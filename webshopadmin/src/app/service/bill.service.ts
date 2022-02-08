@@ -16,14 +16,14 @@ export class BillService extends CrudService<Bill> {
     private os: OrderService,
   ) {
     super(http, 'bill');
-   }
+  }
 
-   getOrder(bill: Bill): Observable<Order> {
-     return this.os.get(bill.orderID);
-   }
+  getOrder(bill: Bill): Observable<Order> {
+    return this.os.get(bill.orderID);
+  }
 
-   getOrderAsync(bill$: Observable<Bill>): Observable<Order> {
-     return bill$.pipe(mergeMap(bill => this.os.get(bill.orderID)));
-   }
+  getOrderAsync(bill$: Observable<Bill>): Observable<Order> {
+    return bill$.pipe(mergeMap(bill => this.os.get(bill.orderID)));
+  }
 
 }
