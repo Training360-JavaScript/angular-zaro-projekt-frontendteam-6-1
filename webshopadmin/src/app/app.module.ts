@@ -9,7 +9,9 @@ import { EditCategoryComponent } from './common/edit-category/edit-category.comp
 import { EditProductComponent } from './common/edit-product/edit-product.component';
 import { EditCustomerComponent } from './common/edit-customer/edit-customer.component';
 import { EditOrderComponent } from './common/edit-order/edit-order.component';
-import { EditBillComponent } from './common/edit-bill/edit-bill.component'
+import { EditBillComponent } from './common/edit-bill/edit-bill.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component'
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,13 +20,15 @@ import { EditBillComponent } from './common/edit-bill/edit-bill.component'
     EditProductComponent,
     EditCustomerComponent,
     EditOrderComponent,
-    EditBillComponent
+    EditBillComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
