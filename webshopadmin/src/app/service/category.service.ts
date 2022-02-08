@@ -12,5 +12,5 @@ export class CategoryService extends CrudService<Category> {
     http: HttpClient
   ) {
     super(http, 'category');
-   }
+  }
 }
