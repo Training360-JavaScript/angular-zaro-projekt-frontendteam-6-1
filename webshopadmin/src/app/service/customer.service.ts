@@ -12,5 +12,5 @@ export class CustomerService extends CrudService<Customer> {
     http: HttpClient
   ) {
     super(http, 'customer');
-   }
+  }
 }
