@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, switchMap } from 'rxjs';
+import { Product } from 'src/app/model/product';
+import { ProductService } from 'src/app/service/product.service';
 
 @Component({
   selector: 'app-edit-product',
@@ -7,9 +11,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditProductComponent implements OnInit {
 
-  constructor() { }
+  product$: Observable<Product> = this.activatedRoute.params.pipe(
+    switchMap( params => this.productService.get(params['id']))
+  )
+  constructor(
+    private productService: ProductService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
+
+  }
+
+  onUpdate(product: Product): void {
+    this.productService.update(product).subscribe(
+      product => this.router.navigate(['/']),
+      err => console.error(err)
+    )
   }
 
 }
