@@ -1,6 +1,61 @@
-<p>edit-customer works!</p>
-<br>
-{{ customer$ | async | json }}
-<br>
-<br>
-{{ customers$ | async | json }}
+<div class="container">
+  <div class="row">
+    <div *ngIf="customer$ | async as customer" class="col-12">
+      <h1 class="h2 text-center mt-5">Customer details</h1>
+      <form #customerForm="ngForm" (ngSubmit)="onSubmit(customer)" >
+        <input [(ngModel)]="customer.id" class="form-control" name="id" type="hidden" />
+        <h3 class="h4">Person</h3>
+        <div class="row">
+          <div class="form-group col-4">
+            <label for="firstname-id">First name</label>
+            <input [(ngModel)]="customer.firstName" id="firstname-id" type="text" name="firstname" class="form-control" required >
+          </div>
+          <div class="form-group col-4">
+            <label for="lastname-id">Last name</label>
+            <input [(ngModel)]="customer.lastName" id="lastname-id" type="text" name="lastname" class="form-control" required >
+          </div>
+          <div class="form-group col-3">
+            <label for="email-id">e-mail</label>
+            <input [(ngModel)]="customer.email" id="email-id" type="text" name="email" class="form-control" required >
+          </div>
+          <div class="form-group col-1 text-center">
+            <label for="active-id">Active</label>
+            <input [(ngModel)]="customer.active" id="active-id" type="checkbox" name="active" class="form-control">
+          </div>
+        </div>
+        <h3 class="h4">Address</h3>
+        <div class="row">
+          <div class="form-group col-2">
+            <label for="zip-id">Zip</label>
+            <input [(ngModel)]="customer.address.zip" id="zip-id" type="text" name="zip" class="form-control" required >
+          </div>
+          <div class="form-group col-4">
+            <label for="country-id">Country</label>
+            <input [(ngModel)]="customer.address.country" id="country-id" type="text" name="country" class="form-control" required >
+          </div>
+          <div class="form-group col-6">
+            <label for="city-id">City</label>
+            <input [(ngModel)]="customer.address.city" id="city-id" type="text" name="city" class="form-control" required >
+          </div>
+          <div class="form-group col-12">
+            <label for="street-id">Street</label>
+            <input [(ngModel)]="customer.address.street" id="street-id" type="text" name="street" class="form-control" required >
+          </div>
+          <div class="form-group col-12">
+            <label for="notes-id">Notes</label>
+            <input [(ngModel)]="customer.address.notes" id="notes-id" type="text" name="notes" class="form-control" >
+          </div>
+        </div>
+        <div class="btn-group d-flex justify-content-center">
+          <button [routerLink]="[ '/', 'customer']" class="btn btn-secondary btn-block mr-1" type="button">
+            <i class="fa fa-undo"></i> Cancel
+          </button>
+          <button [disabled]="customerForm.invalid" type="submit" class="btn btn-success btn-block ml-1">
+            <i class="fa fa-save"></i> Save changes
+          </button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

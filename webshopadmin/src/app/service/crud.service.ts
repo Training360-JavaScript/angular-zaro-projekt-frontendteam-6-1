@@ -39,11 +39,11 @@ export abstract class CrudService<T extends {id: number} > {
     return this.http.delete<T>(`${this.apiUrl}${this.endPoint}/${id}`);
   }
 
-  createOrUpdate(target: T) {
+  createOrUpdate(target: T): Observable<T> {
     if (target.id)
-      this.update(target);
+      return this.update(target);
     else
-      this.create(target);
+      return this.create(target);
   }
 
   create(target: T): Observable<T> {
@@ -62,8 +62,8 @@ export abstract class CrudService<T extends {id: number} > {
   update(target: T): Observable<T> {
     const filteredTarget = this.outputTransform ? this.outputTransform(target) : target;
     const retVal = this.http.patch<T>(
-      `${this.apiUrl}${this.endPoint}/${target.id}`,
-      target,
+      `${this.apiUrl}${this.endPoint}/${filteredTarget.id}`,
+      filteredTarget,
     );
     if (this.inputTransform)
       return retVal.pipe(map(e => this.inputTransform!(e)));
