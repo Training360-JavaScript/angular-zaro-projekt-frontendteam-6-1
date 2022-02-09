@@ -6,8 +6,6 @@ import { Order } from 'src/app/model/order';
 import { Product } from 'src/app/model/product';
 import { Customer } from 'src/app/model/customer';
 
-
-
 @Component({
   selector: 'app-edit-order',
   templateUrl: './edit-order.component.html',
@@ -26,8 +24,6 @@ export class EditOrderComponent implements OnInit {
     this.order$
   );
 
-  
-
   constructor(
     private orderService: OrderService,
     private activatedRoute: ActivatedRoute,
@@ -39,7 +35,7 @@ export class EditOrderComponent implements OnInit {
 
   onUpdate(order: Order): void {
     this.orderService.update(order).subscribe(
-      (_order) => this.router.navigate(['/']),
+      (order) => this.router.navigate(['/']),
       (err) => console.error(err)
     );
   }

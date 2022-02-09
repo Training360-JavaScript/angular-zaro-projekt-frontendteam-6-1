@@ -6,9 +6,9 @@
 
       <div class="form-group">
         <label for="customerid">CustomerID</label>
-        <input [(ngModel)]="order.customerID" id="customerid" class="form-control" name="customer" type="number" required
+        <input [(ngModel)]="order.customerID" id="customerid" class="form-control" name="customerID" type="number" required
           pattern="^[0-9]{1,}" />
-        <div class="error-message" [hidden]="orderForm.controls['customer']?.valid">
+        <div class="error-message" [hidden]="orderForm.controls['customerID']?.valid">
           Required, numbers only!
         </div>
         {{ customer$ | async | json }}
@@ -16,9 +16,9 @@
 
       <div class="form-group">
         <label for="productid">ProductID</label>
-        <input [(ngModel)]="order.productID" id="productid" class="form-control" name="product" type="number" required
+        <input [(ngModel)]="order.productID" id="productid" class="form-control" name="productID" type="number" required
           pattern="^[0-9]{1,}" />
-        <div class="error-message" [hidden]="orderForm.controls['product']?.valid">
+        <div class="error-message" [hidden]="orderForm.controls['productID']?.valid">
           Required, numbers only !
         </div>
         {{ product$ | async | json }}
