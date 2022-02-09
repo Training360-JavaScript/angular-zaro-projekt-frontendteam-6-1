@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export abstract class CrudService<T extends {id: number} > {
+export class CrudService<T extends {id: number} > {
 
   constructor(
     protected http: HttpClient,
