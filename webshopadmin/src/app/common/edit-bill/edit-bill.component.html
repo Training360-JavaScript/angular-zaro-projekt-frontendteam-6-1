@@ -1,1 +1,54 @@
-<p>edit-bill works!</p>
+<div class="row">
+  <div *ngIf="bill$ | async as bill" class="col-6 offset-3">
+    <h1 class="h2 text-center mt-5">Bill details</h1>
+    <form #billForm="ngForm" (ngSubmit)="onUpdate(bill)">
+
+      <input [(ngModel)]="bill.id" class="form-control" name="id" type="hidden" />
+
+      <div class="form-group">
+        <label for="customerid">OrderID</label>
+        <input [(ngModel)]="bill.orderID" id="orderid" class="form-control" name="orderID" type="number" required
+          pattern="^[0-9]{1,}" />
+        <div class="error-message" [hidden]="billForm.controls['orderID']?.valid">
+          Required, numbers only!
+        </div>
+        {{ order$ | async | json }}
+      </div>
+
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <input [(ngModel)]="bill.amount" class="form-control" name="amount" type="number" required
+          pattern="^[1-9][0-9]{0,}" />
+        <div class="error-message" [hidden]="billForm.controls['amount']?.valid">
+          Minimum amount:1!
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="billStatus"> Status </label>
+        <select [(ngModel)]="bill.status" id="billStatus" name="status" required class="form-control">
+          <option value="" selected>Choose status...</option>
+          <option value="new">New</option>
+          <option value="paid">Paid</option>
+        </select>
+        <div class="error-message" [hidden]="billForm.controls['status']?.valid">
+          Status required!
+        </div>
+      </div>
+
+      <div class="btn-group d-flex justify-content-center">
+
+        <button [routerLink]="['/', 'bill']" class="btn btn-secondary btn-block mx-1">
+          <i class="fa fa-undo"></i> Cancel
+        </button>
+
+        <button [disabled]="billForm.invalid" type="submit" class="btn btn-success btn-block mx-1">
+          <i class="fa fa-save"></i> Save changes
+        </button>
+
+      </div>
+
+
+    </form>
+  </div>
+</div>
