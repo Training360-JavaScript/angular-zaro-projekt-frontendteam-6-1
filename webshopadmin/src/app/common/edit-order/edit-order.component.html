@@ -1,1 +1,67 @@
-<p>edit-order works!</p>
+<div class="row">
+  <div *ngIf="order$ | async as order" class="col-6 offset-3">
+    <h1 class="h2 text-center mt-5">Order details</h1>
+    <form #orderForm="ngForm" (ngSubmit)="onUpdate(orderForm.value)">
+      <input [(ngModel)]="order.id" class="form-control" name="id" type="hidden" />
+
+      <div class="form-group">
+        <label for="customerid">CustomerID</label>
+        <input [(ngModel)]="order.customerID" id="customerid" class="form-control" name="customer" type="number" required
+          pattern="^[0-9]{1,}" />
+        <div class="error-message" [hidden]="orderForm.controls['customer']?.valid">
+          Required, numbers only!
+        </div>
+        {{ customer$ | async | json }}
+      </div>
+
+      <div class="form-group">
+        <label for="productid">ProductID</label>
+        <input [(ngModel)]="order.productID" id="productid" class="form-control" name="product" type="number" required
+          pattern="^[0-9]{1,}" />
+        <div class="error-message" [hidden]="orderForm.controls['product']?.valid">
+          Required, numbers only !
+        </div>
+        {{ product$ | async | json }}
+      </div>
+
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <input [(ngModel)]="order.amount" class="form-control" name="amount" type="number" required
+          pattern="^[1-9][0-9]{0,}" />
+        <div class="error-message" [hidden]="orderForm.controls['amount']?.valid">
+          Minimum amount:1!
+        </div>
+      </div>
+      <!-- <div class="form-group">
+        <label for="status">Status</label>
+        <input [(ngModel)]="order.status" class="form-control" name="status" type="text"
+        />
+      </div> -->
+
+      <div class="form-group">
+        <label for="orderStatus"> Status </label>
+        <select [(ngModel)]="order.status" id="orderStatus" name="status" required class="form-control">
+          <option value="" selected>Choose status...</option>
+          <option value="new">New</option>
+          <option value="paid">Paid</option>
+          <option value="shipped">Shipped</option>
+        </select>
+        <div class="error-message" [hidden]="orderForm.controls['status']?.valid">
+          Status required!
+        </div>
+      </div>
+
+      <div class="btn-group d-flex justify-content-center">
+
+        <button [routerLink]="['/', 'order']" class="btn btn-secondary btn-block mx-1">
+          <i class="fa fa-undo"></i> Cancel
+        </button>
+
+        <button [disabled]="orderForm.invalid" type="submit" class="btn btn-success btn-block mx-1">
+          <i class="fa fa-save"></i> Save changes
+        </button>
+
+      </div>
+    </form>
+  </div>
+</div>
