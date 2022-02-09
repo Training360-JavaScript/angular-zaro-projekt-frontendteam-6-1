@@ -6,7 +6,7 @@
       <input [(ngModel)]="bill.id" class="form-control" name="id" type="hidden" />
 
       <div class="form-group">
-        <label for="customerid">OrderID</label>
+        <label for="orderid">OrderID</label>
         <input [(ngModel)]="bill.orderID" id="orderid" class="form-control" name="orderID" type="number" required
           pattern="^[0-9]{1,}" />
         <div class="error-message" [hidden]="billForm.controls['orderID']?.valid">
