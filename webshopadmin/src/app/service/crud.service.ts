@@ -39,11 +39,11 @@ export abstract class CrudService<T extends {id: number} > {
     return this.http.delete<T>(`${this.apiUrl}${this.endPoint}/${id}`);
   }
 
-  createOrUpdate(target: T) {
+  createOrUpdate(target: T): Observable<T> {
     if (target.id)
-      this.update(target);
+      return this.update(target);
     else
-      this.create(target);
+      return this.create(target);
   }
 
   create(target: T): Observable<T> {
