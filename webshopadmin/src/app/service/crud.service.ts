@@ -1,16 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 
+@Injectable({
+  providedIn: 'root'
+})
 export abstract class CrudService<T extends {id: number} > {
 
   constructor(
     protected http: HttpClient,
-    protected endPoint: string,
-    protected apiUrl: string = environment.apiUrl,
+    @Inject(String) protected endPoint: string,
+    @Inject(String) protected apiUrl: string = environment.apiUrl,
   ) { }
 
   getAll(): Observable<T[]> {
