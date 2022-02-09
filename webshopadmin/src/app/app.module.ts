@@ -12,6 +12,8 @@ import { EditOrderComponent } from './common/edit-order/edit-order.component';
 import { EditBillComponent } from './common/edit-bill/edit-bill.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component'
 import { FormsModule } from '@angular/forms';
+import { HeaderComponent } from './common/header/header.component';
+import { SidebarComponent } from './common/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { FormsModule } from '@angular/forms';
     EditCustomerComponent,
     EditOrderComponent,
     EditBillComponent,
-    DashboardComponent
+    DashboardComponent,
+    HeaderComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
