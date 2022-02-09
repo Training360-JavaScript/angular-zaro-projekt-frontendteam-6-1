@@ -1,7 +1,7 @@
 <div class="row">
   <div *ngIf="order$ | async as order" class="col-6 offset-3">
     <h1 class="h2 text-center mt-5">Order details</h1>
-    <form #orderForm="ngForm" (ngSubmit)="onUpdate(orderForm.value)">
+    <form #orderForm="ngForm" (ngSubmit)="onUpdate(order)">
       <input [(ngModel)]="order.id" class="form-control" name="id" type="hidden" />
 
       <div class="form-group">
