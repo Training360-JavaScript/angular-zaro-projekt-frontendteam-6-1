@@ -118,26 +118,28 @@
         </div>
       </div>
 
-      <pre class="text-right mt-3">
+      <pre class="text-right">
             <small>* required</small>
           </pre>
 
-      <div class="btn-group d-flex justify-content-center m-1">
-        <button
-          [routerLink]="['/products/']"
-          type="reset"
-          class="btn btn-secondary btn-block"
-        >
-          <i class="fa fa-undo"></i>
-        </button>
+          <div class="btn-group d-flex justify-content-center ml-1">
+            <button mat-raised-button
+              color="basic"
+              [routerLink]="['/']"
+              type="reset"
+              class="m-1 btn"
+            >
+              <mat-icon>undo</mat-icon>
+            </button>
 
-        <button
-          (click)="onUpdate(product)"
-          class="btn btn-primary btn-block"
-        >
-          <i class="fa fa-save"></i>
-        </button>
-      </div>
+            <button mat-raised-button
+              color="accent"
+              (click)="onUpdate(product)"
+              class="m-1 btn"
+            >
+              <mat-icon>save</mat-icon>
+            </button>
+          </div>
     </form>
   </div>
 </div>
