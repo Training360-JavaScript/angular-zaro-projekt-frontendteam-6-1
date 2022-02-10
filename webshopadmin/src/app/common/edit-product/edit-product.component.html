@@ -20,7 +20,7 @@
           required
         />
         <div
-          [hidden]="productForm.controls['name'].valid"
+          [hidden]="productForm.controls['name']?.valid"
           class="error-message"
         >
           The name of the product must be at least 3 characters long.
@@ -38,7 +38,7 @@
           required
         />
         <div
-          [hidden]="productForm.controls['type'].valid"
+          [hidden]="productForm.controls['type']?.valid"
           class="error-message"
         >
           The name of the product must be at least 3 characters long.
@@ -55,7 +55,7 @@
           required
         />
         <div
-          [hidden]="productForm.controls['catID'].valid"
+          [hidden]="productForm.controls['catID']?.valid"
           class="error-message"
         ></div>
       </div>
@@ -70,7 +70,7 @@
           required
         />
         <div
-          [hidden]="productForm.controls['description'].valid"
+          [hidden]="productForm.controls['description']?.valid"
           class="error-message"
         >
           The description of the product must be at least 8 characters long.
@@ -87,7 +87,7 @@
           required
         />
         <div
-          [hidden]="productForm.controls['price'].valid"
+          [hidden]="productForm.controls['price']?.valid"
           class="error-message"
         >
           The price of the product must be a number.
@@ -132,7 +132,7 @@
         </button>
 
         <button
-          (click)="onUpdate(productForm.value)"
+          (click)="onUpdate(product)"
           class="btn btn-primary btn-block"
         >
           <i class="fa fa-save"></i>
