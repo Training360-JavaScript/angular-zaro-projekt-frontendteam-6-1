@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://nettuts.hu/jms/hatsix/',
+  // apiUrl: 'https://nettuts.hu/jms/hatsix/',
+  apiUrl: 'http://127.0.0.1:3000/',
 };
 
 /*
