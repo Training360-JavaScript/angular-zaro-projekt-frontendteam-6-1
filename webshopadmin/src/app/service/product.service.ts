@@ -18,6 +18,8 @@ export class ProductService extends CrudService<Product> {
     super(http, 'product');
   }
 
+  override createInstanceOfT() { return new Product(); }
+
   getCategory(product: Product): Observable<Category> {
     return this.cs.get(product.catID);
   }

@@ -21,6 +21,8 @@ export class OrderService extends CrudService<Order> {
     super(http, 'order');
   }
 
+  override createInstanceOfT() { return new Order(); }
+
   getCustomer(order: Order): Observable<Customer> {
     return this.cs.get( order.customerID);
   }

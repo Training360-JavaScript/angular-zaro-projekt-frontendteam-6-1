@@ -18,6 +18,8 @@ export class BillService extends CrudService<Bill> {
     super(http, 'bill');
   }
 
+  override createInstanceOfT() { return new Bill(); }
+
   getOrder(bill: Bill): Observable<Order> {
     return this.os.get(bill.orderID);
   }

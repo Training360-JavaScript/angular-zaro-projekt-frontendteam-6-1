@@ -15,6 +15,8 @@ export class CustomerService extends CrudService<Customer> {
     super(http, 'customer');
   }
 
+  override createInstanceOfT() { return new Customer(); }
+
   override inputTransform(c: Customer ): Customer {
     if (typeof c.address === 'string') {
       const strAddr = c.address as string;
