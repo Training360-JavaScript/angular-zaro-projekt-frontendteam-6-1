@@ -96,25 +96,24 @@
 
       <div class="row">
         <div class="col-md-6 form-group">
-          <label for="featured">* Featured </label><br />
 
           <mat-checkbox
             type="checkbox"
             id="featured"
             name="featured"
             [(ngModel)]="product.featured"
-          ></mat-checkbox>
+          >   <label for="featured"> Featured </label> </mat-checkbox>
         </div>
 
         <div class="col-md-6 form-group">
-          <label for="active">* Active </label><br />
+
 
           <mat-checkbox
             type="checkbox"
             id="active"
             name="active"
             [(ngModel)]="product.active"
-          ></mat-checkbox>
+          > <label for="active"> Active </label> </mat-checkbox>
         </div>
       </div>
 
