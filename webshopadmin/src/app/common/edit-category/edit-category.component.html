@@ -46,20 +46,22 @@
         </div>
       </div>
 
-      <div class="btn-group d-flex justify-content-center m-1">
-        <button
+      <div class="btn-group d-flex justify-content-center ml-1">
+        <button mat-raised-button
+          color="basic"
           [routerLink]="['/']"
           type="reset"
-          class="btn btn-secondary btn-block"
+          class="m-1 btn"
         >
-          <i class="fa fa-undo"></i>
+          <mat-icon>undo</mat-icon>
         </button>
 
-        <button
+        <button mat-raised-button
+          color="accent"
           (click)="onUpdate(category)"
-          class="btn btn-primary btn-block"
+          class="m-1 btn"
         >
-          <i class="fa fa-save"></i>
+          <mat-icon>save</mat-icon>
         </button>
       </div>
     </form>
