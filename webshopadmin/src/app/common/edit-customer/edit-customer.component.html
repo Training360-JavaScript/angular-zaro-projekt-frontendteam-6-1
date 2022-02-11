@@ -32,8 +32,11 @@
             </div>
           </div>
           <div class="form-group col-1 text-center">
+
+            <!-- <label for="active-id">Active</label>
+            <input [(ngModel)]="customer.active" id="active-id" type="checkbox" name="active" class="form-control"> -->
             <label for="active-id">Active</label>
-            <input [(ngModel)]="customer.active" id="active-id" type="checkbox" name="active" class="form-control">
+            <mat-checkbox type="checkbox" id="active-id" name="active" [(ngModel)]="customer.active" > </mat-checkbox>
           </div>
         </div>
         <h3 class="h4">Address</h3>
