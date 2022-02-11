@@ -1,6 +1,8 @@
 <div class="container">
-  <div class="row">
-    <div *ngIf="order$ | async as order" class="col-6 offset-3">
+  Autocomplete teszt
+  <app-autocomplete></app-autocomplete>
+  <div class="row ">
+    <div *ngIf="order$ | async as order" class="col-12 col-lg-8 offset-lg-2">
       <h1 *ngIf="order.id === 0" class="h2 text-center mt-5">Create new order</h1>
       <h1 *ngIf="order.id !== 0" class="h2 text-center mt-5">Order details</h1>
       <form #orderForm="ngForm" (ngSubmit)="onUpdate(order)">
@@ -19,6 +21,7 @@
           <div class="form-group col-5">
             <label for="customer">Customer name</label>
             <div *ngIf="customer$ | async as customer" class="mt-2">
+
               {{ customer.firstName }} {{ customer.lastName }}
             </div>
           </div>
@@ -52,7 +55,8 @@
 
         </div>
 
-        <div class="form-group">
+  <div class="row">
+        <div class="form-group col-4">
           <label for="amount">Amount</label>
           <input [(ngModel)]="order.amount" id="amount" class="form-control" name="amount" type="number" required
             pattern="^[1-9][0-9]{0,}" />
@@ -78,8 +82,9 @@
           Status required!
         </div>
       </div> -->
+        <div class="form-group col-8">
         <label for=""> Status </label>
-        <div class="row">
+        <div class="row mt-2">
           <div class="form-check form-check-radio">
             <label class="form-check-label">
               <input [(ngModel)]="order.status" class="form-check-input" type="radio" name="satus" id=""
@@ -112,7 +117,10 @@
               </span>
             </label>
           </div>
+          </div>
         </div>
+        </div>
+
 
         <div class="btn-group d-flex justify-content-center mt-5">
 
