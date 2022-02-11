@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { asapScheduler, asyncScheduler, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export abstract class CrudService<T extends {id: number} > {
+export class CrudService<T extends {id: number} > {
 
   constructor(
     protected http: HttpClient,
@@ -18,6 +18,7 @@ export abstract class CrudService<T extends {id: number} > {
 
   protected inputTransform?(target: T): T;
   protected outputTransform?(target: T): T;
+  protected createInstanceOfT?(): T;
 
   getAll(): Observable<T[]> {
     if (this.inputTransform)
@@ -25,6 +26,15 @@ export abstract class CrudService<T extends {id: number} > {
         .pipe(map(list => list.map(e => this.inputTransform!(e))))
     else
       return this.http.get<T[]>(`${this.apiUrl}${this.endPoint}`);
+  }
+
+  getOrNew(id: number): Observable<T> {
+    if ( ( !id || !parseInt(String(id)) ) && this.createInstanceOfT)
+      return new Observable<T>(subscriber =>
+          asyncScheduler.schedule(() =>
+          subscriber.next(this.createInstanceOfT!())));
+    else
+      return this.get(id);
   }
 
   get(id: number): Observable<T> {

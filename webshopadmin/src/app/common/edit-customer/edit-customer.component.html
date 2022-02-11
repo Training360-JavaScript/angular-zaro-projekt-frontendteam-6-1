@@ -1,3 +1,4 @@
+
 <div class="container">
   <div class="row">
     <div *ngIf="customer$ | async as customer" class="col-12">
@@ -31,8 +32,11 @@
             </div>
           </div>
           <div class="form-group col-1 text-center">
+
+            <!-- <label for="active-id">Active</label>
+            <input [(ngModel)]="customer.active" id="active-id" type="checkbox" name="active" class="form-control"> -->
             <label for="active-id">Active</label>
-            <input [(ngModel)]="customer.active" id="active-id" type="checkbox" name="active" class="form-control">
+            <mat-checkbox type="checkbox" id="active-id" name="active" [(ngModel)]="customer.active" > </mat-checkbox>
           </div>
         </div>
         <h3 class="h4">Address</h3>
@@ -71,7 +75,11 @@
           </div>
           <div class="form-group col-12">
             <label for="notes-id">Notes</label>
-            <input [(ngModel)]="customer.address.notes" id="notes-id" type="text" name="notes" class="form-control" >
+            <input [(ngModel)]="customer.address.notes" id="notes-id" type="text" name="notes" class="form-control" required
+            pattern=".{1,}" >
+            <div class="error-message small" [hidden]="customerForm.controls['notes']?.valid">
+              Please enter the notes.
+            </div>
           </div>
         </div>
         <div class="btn-group d-flex justify-content-center">
@@ -86,3 +94,5 @@
     </div>
   </div>
 </div>
+
+

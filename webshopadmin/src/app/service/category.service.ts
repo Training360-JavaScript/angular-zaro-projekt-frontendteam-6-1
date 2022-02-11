@@ -13,4 +13,7 @@ export class CategoryService extends CrudService<Category> {
   ) {
     super(http, 'category');
   }
+
+  override createInstanceOfT() { return new Category(); }
+
 }
