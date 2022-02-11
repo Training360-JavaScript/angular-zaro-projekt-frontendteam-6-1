@@ -1,8 +1,8 @@
-import { switchMap, Observable } from 'rxjs';
+import { switchMap, Observable, Subscription, asyncScheduler, asapScheduler } from 'rxjs';
 import { Customer } from './../../model/customer';
 import { CustomerService } from './../../service/customer.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-edit-customer',
@@ -11,8 +11,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditCustomerComponent implements OnInit {
 
+  @Input() set customerID(value: number) {
+    this.customer$ = this.customerService.getOrNew(value);
+  }
+
   customer$: Observable<Customer> = this.activatedRoute.params
-    .pipe(switchMap(e => this.customerService.get(e['id'])));
+    .pipe(switchMap(e => this.customerService.getOrNew(e['id'])));
 
   constructor(
     private router: Router,

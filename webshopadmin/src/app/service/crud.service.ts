@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { asapScheduler, asyncScheduler, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 
@@ -29,9 +29,12 @@ export class CrudService<T extends {id: number} > {
   }
 
   getOrNew(id: number): Observable<T> {
-    if (!id && this.createInstanceOfT) return new Observable<T>(
-      subscriber => subscriber.next(this.createInstanceOfT!()));
-    else return this.get(id);
+    if ( ( !id || !parseInt(String(id)) ) && this.createInstanceOfT)
+      return new Observable<T>(subscriber =>
+          asyncScheduler.schedule(() =>
+          subscriber.next(this.createInstanceOfT!())));
+    else
+      return this.get(id);
   }
 
   get(id: number): Observable<T> {
