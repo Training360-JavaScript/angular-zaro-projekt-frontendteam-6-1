@@ -2,7 +2,7 @@ import { switchMap, Observable, Subscription, asyncScheduler, asapScheduler } fr
 import { Customer } from './../../model/customer';
 import { CustomerService } from './../../service/customer.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-edit-customer',
@@ -11,9 +11,13 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class EditCustomerComponent implements OnInit {
 
+  @Input() closeNavigatePath: string[] | null = ['/'];
+
   @Input() set customerID(value: number) {
     this.customer$ = this.customerService.getOrNew(value);
   }
+
+  @Output() close : EventEmitter<boolean> = new EventEmitter<boolean>();
 
   customer$: Observable<Customer> = this.activatedRoute.params
     .pipe(switchMap(e => this.customerService.getOrNew(e['id'])));
@@ -29,9 +33,15 @@ export class EditCustomerComponent implements OnInit {
 
   onSubmit(customer: Customer) {
     this.customerService.createOrUpdate(customer).subscribe({
-      next: () => this.router.navigate(['/']),
+      next: () => this.onClose(true),
       error: console.log,
     })
+  }
+
+  onClose(result: boolean) {
+    this.close.emit(result);
+    if (this.closeNavigatePath && this.closeNavigatePath.length)
+      this.router.navigate(this.closeNavigatePath);
   }
 
 }
