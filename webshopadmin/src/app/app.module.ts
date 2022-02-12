@@ -11,7 +11,7 @@ import { EditCustomerComponent } from './common/edit-customer/edit-customer.comp
 import { EditOrderComponent } from './common/edit-order/edit-order.component';
 import { EditBillComponent } from './common/edit-bill/edit-bill.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component'
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './common/header/header.component';
 import { SidebarComponent } from './common/sidebar/sidebar.component';
 import { DatabaseTableComponent } from './common/database-table/database-table.component';
@@ -31,6 +31,10 @@ import { DynamicPipe } from './pipe/dynamic.pipe';
 import { AddressPipe } from './pipe/address.pipe';
 import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { AutocompleteComponent } from './common/autocomplete/autocomplete.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -51,6 +55,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ListOrderComponent,
     DynamicPipe,
     AddressPipe,
+    AutocompleteComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,6 +63,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
 
     MatCheckboxModule,
     MatButtonModule,
@@ -68,9 +74,12 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MatSortModule,
     CommonModule,
     DragDropModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
