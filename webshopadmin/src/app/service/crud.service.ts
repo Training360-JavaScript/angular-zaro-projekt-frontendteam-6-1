@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, Pipe } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { asapScheduler, asyncScheduler, map, Observable } from 'rxjs';
@@ -26,6 +26,10 @@ export class CrudService<T extends {id: number} > {
         .pipe(map(list => list.map(e => this.inputTransform!(e))))
     else
       return this.http.get<T[]>(`${this.apiUrl}${this.endPoint}`);
+  }
+
+  getAllFiltered(filterFunc: (value: T, index: number, array: T[]) => unknown, thisArg?: any) : Observable<T[]> {
+    return this.getAll().pipe(map(list => list.filter(filterFunc)))
   }
 
   getOrNew(id: number): Observable<T> {
