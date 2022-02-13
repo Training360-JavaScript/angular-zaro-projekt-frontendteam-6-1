@@ -1,0 +1,18 @@
+@use '../../scss/variable' as *;
+@use '../../scss/mixin' as mixin;
+
+$alignCenterNameList:            id                   status  buttons;
+$responsiveNameList:             id  orderID  amount  status  buttons;
+$responsiveList:      $xs-min   10%      65%    25%   hidden      25%,
+                      $sm-min   15%      27%    30%   hidden      30%,
+                      $md-min   12%      20%    20%      18%      30%,
+                      $lg-min   10%      45%    15%      15%      15%,
+                      $xl-min    5%      50%    15%      15%      15%;
+
+@include mixin.set-database-table-style(
+  $responsiveNameList,
+  $responsiveList,
+  $alignCenterNameList
+);
+
+

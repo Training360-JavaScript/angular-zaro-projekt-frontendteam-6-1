@@ -1,0 +1,62 @@
+@use 'variable' as var;
+
+@mixin set-database-table-style (
+  $responsiveNameList,
+  $responsiveList,
+  $alignCenterNameList
+) {
+
+  $last: null;
+
+  @each $list in $responsiveList {
+
+    $width: 0%;
+
+    @each $columName in $responsiveNameList {
+
+      @media screen and ( min-width: nth($list,1) ) {
+
+        :host ::ng-deep {
+
+          .mat-column {
+
+            &-#{$columName},
+            &-#{$columName}--filter {
+
+              $index: index($responsiveNameList, $columName)+1;
+              $value: nth( $list, $index );
+
+              @if ( $value == hidden ) {
+
+                visibility: hidden;
+                flex: 0 0 0 !important;
+                padding: 0 !important;
+
+              } @else {
+
+                visibility: visible;
+                flex: 0 0 $value !important;
+                padding: var.$cell-padding !important;
+
+                $width: $width + $value;
+
+                @if index( $alignCenterNameList, #{$columName} ) {
+                  display: flex;
+                  justify-content: center;
+                }
+
+              }
+            }
+          }
+        }
+      }
+
+    }
+
+    @if $width != 100% {
+      @debug 'WARNING: ', $width, ': ', $list;
+
+    };
+
+  }
+}

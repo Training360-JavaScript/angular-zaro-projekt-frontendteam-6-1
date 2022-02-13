@@ -38,23 +38,26 @@ export class ListCustomerComponent implements OnInit {
       buttons: { name: '' }
     },
 
-    onDelete( Customer: Customer ): Observable<boolean> {
+    onEdit: ( customer: Customer ): Observable<boolean> => {
       return new Observable(
         subscriber => {
-          setTimeout(
-            () => {
-              subscriber.next( Math.random() < 0.5 );
-              subscriber.complete();
-            }, 1000
-          );
+          this.router.navigate( [ '/customer', customer.id ] );
+          subscriber.next();
+          subscriber.complete();
         }
       );
     },
 
-    onEdit: ( customer: Customer ): Observable<boolean> => {
-      this.router.navigate( [ '/customer', customer.id] );
-      return new Observable();
-    }
+    onNew: (): Observable<boolean> => {
+      return new Observable(
+        subscriber => {
+          this.router.navigate( [ '/customer', 0 ] );
+          subscriber.next();
+          subscriber.complete();
+        }
+      );
+    },
+
   };
 
   constructor(

@@ -1,3 +1,5 @@
+@import  'assets/scss/material-dashboard';
+
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
@@ -8,4 +10,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-style: italic;
   font-size: 0.9rem;
   padding-top: 0.4rem;
+}
+
+mat-checkbox {
+	::ng-deep .mat-checkbox-inner-container {
+      width: 1.9rem;
+      height: 1.9rem;
+  	}
 }

@@ -1,10 +1,12 @@
+import { ComponentType } from '@angular/cdk/portal';
+import { EditProductComponent } from './../edit-product/edit-product.component';
 import { Category } from './../../model/category';
 import { CategoryService } from './../../service/category.service';
 import { Router } from '@angular/router';
 import { ProductService } from './../../service/product.service';
 import { Product } from './../../model/product';
 import { Observable } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 
 @Component({
   selector: 'app-list-product',
@@ -19,6 +21,7 @@ export class ListProductComponent implements OnInit {
 
     columns: {
       id: { name: '#' },
+      active: { name: 'Active', type: 'boolean' },
       name: { name: 'Name'},
       type: { name: 'Type' },
       catID: {
@@ -28,34 +31,42 @@ export class ListProductComponent implements OnInit {
           return find?.name ?? '';
         }
       },
-      buttons: { name: '' }
+      featured: { name: 'Featured', type: 'boolean' },
+      buttons: { name: '' },
     },
 
-    onDelete( product: Product ): Observable<boolean> {
+    onEdit: ( product: Product ): Observable<boolean> => {
       return new Observable(
         subscriber => {
-          setTimeout(
-            () => {
-              subscriber.next( Math.random() < 0.5 );
-              subscriber.complete();
-            }, 1000
-          );
+          this.router.navigate( [ '/product', product.id ] );
+          subscriber.next();
+          subscriber.complete();
         }
       );
     },
 
-    onEdit: ( product: Product ): Observable<boolean> => {
-      this.router.navigate( [ '/product', product.id ] );
-      return new Observable();
-     }
+    onNew: (): Observable<boolean> => {
+      return new Observable(
+        subscriber => {
+          this.router.navigate( [ '/product', 0 ] );
+          subscriber.next();
+          subscriber.complete();
+        }
+      );
+    },
+
+    getItemName( product: Product ) {
+      return `#${product.id} ${product.name}`;
+    }
   };
 
   categoryList: Category[] = [];
+  customComponent: ComponentType<any> = EditProductComponent;
 
   constructor(
     public customService: ProductService,
     public categoryService: CategoryService,
-    private router: Router
+    public router: Router,
   ) {
     categoryService.getAll().subscribe( {
       next: ( categories: Category[] | null ) => {
@@ -69,4 +80,8 @@ export class ListProductComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+
 }
+
+

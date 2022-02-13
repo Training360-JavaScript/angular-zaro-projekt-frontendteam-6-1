@@ -27,6 +27,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule, MAT_DIALOG_SCROLL_STRATEGY } from '@angular/material/dialog';
 import { DynamicPipe } from './pipe/dynamic.pipe';
 import { AddressPipe } from './pipe/address.pipe';
 import { CommonModule } from '@angular/common';
@@ -35,6 +36,10 @@ import { AutocompleteComponent } from './common/autocomplete/autocomplete.compon
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { DialogComponent } from './common/dialog/dialog.component';
+import { PortalModule } from '@angular/cdk/portal';
+import { DialogConfirmComponent } from './common/dialog-confirm/dialog-confirm.component';
+
 
 @NgModule({
   declarations: [
@@ -56,6 +61,8 @@ import { MatInputModule } from '@angular/material/input';
     DynamicPipe,
     AddressPipe,
     AutocompleteComponent,
+    DialogComponent,
+    DialogConfirmComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,11 +82,14 @@ import { MatInputModule } from '@angular/material/input';
     CommonModule,
     DragDropModule,
     MatCheckboxModule,
-    MatAutocompleteModule,
     MatFormFieldModule,
+    MatDialogModule,
     MatInputModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    PortalModule,
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
