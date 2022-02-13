@@ -1,1 +1,94 @@
-<p>dashboard works!</p>
+<div class="container">
+  <div class="row">
+    <h2 class="mt-5">Products</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>All</th>
+          <th>Active</th>
+          <th>Not active</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td> {{info.allProducts }} </td>
+          <td> {{info.activeProducts }}</td>
+          <td> {{ info.allProducts - info.activeProducts }} </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 class="mt-5">Customers</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>All</th>
+          <th>Active</th>
+          <th>Not active</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td> {{info.allCustomer }} </td>
+          <td> {{info.activeCustomer }}</td>
+          <td> {{ info.allCustomer - info.activeCustomer }} </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 class="mt-5">Orders</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th></th>
+          <th>All</th>
+          <th>New</th>
+          <th>Shipped</th>
+          <th>Not paid (new + shipped)</th>
+          <th>Paid</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Count</td>
+          <td> {{ info.allOrder }} </td>
+          <td> {{ info.newOrder }} </td>
+          <td> {{ info.shippedOrder }} </td>
+          <td> {{ info.paidOrder }} </td>
+          <td> {{ info.newOrder + info.shippedOrder }} </td>
+        </tr>
+        <tr>
+          <td>Amout</td>
+          <td> {{ info.allOrderAmount }} </td>
+          <td> {{ info.newOrderAmount }} </td>
+          <td> {{ info.shippedOrderAmount }} </td>
+          <td> {{ info.paidOrderAmount }} </td>
+          <td> {{ info.newOrderAmount + info.shippedOrderAmount }} </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2 class="mt-5">Bills</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th></th>
+          <th>All</th>
+          <th>New (not paid)</th>
+          <th>Paid</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Count</td>
+          <td> {{ info.allBill }} </td>
+          <td> {{ info.newBill }} </td>
+          <td> {{ info.paidBill }} </td>
+        </tr>
+        <tr>
+          <td>Amout</td>
+          <td> {{ info.allBillAmount }} </td>
+          <td> {{ info.newBillAmount }} </td>
+          <td> {{ info.paidBillAmount }} </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
