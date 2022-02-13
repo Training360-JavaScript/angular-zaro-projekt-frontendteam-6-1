@@ -27,8 +27,7 @@ export class EditOrderComponent implements OnInit {
   constructor(
     private orderService: OrderService,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
-
+    private router: Router
   ) {}
 
   ngOnInit(): void {}
@@ -38,5 +37,13 @@ export class EditOrderComponent implements OnInit {
       (order) => this.router.navigate(['/']),
       (err) => console.error(err)
     );
+  }
+
+  editCustomer(customer: Customer, ): void {
+    this.router.navigate(['/customer', customer.id]);
+  }
+
+  editProduct(product: Product): void {
+    this.router.navigate(['/product', product.id]);
   }
 }
