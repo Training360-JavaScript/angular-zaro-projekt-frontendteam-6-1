@@ -12,7 +12,7 @@
           <div class="form-group col-4">
             <label for="customerid">CustomerID</label>
             <input [(ngModel)]="order.customerID" id="customerid" class="form-control form-inline" name="customerID"
-              type="number" required pattern="^[0-9]{1,}" />
+              type="number" required pattern="^[1-9][0-9]{0,}" />
 
             <div class="error-message" [hidden]="orderForm.controls['customerID']?.valid">
               Required, numbers only!
@@ -35,7 +35,7 @@
           <div class="form-group col-4">
             <label for="productid">ProductID</label>
             <input [(ngModel)]="order.productID" id="productid" class="form-control" name="productID" type="number"
-              required pattern="^[0-9]{1,}" />
+              required pattern="^[1-9][0-9]{0,}" />
             <div class="error-message" [hidden]="orderForm.controls['productID']?.valid">
               Required, numbers only !
             </div>
