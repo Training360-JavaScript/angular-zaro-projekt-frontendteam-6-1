@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable, switchMap } from 'rxjs';
 import { OrderService } from 'src/app/service/order.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,8 +12,18 @@ import { Customer } from 'src/app/model/customer';
   styleUrls: ['./edit-order.component.scss'],
 })
 export class EditOrderComponent implements OnInit {
+
+  @Input() closeNavigatePath: string[] | null = ['/order/list'];
+
+  @Input() set orderID(value: number) {
+    this.order$ = this.orderService.getOrNew(value);
+  }
+
+  @Output() close: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+
   order$: Observable<Order> = this.activatedRoute.params.pipe(
-    switchMap((params) => this.orderService.get(params['id']))
+    switchMap(params => this.orderService.get(params['id']))
   );
 
   product$: Observable<Product> = this.orderService.getProductAsync(
@@ -32,11 +42,17 @@ export class EditOrderComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onUpdate(order: Order): void {
-    this.orderService.update(order).subscribe(
-      (order) => this.router.navigate(['/']),
-      (err) => console.error(err)
-    );
+  onSubmit(order: Order) {
+    this.orderService.createOrUpdate(order).subscribe({
+      next: () => this.onClose(true),
+      error: console.log,
+    });
+  }
+
+  onClose(result: boolean): void {
+    this.close.emit(result);
+    if (this.closeNavigatePath && this.closeNavigatePath.length)
+      this.router.navigate(this.closeNavigatePath);
   }
 
   editCustomer(customer: Customer, ): void {
