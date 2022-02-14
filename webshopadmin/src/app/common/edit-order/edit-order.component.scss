@@ -2,3 +2,7 @@
     color: red;
     font-style: italic;
  }
+
+ button:disabled {
+  cursor: not-allowed;
+}
