@@ -1,54 +1,102 @@
-<div class="row">
-  <div *ngIf="bill$ | async as bill" class="col-6 offset-3">
-    <h1 class="h2 text-center mt-5">Bill details</h1>
-    <form #billForm="ngForm" (ngSubmit)="onUpdate(bill)">
+<div class="container">
+  <div class="row">
+    <div *ngIf="bill$ | async as bill" class="col-12 col-lg-8 offset-lg-2">
+      <h1 *ngIf="bill.id === 0" class="h2 text-center mt-5">Create new bill</h1>
+      <h1 *ngIf="bill.id !== 0" class="h2 text-center mt-5">Bill details</h1>
+      <form #billForm="ngForm">
 
-      <input [(ngModel)]="bill.id" class="form-control" name="id" type="hidden" />
+        <input [(ngModel)]="bill.id" class="form-control" name="id" type="hidden" />
 
-      <div class="form-group">
-        <label for="orderid">OrderID</label>
-        <input [(ngModel)]="bill.orderID" id="orderid" class="form-control" name="orderID" type="number" required
-          pattern="^[0-9]{1,}" />
-        <div class="error-message" [hidden]="billForm.controls['orderID']?.valid">
-          Required, numbers only!
+        <div class="row">
+          <div class="form-group col-4">
+            <label for="orderid">OrderID</label>
+            <input [(ngModel)]="bill.orderID" id="orderid" class="form-control" name="orderID" type="number" required
+              pattern="^[0-9]{1,}" />
+            <div class="error-message" [hidden]="billForm.controls['orderID']?.valid">
+              Required, numbers only!
+            </div>
+            <!-- {{ order$ | async | json }} -->
+          </div>
+
+          <div class="form-group col-8">
+            <label for="customer">Customer</label>
+            <div *ngIf="customer$ | async as customer" class="d-flex mt-2">
+              <div class="col-8">{{ customer.firstName }} {{ customer.lastName }}</div>
+              <div class="col-4"><button (click)="editCustomer(customer)" class="btn-primary btn-block"><i
+                    class="fa fa-pencil"></i>
+                  Edit</button>
+              </div>
+            </div>
+          </div>
         </div>
-        {{ order$ | async | json }}
-      </div>
 
-      <div class="form-group">
-        <label for="amount">Amount</label>
-        <input [(ngModel)]="bill.amount" class="form-control" name="amount" type="number" required
-          pattern="^[1-9][0-9]{0,}" />
-        <div class="error-message" [hidden]="billForm.controls['amount']?.valid">
-          Minimum amount:1!
+        <div class="row">
+
+          <div class="form-group col-4">
+            <label for="amount">Product amount</label>
+            <div *ngIf="order$ | async as order" class="d-flex mt-2">
+              <div class="col-8">{{ order.amount }}</div>
+            </div>
+          </div>
+
+          <div class="form-group col-8">
+            <label for="product">Product name</label>
+            <div *ngIf="product$ | async as product" class="d-flex mt-2">
+              <div class="col-8">{{ product.name }}</div>
+              <div class="col-4"><button (click)="editProduct(product)" class="btn-primary btn-block"><i
+                    class="fa fa-pencil"></i>
+                  Edit</button>
+              </div>
+            </div>
+          </div>
+
         </div>
-      </div>
 
-      <div class="form-group">
-        <label for="billStatus"> Status </label>
-        <select [(ngModel)]="bill.status" id="billStatus" name="status" required class="form-control">
-          <option value="" selected>Choose status...</option>
-          <option value="new">New</option>
-          <option value="paid">Paid</option>
-        </select>
-        <div class="error-message" [hidden]="billForm.controls['status']?.valid">
-          Status required!
+        <div class="row">
+        <div class="form-group col-4">
+          <label for="price">Price (USD)</label>
+          <input [(ngModel)]="bill.amount" class="form-control" id="price" name="amount" type="number" required
+            pattern="^[1-9][0-9]{0,}" />
+          <div class="error-message" [hidden]="billForm.controls['amount']?.valid">
+            Price required!
+          </div>
         </div>
-      </div>
-
-      <div class="btn-group d-flex justify-content-center">
-
-        <button [routerLink]="['/', 'bill']" class="btn btn-secondary btn-block mx-1">
-          <i class="fa fa-undo"></i> Cancel
-        </button>
-
-        <button [disabled]="billForm.invalid" type="submit" class="btn btn-success btn-block mx-1">
-          <i class="fa fa-save"></i> Save changes
-        </button>
-
-      </div>
 
 
-    </form>
+
+        <div class="form-group col-8">
+          <label for="billStatus"> Status </label>
+          <select [(ngModel)]="bill.status" id="billStatus" name="status" required class="form-control">
+            <option value="" selected>Choose status...</option>
+            <option value="new">New</option>
+            <option value="paid">Paid</option>
+          </select>
+          <div class="error-message" [hidden]="billForm.controls['status']?.valid">
+            Status required!
+          </div>
+        </div>
+
+        </div>
+
+        <div class="btn-group d-flex justify-content-center mt-5">
+
+          <button (click)="back()" class="btn btn-secondary btn-block mr-1">
+            <i class="fa fa-undo"></i> <span class="ml-2">Cancel</span>
+          </button>
+
+          <button (click)="onSubmit(bill)" *ngIf="bill.id === 0" [disabled]="billForm.invalid" type="submit"
+            class="btn btn-success btn-block ml-1">
+            <i class="fa fa-save"></i> <span class="ml-2">Create new</span>
+          </button>
+          <button (click)="onSubmit(bill)" *ngIf="bill.id !== 0" [disabled]="billForm.invalid" type="submit"
+            class="btn btn-success btn-block ml-1">
+            <i class="fa fa-save"></i> <span class="ml-2">Save changes</span>
+          </button>
+
+        </div>
+
+
+      </form>
+    </div>
   </div>
 </div>

@@ -21,7 +21,6 @@
 
           <div class="form-group col-8">
             <label for="customer">Customer name</label>
-
             <div *ngIf="customer$ | async as customer" class="d-flex mt-2">
               <div class="col-8">{{ customer.firstName }} {{ customer.lastName }}</div>
               <div class="col-4"><button (click)="editCustomer(customer)" class="btn-primary btn-block"><i
