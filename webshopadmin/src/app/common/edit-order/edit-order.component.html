@@ -5,7 +5,7 @@
     <div *ngIf="order$ | async as order" class="col-12 col-lg-8 offset-lg-2">
       <h1 *ngIf="order.id === 0" class="h2 text-center mt-5">Create new order</h1>
       <h1 *ngIf="order.id !== 0" class="h2 text-center mt-5">Order details</h1>
-      <form #orderForm="ngForm" (ngSubmit)="onSubmit(order)">
+      <form #orderForm="ngForm" >
         <input [(ngModel)]="order.id" class="form-control" name="id" type="hidden" />
 
         <div class="row">
@@ -124,15 +124,18 @@
 
         <div class="btn-group d-flex justify-content-center mt-5">
 
-          <button (click)="onClose(false)" class="btn btn-secondary btn-block mr-1">
+          <button (click)="back()" class="btn btn-secondary btn-block mr-1">
             <i class="fa fa-undo"></i> Cancel
           </button>
+          <!-- <button (click)="onClose(false)" class="btn btn-secondary btn-block mr-1">
+            <i class="fa fa-undo"></i> Cancel
+          </button> -->
 
-          <button *ngIf="order.id === 0" [disabled]="orderForm.invalid" type="submit"
+          <button  (click)="onSubmit(order)" *ngIf="order.id === 0" [disabled]="orderForm.invalid" type="submit"
             class="btn btn-success btn-block ml-1">
             <i class="fa fa-save"></i> Create new
           </button>
-          <button *ngIf="order.id !== 0" [disabled]="orderForm.invalid" type="submit"
+          <button (click)="onSubmit(order)" *ngIf="order.id !== 0" [disabled]="orderForm.invalid" type="submit"
             class="btn btn-success btn-block ml-1">
             <i class="fa fa-save"></i> Save changes
           </button>

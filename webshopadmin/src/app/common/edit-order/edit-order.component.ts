@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Order } from 'src/app/model/order';
 import { Product } from 'src/app/model/product';
 import { Customer } from 'src/app/model/customer';
+import { Location } from '@angular/common'
 
 @Component({
   selector: 'app-edit-order',
@@ -13,7 +14,7 @@ import { Customer } from 'src/app/model/customer';
 })
 export class EditOrderComponent implements OnInit {
 
-  @Input() closeNavigatePath: string[] | null = ['/order/list'];
+  /* @Input() closeNavigatePath: string[] | null = ['/order/list']; */
 
   @Input() set orderID(value: number) {
     this.order$ = this.orderService.getOrNew(value);
@@ -23,7 +24,7 @@ export class EditOrderComponent implements OnInit {
 
 
   order$: Observable<Order> = this.activatedRoute.params.pipe(
-    switchMap(params => this.orderService.get(params['id']))
+    switchMap(params => this.orderService.getOrNew(params['id']))
   );
 
   product$: Observable<Product> = this.orderService.getProductAsync(
@@ -37,23 +38,25 @@ export class EditOrderComponent implements OnInit {
   constructor(
     private orderService: OrderService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location,
   ) {}
 
   ngOnInit(): void {}
 
   onSubmit(order: Order) {
     this.orderService.createOrUpdate(order).subscribe({
-      next: () => this.onClose(true),
+
       error: console.log,
     });
+    this.back();
   }
 
-  onClose(result: boolean): void {
+  /* onClose(result: boolean): void {
     this.close.emit(result);
     if (this.closeNavigatePath && this.closeNavigatePath.length)
       this.router.navigate(this.closeNavigatePath);
-  }
+  } */
 
   editCustomer(customer: Customer, ): void {
     this.router.navigate(['/customer', customer.id]);
@@ -61,5 +64,9 @@ export class EditOrderComponent implements OnInit {
 
   editProduct(product: Product): void {
     this.router.navigate(['/product', product.id]);
+  }
+
+  back(): void {
+    this.location.back()
   }
 }
