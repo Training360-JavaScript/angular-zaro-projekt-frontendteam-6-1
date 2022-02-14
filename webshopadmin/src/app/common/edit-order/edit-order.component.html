@@ -129,7 +129,7 @@
         <div class="btn-group d-flex justify-content-center mt-5">
 
           <button (click)="back()" class="btn btn-secondary btn-block mr-1">
-            <i class="fa fa-undo"></i> Cancel
+            <i class="fa fa-undo"></i> <span class="ml-2">Cancel</span>
           </button>
           <!-- <button (click)="onClose(false)" class="btn btn-secondary btn-block mr-1">
             <i class="fa fa-undo"></i> Cancel
@@ -137,11 +137,11 @@
 
           <button  (click)="onSubmit(order)" *ngIf="order.id === 0" [disabled]="orderForm.invalid" type="submit"
             class="btn btn-success btn-block ml-1">
-            <i class="fa fa-save"></i> Create new
+            <i class="fa fa-save"></i> <span class="ml-2">Create new</span>
           </button>
           <button (click)="onSubmit(order)" *ngIf="order.id !== 0" [disabled]="orderForm.invalid" type="submit"
             class="btn btn-success btn-block ml-1">
-            <i class="fa fa-save"></i> Save changes
+            <i class="fa fa-save"></i> <span class="ml-2">Save changes</span>
           </button>
 
         </div>
