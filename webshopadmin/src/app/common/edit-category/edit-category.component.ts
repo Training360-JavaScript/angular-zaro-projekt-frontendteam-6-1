@@ -11,6 +11,9 @@ import { CategoryService } from 'src/app/service/category.service';
 })
 export class EditCategoryComponent implements OnInit {
 
+  titleWhenEdit: string = 'Category details'
+  titleWhenCreate: string = 'Add a category'
+
   category$: Observable<Category> = this.activatedRoute.params.pipe(
     switchMap( params => this.categoryService.getOrNew(params['id']))
   )
