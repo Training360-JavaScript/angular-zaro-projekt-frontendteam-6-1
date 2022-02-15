@@ -1,0 +1,142 @@
+<h1>{{ tableConfig.title }}</h1>
+
+<button mat-raised-button color="primary" (click)="newItem()">
+  New item
+</button>
+
+<mat-table
+  [dataSource]="dataSource"
+  matSort
+  class="mat-elevation-z8 w-100"
+  *ngIf="dataSource.data.length > 0"
+  cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+
+  <!-- data rows -->
+  <ng-container *ngFor="let key of displayedColumnsKeys" cdkDropListGroup>
+    <ng-container *ngIf="key !== 'buttons'" [matColumnDef]="key">
+
+      <!-- header cell -->
+      <mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        XXXmatSortChange="announceSortChange($event)"
+        cdkDrag
+        cdkDragLockAxis="x"
+        [title]="'Click to sort by '+tableConfig.columns[key].name+' or move to change column order'"
+        sortActionDescription="'Sort by '+tableConfig.columns[key].name">
+        {{ tableConfig.columns[key].name }}
+      </mat-header-cell>
+
+      <!-- data cell -->
+      <ng-container>
+        <mat-cell *matCellDef="let element">
+
+          <ng-container *ngIf="tableConfig.columns[key].value; else pipe">
+            {{ tableConfig.columns[key].value(element[ key ]) }}
+          </ng-container>
+
+          <ng-template #pipe>
+            <ng-container  *ngIf="tableConfig.columns[key].pipe; else boolean">
+              {{ element[ key ] | dynamic:tableConfig.columns[key].pipe }}
+            </ng-container>
+          </ng-template>
+
+          <ng-template #boolean>
+            <ng-container *ngIf="tableConfig.columns[key].type==='boolean'; else default">
+              <mat-checkbox
+                class="example-margin"
+                [ngModel]="element[ key ]"
+                disabled></mat-checkbox>
+            </ng-container>
+          </ng-template>
+
+          <ng-template #default>
+            {{ element[ key ] }}
+          </ng-template>
+
+        </mat-cell>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+
+  <ng-container [matColumnDef]="'buttons'">
+
+    <mat-header-cell *matHeaderCellDef cdkDrag >Buttons</mat-header-cell>
+
+    <mat-cell button  *matCellDef="let element">
+      <div class="buttons">
+        <button mat-mini-fab (click)="editItem(element)" aria-label="Edit">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-mini-fab (click)="deleteItem(element)" aria-label="Delete">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </mat-cell>
+
+  </ng-container>
+
+
+  <!-- filter row cells -->
+  <ng-container matColumnDef="header-row-first-group">
+    <ng-container *ngFor="let key of displayedColumnsKeys">
+      <ng-container *ngIf="key !== 'buttons'" [matColumnDef]="key+'--filter'">
+
+        <mat-header-cell *matHeaderCellDef>
+
+            <ng-container [ngSwitch]="tableConfig.columns[key].type">
+
+              <mat-checkbox
+                *ngSwitchCase="'boolean'"
+                class="example-margin"
+                [(ngModel)]="filter[key].checked"
+                [indeterminate]="filter[key].status === 'indeterminated'"
+                (change)="setCheckBox(filter[key])"></mat-checkbox>
+
+              <mat-form-field appearance="fill"
+                *ngSwitchDefault>
+                <input class="w-100"
+                  matInput
+                  autocomplete="off"
+                  [name]="key"
+                  type="text"
+                  [(ngModel)]="filter[key]"
+                  (keyup)="onChange()">
+                <mat-icon matSuffix>filter_list</mat-icon>
+              </mat-form-field>
+
+            </ng-container>
+
+        </mat-header-cell>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+
+  <ng-container [matColumnDef]="'buttons--filter'">
+    <mat-header-cell *matHeaderCellDef >
+      <button mat-raised-button color="primary" (click)="clearFilter()" aria-label="Clear filter fields" style="display:flex">
+        <mat-icon>backspace</mat-icon>
+        Clear filter
+      </button>
+    </mat-header-cell>
+
+    <mat-cell *matCellDef="let element"></mat-cell>
+  </ng-container>
+
+  <!-- data table header rows: column names, filters -->
+  <mat-header-row *matHeaderRowDef="displayedColumnsKeys; sticky:true;"></mat-header-row>
+  <mat-header-row *matHeaderRowDef="displayedColumnsFilterKeys; sticky:true;"></mat-header-row>
+
+  <!-- data table rows -->
+  <mat-row *matRowDef="let row; columns: displayedColumnsKeys;"></mat-row>
+
+</mat-table>
+
+<!-- paginator -->
+<mat-paginator
+  [pageSize]="10"
+  [pageSizeOptions]="[10,25, 50, 100]"
+  [length] = "dataSource.data.length"
+  aria-label="Select page of periodic elements">
+</mat-paginator>
+
