@@ -1,0 +1,41 @@
+$purple: #9c27b0;
+$purple-light: #ae2ec5;
+
+//< --- checkboxes --- >
+/*
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-ripple .mat-ripple-element {
+  background-color: $purple-light;
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background,
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: $purple;
+}
+*/
+//< --- accent buttons --- >
+
+.mat-button.mat-accent,
+.mat-stroked-button.mat-accent {
+    color: $purple;
+}
+.mat-button.mat-accent:hover,
+.mat-stroked-button.mat-accent:hover {
+    color: $purple-light;
+}
+
+.mat-raised-button.mat-accent,
+.mat-flat-button.mat-accent,
+.mat-fab.mat-accent,
+.mat-mini-fab.mat-accent {
+    color: #f0fff3;
+    background-color:  $purple
+}
+
+.mat-icon-button.mat-accent {
+    color:  $purple
+}
+
+button {
+    padding: 0.5rem 1.5rem;
+    margin-right: 0.5rem
+}
