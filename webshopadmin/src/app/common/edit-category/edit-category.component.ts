@@ -11,8 +11,11 @@ import { CategoryService } from 'src/app/service/category.service';
 })
 export class EditCategoryComponent implements OnInit {
 
+  titleWhenEdit: string = 'Category details'
+  titleWhenCreate: string = 'Add a category'
+
   category$: Observable<Category> = this.activatedRoute.params.pipe(
-    switchMap( params => this.categoryService.get(params['id']))
+    switchMap( params => this.categoryService.getOrNew(params['id']))
   )
 
 
@@ -27,8 +30,8 @@ export class EditCategoryComponent implements OnInit {
   }
 
   onUpdate(category: Category): void {
-    this.categoryService.update(category).subscribe(
-      category => this.router.navigate(['/']),
+    this.categoryService.createOrUpdate(category).subscribe(
+      category => this.router.navigate(['/list/category']),
       err => console.error(err)
     )
   }
