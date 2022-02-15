@@ -16,7 +16,7 @@
           class="form-control"
           name="name"
           type="text"
-          pattern="^[A-Z0-9].{2,}"
+          pattern="^[A-Za-z0-9].{2,}"
           required
         />
         <div
@@ -34,7 +34,7 @@
           class="form-control"
           name="type"
           type="text"
-          pattern="^[A-Z0-9].{2,}"
+          pattern="^[A-Za-z0-9].{2,}"
           required
         />
         <div
@@ -45,15 +45,20 @@
         </div>
       </div>
 
-      <div class="form-group" *ngIf="category$ | async as category">
+      <div class="form-group">
         <label for="catID">* Category </label>
-        <input
-          [(ngModel)]="category.name"
+        <select
+          [(ngModel)]="product.catID"
           class="form-control"
           name="catID"
-          type="text"
+          type="number"
           required
-        />
+        >
+        <option type="number" *ngFor="let categories of categories$ | async" [ngValue]="categories.id">
+          {{ categories.name }}
+        </option>
+      </select>
+
         <div
           [hidden]="productForm.controls['catID']?.valid"
           class="error-message"
@@ -66,7 +71,7 @@
           class="form-control"
           name="description"
           type="text"
-          pattern="^[A-Z0-9].{7,}"
+          pattern="^[A-Za-z0-9].{7,}"
           required
         />
         <div
@@ -82,7 +87,7 @@
           [(ngModel)]="product.price"
           class="form-control"
           name="price"
-          type="text"
+          type="number"
           pattern="^[1-9]\d*$"
           required
         />
@@ -90,7 +95,7 @@
           [hidden]="productForm.controls['price']?.valid"
           class="error-message"
         >
-          The price of the product must be a number.
+          The price of the product must be a number and bigger than 0.
         </div>
       </div>
 
@@ -124,7 +129,7 @@
           <div class="btn-group d-flex justify-content-center ml-1">
             <button mat-raised-button
               color="basic"
-              [routerLink]="['/']"
+              [routerLink]="['/list/product']"
               type="reset"
               class="m-1 btn"
             >

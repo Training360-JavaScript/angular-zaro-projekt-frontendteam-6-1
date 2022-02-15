@@ -35,7 +35,7 @@
           name="description"
           id="description"
           rows="5"
-          pattern="^[A-Z0-9].{7,}"
+          pattern="^[A-Za-z0-9].{7,}"
           required
         > </textarea>
         <div
@@ -49,7 +49,7 @@
       <div class="btn-group d-flex justify-content-center ml-1">
         <button mat-raised-button
           color="basic"
-          [routerLink]="['/']"
+          routerLink="/list/category/"
           type="reset"
           class="m-1 btn"
         >
