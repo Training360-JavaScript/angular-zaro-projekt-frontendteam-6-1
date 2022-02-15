@@ -21,6 +21,9 @@ export class EditProductComponent implements OnInit {
 
   categories$: Observable<Category[]> = this.categoryService.getAll()
 
+  titleWhenEdit: string = 'Product details'
+  titleWhenCreate: string = 'Add a product'
+
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService,
