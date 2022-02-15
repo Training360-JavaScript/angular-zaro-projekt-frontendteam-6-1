@@ -3,6 +3,7 @@ import { Customer } from './../../model/customer';
 import { CustomerService } from './../../service/customer.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit-customer',
@@ -11,7 +12,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class EditCustomerComponent implements OnInit {
 
-  @Input() closeNavigatePath: string[] | null = ['/'];
+  @Input() closeNavigatePath: string[] | null | number = -1;
 
   @Input() set customerID(value: number) {
     this.customer$ = this.customerService.getOrNew(value);
@@ -26,6 +27,7 @@ export class EditCustomerComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private customerService: CustomerService,
+    private location: Location,
   ) { }
 
   ngOnInit(): void {
@@ -40,8 +42,12 @@ export class EditCustomerComponent implements OnInit {
 
   onClose(result: boolean) {
     this.close.emit(result);
-    if (this.closeNavigatePath && this.closeNavigatePath.length)
-      this.router.navigate(this.closeNavigatePath);
+    if (this.closeNavigatePath !== null) {
+      if (typeof this.closeNavigatePath === 'number')
+          this.location.historyGo(this.closeNavigatePath as number);
+      else
+        this.router.navigate(this.closeNavigatePath as string[]);
+    }
   }
 
 }
