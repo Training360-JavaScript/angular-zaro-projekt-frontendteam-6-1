@@ -41,6 +41,8 @@ import { PortalModule } from '@angular/cdk/portal';
 import { DialogConfirmComponent } from './common/dialog-confirm/dialog-confirm.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { ToastrModule } from 'ngx-toastr';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
 
 @NgModule({
   declarations: [
@@ -76,6 +78,7 @@ import { ToastrModule } from 'ngx-toastr';
     MatCheckboxModule,
     MatButtonModule,
     MatIconModule,
+    MatProgressBarModule,
 
     MatTableModule,
     MatPaginatorModule,

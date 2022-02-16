@@ -1,11 +1,11 @@
 <div class="container">
   <div class="row">
 
-    <div class="col-3">
+    <div class="col-12 col-md-6 col-xl-3">
       <div class="card card-stats">
         <div class="card-header card-header-success card-header-icon">
           <div class="card-icon">
-            <i class="material-icons">inventory</i>
+            <mat-icon>inventory</mat-icon>
           </div>
           <p class="card-category">Active Product</p>
           <h3 class="card-title">
@@ -13,14 +13,15 @@
           </h3>
         </div>
         <div class="card-footer">
+          <mat-progress-bar mode="determinate" [value]="info.newBillAmount /  info.allBillAmount * 100"></mat-progress-bar>
         </div>
       </div>
     </div>
-    <div class="col-3">
+    <div class="col-12 col-md-6 col-xl-3">
       <div class="card card-stats">
         <div class="card-header card-header-primary card-header-icon">
           <div class="card-icon">
-            <i class="material-icons">people</i>
+            <mat-icon>people</mat-icon>
           </div>
           <p class="card-category">Active Customers</p>
           <h3 class="card-title">
@@ -28,14 +29,15 @@
           </h3>
         </div>
         <div class="card-footer">
+          <mat-progress-bar mode="determinate" [value]="info.activeCustomer / info.allCustomer * 100"></mat-progress-bar>
         </div>
       </div>
     </div>
-    <div class="col-3">
+    <div class="col-12 col-md-6 col-xl-3">
       <div class="card card-stats">
         <div class="card-header card-header-warning card-header-icon">
           <div class="card-icon">
-            <i class="material-icons">shopping_cart</i>
+            <mat-icon>shopping_cart</mat-icon>
           </div>
           <p class="card-category">Not paid orders</p>
           <h3 class="card-title">
@@ -43,48 +45,53 @@
           </h3>
         </div>
         <div class="card-footer">
+          <mat-progress-bar mode="determinate" [value]="(this.info.newOrder + this.info.shippedOrder) / this.info.allOrder * 100"></mat-progress-bar>
         </div>
       </div>
     </div>
-    <div class="col-3">
+    <div class="col-12 col-md-6 col-xl-3">
       <div class="card card-stats">
         <div class="card-header card-header-danger card-header-icon">
           <div class="card-icon">
-            <i class="material-icons">attach_money</i>
+            <mat-icon>attach_money</mat-icon>
           </div>
           <p class="card-category">&Sigma; of not paid bills</p>
           <h3 class="card-title">
-            {{ info.newBillAmount }} / {{ info.allBillAmount }}
+            {{ info.newBillAmount | currency:'USD':'symbol':'3.0' }} / {{ info.allBillAmount | currency:'USD':'symbol':'3.0' }}
           </h3>
         </div>
         <div class="card-footer">
+          <mat-progress-bar mode="determinate" [value]="info.activeCustomer / info.allCustomer * 100"></mat-progress-bar>
         </div>
       </div>
     </div>
-    <div class="col-6">
-      <h2 class="mt-5">Products</h2>
+
+
+    <div class="col-12 col-lg-6">
+      <h2 class="mt-5 text-uppercase">Products</h2>
       <div *ngIf="chartDataProducts"  echarts [options]="chartDataProducts" class="pie-chart"></div>
     </div>
-    <div class="col-6">
-      <h2 class="mt-5">Customers</h2>
+    <div class="col-12 col-lg-6">
+      <h2 class="mt-5 text-uppercase">Customers</h2>
       <div *ngIf="chartDataCustomers"  echarts [options]="chartDataCustomers" class="pie-chart"></div>
     </div>
-    <h2 class="mt-5 col-12">Orders</h2>
-    <div class="col-6">
+    <h2 class="mt-5 col-12 text-uppercase">Orders</h2>
+    <div class="col-12 col-lg-6">
       <h3>Number of orders</h3>
       <div *ngIf="chartDataOrders"  echarts [options]="chartDataOrders" class="pie-chart"></div>
     </div>
-    <div class="col-6">
+    <div class="col-12 col-lg-6">
       <h3>Amount of orders</h3>
       <div *ngIf="chartDataOrdersAmount"  echarts [options]="chartDataOrdersAmount" class="pie-chart"></div>
     </div>
 
-    <h2 class="mt-5 col-12">Bills</h2>
-    <div class="col-6">
+    <h2 class="mt-5 col-12 text-uppercase">Bills</h2>
+    <div class="col-12 col-lg-6">
       <h3>Number of bills</h3>
-      <div *ngIf="chartDataBills"  echarts [options]="chartDataBills" class="pie-chart"></div>
+      <div *ngIf="chartDataBills"  echarts [options]="chartDataBills" class="pie-chart">
+      </div>
     </div>
-    <div class="col-6">
+    <div class="col-12 col-lg-6">
       <h3>Amount of bills</h3>
       <div *ngIf="chartDataBillsAmount"  echarts [options]="chartDataBillsAmount" class="pie-chart"></div>
     </div>
