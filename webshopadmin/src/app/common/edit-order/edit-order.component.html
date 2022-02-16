@@ -1,16 +1,16 @@
 <div class="container">
-   <div class="row ">
+  <div class="row ">
     <div *ngIf="order$ | async as order" class="col-12 col-lg-8 offset-lg-2">
       <h1 class="editor__title"> {{ order.id ? 'Modify order' : 'Create order' }} </h1>
-      <form #orderForm="ngForm" >
-        
+      <form #orderForm="ngForm">
+
         <input [(ngModel)]="order.id" class="form-control" name="id" type="hidden" />
 
         <div class="row border mb-3">
           <div class="form-group col-4">
             <label for="customerid">CustomerID</label>
-            <input [(ngModel)]="order.customerID" id="customerid" class="form-control" name="customerID"
-              type="number" required pattern="^[1-9][0-9]{0,}" />
+            <input [(ngModel)]="order.customerID" id="customerid" class="form-control" name="customerID" type="number"
+              required pattern="^[1-9][0-9]{0,}" />
 
             <div class="error-message" [hidden]="orderForm.controls['customerID']?.valid">
               Required, numbers only!
@@ -49,7 +49,6 @@
               </div>
             </div>
           </div>
-
         </div>
 
         <div class="row">
@@ -61,24 +60,7 @@
               Minimum amount:1!
             </div>
           </div>
-          <!-- <div class="form-group">
-        <label for="status">Status</label>
-        <input [(ngModel)]="order.status" class="form-control" name="status" type="text"
-        />
-      </div> -->
 
-          <!-- <div class="form-group">
-        <label for="orderStatus"> Status </label>
-        <select [(ngModel)]="order.status" id="orderStatus" name="status" required class="form-control">
-          <option value="" selected>Choose status...</option>
-          <option value="new">New</option>
-          <option value="paid">Paid</option>
-          <option value="shipped">Shipped</option>
-        </select>
-        <div class="error-message" [hidden]="orderForm.controls['status']?.valid">
-          Status required!
-        </div>
-      </div> -->
           <div class="form-group col-8">
 
             <label for=""> Status </label>
@@ -122,25 +104,15 @@
           </div>
         </div>
 
-
         <div class="btn-group d-flex justify-content-center mt-5">
-
-          <button (click)="back()" class="btn btn-secondary btn-block mr-1">
+          <button (click)="onClose(true)" class="btn btn-secondary btn-block mr-1">
             <i class="fa fa-undo"></i> <span class="ml-2">Cancel</span>
           </button>
-          <!-- <button (click)="onClose(false)" class="btn btn-secondary btn-block mr-1">
-            <i class="fa fa-undo"></i> Cancel
-          </button> -->
 
-          <button  (click)="onSubmit(order)" *ngIf="order.id === 0" [disabled]="orderForm.invalid" type="submit"
+          <button (click)="onSubmit(order)" [disabled]="orderForm.invalid" type="submit"
             class="btn btn-success btn-block ml-1">
-            <i class="fa fa-save"></i> <span class="ml-2">Create new</span>
+            <i class="fa fa-save"></i> <span class="ml-2">{{ order.id ? 'Save changes' : 'Save new' }}</span>
           </button>
-          <button (click)="onSubmit(order)" *ngIf="order.id !== 0" [disabled]="orderForm.invalid" type="submit"
-            class="btn btn-success btn-block ml-1">
-            <i class="fa fa-save"></i> <span class="ml-2">Save changes</span>
-          </button>
-
         </div>
       </form>
     </div>
