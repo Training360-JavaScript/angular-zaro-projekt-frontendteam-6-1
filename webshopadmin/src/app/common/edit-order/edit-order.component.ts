@@ -14,7 +14,7 @@ import { Location } from '@angular/common'
 })
 export class EditOrderComponent implements OnInit {
 
-  /* @Input() closeNavigatePath: string[] | null = ['/order/list']; */
+  @Input() closeNavigatePath: string[] | null | number = -1;
 
   @Input() set orderID(value: number) {
     this.order$ = this.orderService.getOrNew(value);
@@ -46,17 +46,19 @@ export class EditOrderComponent implements OnInit {
 
   onSubmit(order: Order) {
     this.orderService.createOrUpdate(order).subscribe({
-
+      next: () => this.onClose(true),
       error: console.log,
     });
-    this.back();
+    /* this.back(); */
   }
 
-  /* onClose(result: boolean): void {
+  onClose(result: boolean): void {
     this.close.emit(result);
-    if (this.closeNavigatePath && this.closeNavigatePath.length)
-      this.router.navigate(this.closeNavigatePath);
-  } */
+    if (typeof this.closeNavigatePath === 'number')
+      this.location.historyGo(this.closeNavigatePath as number);
+    else
+      this.router.navigate(this.closeNavigatePath as string[]);
+  }
 
   editCustomer(customer: Customer, ): void {
     this.router.navigate(['/customer', customer.id]);
@@ -66,7 +68,7 @@ export class EditOrderComponent implements OnInit {
     this.router.navigate(['/product', product.id]);
   }
 
-  back(): void {
+  /* back(): void {
     this.location.back()
-  }
+  } */
 }
