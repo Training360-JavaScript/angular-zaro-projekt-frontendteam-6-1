@@ -1,5 +1,3 @@
-
-declare let google: any;
 import { Order } from './../../model/order';
 import { BillService } from './../../service/bill.service';
 import { OrderService } from './../../service/order.service';
