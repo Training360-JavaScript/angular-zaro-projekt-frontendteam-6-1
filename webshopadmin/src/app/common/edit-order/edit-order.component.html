@@ -9,7 +9,7 @@
         <div class="row border mb-3">
           <div class="form-group col-4">
             <label for="customerid">CustomerID</label>
-            <input [(ngModel)]="order.customerID" id="customerid" class="form-control" name="customerID" type="number"
+            <input [(ngModel)]="order.customerID" id="customerid" class="form-control bg-white px-1" name="customerID" type="number"
               required pattern="^[1-9][0-9]{0,}" />
 
             <div class="error-message" [hidden]="orderForm.controls['customerID']?.valid">
@@ -20,9 +20,9 @@
           <div class="form-group col-8">
             <label for="customer">Customer name</label>
             <div *ngIf="customer$ | async as customer" class="d-flex mt-2">
-              <div class="col-8">{{ customer.firstName }} {{ customer.lastName }}</div>
-              <div class="col-4 px-0"><button (click)="editCustomer(customer)" class="btn-primary btn-block"><i
-                    class="fa fa-pencil"></i><span class="ml-2">EDIT</span></button>
+              <div class="col-6">{{ customer.firstName }} {{ customer.lastName }}</div>
+              <div class="col-6 px-0"><button (click)="editCustomer(customer)" class="btn btn-primary btn-block"><i
+                    class="fa fa-pencil"></i><span class="ml-2">EDIT CUSTOMER</span></button>
               </div>
             </div>
           </div>
@@ -31,7 +31,7 @@
         <div class="row border mb-3">
           <div class="form-group col-4">
             <label for="productid">ProductID</label>
-            <input [(ngModel)]="order.productID" id="productid" class="form-control" name="productID" type="number"
+            <input [(ngModel)]="order.productID" id="productid" class="form-control bg-white px-1" name="productID" type="number"
               required pattern="^[1-9][0-9]{0,}" />
             <div class="error-message" [hidden]="orderForm.controls['productID']?.valid">
               Required, numbers only!
@@ -42,10 +42,10 @@
             <label for="product">Product name</label>
 
             <div *ngIf="product$ | async as product" class="d-flex mt-2">
-              <div class="col-8">{{ product.name }}</div>
-              <div class="col-4 px-0"><button (click)="editProduct(product)" class="btn-primary btn-block btn-small"><i
+              <div class="col-6">{{ product.name }}</div>
+              <div class="col-6 px-0"><button (click)="editProduct(product)" class="btn btn-primary btn-block btn-small"><i
                     class="fa fa-pencil"></i>
-                  <span class="ml-2">EDIT</span></button>
+                  <span class="ml-2">EDIT PRODUCT</span></button>
               </div>
             </div>
           </div>
@@ -54,7 +54,7 @@
         <div class="row">
           <div class="form-group col-4">
             <label for="amount">Amount</label>
-            <input [(ngModel)]="order.amount" id="amount" class="form-control" name="amount" type="number" required
+            <input [(ngModel)]="order.amount" id="amount" class="form-control bg-white px-1" name="amount" type="number" required
               pattern="^[1-9][0-9]{0,}" />
             <div class="error-message" [hidden]="orderForm.controls['amount']?.valid">
               Minimum amount:1!
@@ -78,7 +78,7 @@
 
               <div class="form-check form-check-radio ml-5">
                 <label class="form-check-label">
-                  <input [(ngModel)]="order.status" class="form-check-input" type="radio" name="status" id=""
+                  <input [(ngModel)]="order.status" class="form-check-input bg-white px-1" type="radio" name="status" id=""
                     value="paid" required #name="ngModel">
                   Paid
                   <span class="circle">
