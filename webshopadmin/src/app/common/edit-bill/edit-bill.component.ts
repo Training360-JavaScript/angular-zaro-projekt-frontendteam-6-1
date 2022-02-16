@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { BillService } from 'src/app/service/bill.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
@@ -15,9 +15,14 @@ import { OrderService } from 'src/app/service/order.service';
   styleUrls: ['./edit-bill.component.scss'],
 })
 export class EditBillComponent implements OnInit {
+
+  @Input() closeNavigatePath: string[] | null | number = -1;
+
   @Input() set billID(value: number) {
     this.bill$ = this.billService.getOrNew(value);
   }
+
+  @Output() close: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   bill$: Observable<Bill> = this.activatedRoute.params.pipe(
     switchMap((params) => this.billService.getOrNew(params['id']))
@@ -38,23 +43,24 @@ export class EditBillComponent implements OnInit {
     private orderService: OrderService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private location: Location
+    private location: Location,
   ) {}
 
   ngOnInit(): void {}
 
   onSubmit(bill: Bill) {
     this.billService.createOrUpdate(bill).subscribe({
+      next: () => this.onClose(true),
       error: console.log,
     });
-    this.back();
+    /* this.back(); */
   }
 
-  onUpdate(bill: Bill): void {
-    this.billService.update(bill).subscribe(
-      (bill) => this.router.navigate(['/']),
-      (err) => console.error(err)
-    );
+  onClose(result: boolean): void {
+    this.close.emit(result);
+    if (typeof this.closeNavigatePath === 'number')
+      this.location.historyGo(this.closeNavigatePath as number);
+    else this.router.navigate(this.closeNavigatePath as string[]);
   }
 
   editOrder(order: Order): void {
@@ -69,7 +75,7 @@ export class EditBillComponent implements OnInit {
     this.router.navigate(['/customer', customer.id]);
   }
 
-  back(): void {
+  /*  back(): void {
     this.location.back();
-  }
+  } */
 }
