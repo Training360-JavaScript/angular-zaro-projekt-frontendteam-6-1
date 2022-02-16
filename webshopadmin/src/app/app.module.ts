@@ -39,7 +39,7 @@ import { MatInputModule } from '@angular/material/input';
 import { DialogComponent } from './common/dialog/dialog.component';
 import { PortalModule } from '@angular/cdk/portal';
 import { DialogConfirmComponent } from './common/dialog-confirm/dialog-confirm.component';
-
+import { GoogleChartsModule } from 'angular-google-charts';
 
 @NgModule({
   declarations: [
@@ -88,6 +88,7 @@ import { DialogConfirmComponent } from './common/dialog-confirm/dialog-confirm.c
     MatAutocompleteModule,
     MatInputModule,
     PortalModule,
+    GoogleChartsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

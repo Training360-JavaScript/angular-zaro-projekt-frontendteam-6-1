@@ -74,8 +74,74 @@ export class DashboardComponent implements OnInit {
         this.info.allBillAmount = bills.reduce((prev, e) => prev + e.amount, 0);
         this.info.newBillAmount = bills.reduce((prev, e) => e.status.toLowerCase() == 'new' ? prev + e.amount : prev, 0);
         this.info.paidBillAmount = bills.reduce((prev, e) => e.status.toLowerCase() == 'paid' ? prev + e.amount : prev, 0);
+        //this.chartData.data[0] = ['c', 111];
+        this.chartDataProducts = this.getPieChartData('',
+        [
+          ['Active', this.info.activeProducts],
+          ['Inactive', this.info.allProducts - this.info.activeProducts]
+        ]);
+        this.chartDataCustomers = this.getPieChartData('',
+        [
+          ['Active', this.info.activeCustomer],
+          ['Inactive', this.info.allCustomer - this.info.activeCustomer],
+        ]);
+        this.chartDataOrders = this.getPieChartData('Order count',
+        [
+          ['New', this.info.newOrder],
+          ['Shipped', this.info.shippedOrder],
+          ['Paid', this.info.paidOrder],
+        ]);
+        this.chartDataOrdersAmount = this.getPieChartData('Order amount',
+        [
+          ['New', this.info.newOrderAmount],
+          ['Shipped', this.info.shippedOrderAmount],
+          ['Paid', this.info.paidOrderAmount],
+        ]);
+        this.chartDataBills = this.getPieChartData('Bill count',
+        [
+          ['new', this.info.newBill],
+          ['paid', this.info.paidBill],
+        ]);
+        this.chartDataBillsAmount = this.getPieChartData('Bill amount',
+        [
+          ['new', this.info.newBillAmount],
+          ['paid', this.info.paidBillAmount],
+        ]);
+
       }
     })
+  }
+
+  chartDataProducts:any = null;
+  chartDataCustomers:any = null;
+  chartDataOrders:any = null;
+  chartDataOrdersAmount:any = null;
+  chartDataBills:any = null;
+  chartDataBillsAmount:any = null;
+
+  getPieChartData(title: string, data: [string, number][]): any {
+    return {
+      type: 'PieChart',
+      data: data,
+    width: 400,
+    height: 200,
+    options: {
+      title: title,
+      backgroundColor: 'transparent',
+      is3D: true,
+      legend: {
+        position: 'top',
+        textStyle: {color: 'blue', fontSize: 16},
+      },
+      titleTextStyle: {
+        // color: "red",
+        // fontName: ,
+        fontSize: 16,
+        bold: false,
+        italic: false,
+      }
+    }
+    };
   }
 
 

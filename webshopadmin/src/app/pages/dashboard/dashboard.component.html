@@ -1,115 +1,108 @@
 <div class="container">
   <div class="row">
 
-    <h2 class="mt-5">Summary</h2>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Active products</th>
-          <th>Active customers</th>
-          <th>Count of not paid orders</th>
-          <th>Amount of not paid bill</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td> {{info.activeProducts }} </td>
-          <td> {{info.activeCustomer }}</td>
-          <td> {{ info.newOrder + info.shippedOrder }} </td>
-          <td> {{ info.newBillAmount }} </td>
-        </tr>
-      </tbody>
-    </table>
-    <h2 class="mt-5">Products</h2>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>All</th>
-          <th>Active</th>
-          <th>Not active</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td> {{info.allProducts }} </td>
-          <td> {{info.activeProducts }}</td>
-          <td> {{ info.allProducts - info.activeProducts }} </td>
-        </tr>
-      </tbody>
-    </table>
-    <h2 class="mt-5">Customers</h2>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>All</th>
-          <th>Active</th>
-          <th>Not active</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td> {{info.allCustomer }} </td>
-          <td> {{info.activeCustomer }}</td>
-          <td> {{ info.allCustomer - info.activeCustomer }} </td>
-        </tr>
-      </tbody>
-    </table>
-    <h2 class="mt-5">Orders</h2>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th></th>
-          <th>All</th>
-          <th>New</th>
-          <th>Shipped</th>
-          <th>Not paid (new + shipped)</th>
-          <th>Paid</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Count</td>
-          <td> {{ info.allOrder }} </td>
-          <td> {{ info.newOrder }} </td>
-          <td> {{ info.shippedOrder }} </td>
-          <td> {{ info.newOrder + info.shippedOrder }} </td>
-          <td> {{ info.paidOrder }} </td>
-        </tr>
-        <tr>
-          <td>Amout</td>
-          <td> {{ info.allOrderAmount }} </td>
-          <td> {{ info.newOrderAmount }} </td>
-          <td> {{ info.shippedOrderAmount }} </td>
-          <td> {{ info.newOrderAmount + info.shippedOrderAmount }} </td>
-          <td> {{ info.paidOrderAmount }} </td>
-        </tr>
-      </tbody>
-    </table>
-    <h2 class="mt-5">Bills</h2>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th></th>
-          <th>All</th>
-          <th>New (not paid)</th>
-          <th>Paid</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Count</td>
-          <td> {{ info.allBill }} </td>
-          <td> {{ info.newBill }} </td>
-          <td> {{ info.paidBill }} </td>
-        </tr>
-        <tr>
-          <td>Amout</td>
-          <td> {{ info.allBillAmount }} </td>
-          <td> {{ info.newBillAmount }} </td>
-          <td> {{ info.paidBillAmount }} </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="col-3">
+      <div class="card card-stats">
+        <div class="card-header card-header-success card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">inventory</i>
+          </div>
+          <p class="card-category">Active Product</p>
+          <h3 class="card-title">
+            {{ info.activeProducts }} / {{ info.allProducts }}
+          </h3>
+        </div>
+        <div class="card-footer">
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card card-stats">
+        <div class="card-header card-header-primary card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">people</i>
+          </div>
+          <p class="card-category">Active Customers</p>
+          <h3 class="card-title">
+            {{ info.activeCustomer }} / {{ info.allCustomer }}
+          </h3>
+        </div>
+        <div class="card-footer">
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card card-stats">
+        <div class="card-header card-header-warning card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">shopping_cart</i>
+          </div>
+          <p class="card-category">Not paid orders</p>
+          <h3 class="card-title">
+            {{ info.newOrder + info.shippedOrder }} / {{ info.allOrder }}
+          </h3>
+        </div>
+        <div class="card-footer">
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card card-stats">
+        <div class="card-header card-header-danger card-header-icon">
+          <div class="card-icon">
+            <i class="material-icons">attach_money</i>
+          </div>
+          <p class="card-category">&Sigma; of not paid bills</p>
+          <h3 class="card-title">
+            {{ info.newBillAmount }} / {{ info.allBillAmount }}
+          </h3>
+        </div>
+        <div class="card-footer">
+        </div>
+      </div>
+    </div>
+    <h2 class="mt-5 col-12">Summary</h2>
+    <div class="col-6">
+      <h2 class="mt-5">Products</h2>
+      <div>
+        <google-chart [title]="chartDataProducts.title" [type]="chartDataProducts.type" [data]="chartDataProducts.data"
+          [options]="chartDataProducts.options" [width]="chartDataProducts.width" [height]="chartDataProducts.height">
+        </google-chart>
+      </div>
+    </div>
+    <div class="col-6">
+      <h2 class="mt-5">Customers</h2>
+      <div>
+        <google-chart [title]="chartDataCustomers.title" [type]="chartDataCustomers.type"
+          [data]="chartDataCustomers.data" [options]="chartDataCustomers.options" [width]="chartDataCustomers.width"
+          [height]="chartDataCustomers.height">
+        </google-chart>
+      </div>
+    </div>
+    <h2 class="mt-5 col-12">Orders</h2>
+    <div class="col-6">
+      <google-chart [title]="chartDataOrders.title" [type]="chartDataOrders.type" [data]="chartDataOrders.data"
+        [options]="chartDataOrders.options" [width]="chartDataOrders.width" [height]="chartDataOrders.height">
+      </google-chart>
+    </div>
+    <div class="col-6">
+      <google-chart [title]="chartDataOrdersAmount.title" [type]="chartDataOrdersAmount.type"
+        [data]="chartDataOrdersAmount.data" [options]="chartDataOrdersAmount.options"
+        [width]="chartDataOrdersAmount.width" [height]="chartDataOrdersAmount.height">
+      </google-chart>
+    </div>
 
+    <h2 class="mt-5 col-12">Bills</h2>
+    <div class="col-6">
+      <google-chart [title]="chartDataBills.title" [type]="chartDataBills.type" [data]="chartDataBills.data"
+        [options]="chartDataBills.options" [width]="chartDataBills.width" [height]="chartDataBills.height">
+      </google-chart>
+    </div>
+    <div class="col-6">
+      <google-chart [title]="chartDataBillsAmount.title" [type]="chartDataBillsAmount.type"
+        [data]="chartDataBillsAmount.data" [options]="chartDataBillsAmount.options" [width]="chartDataBillsAmount.width"
+        [height]="chartDataBillsAmount.height">
+      </google-chart>
+    </div>
   </div> <!-- row-->
 </div>
