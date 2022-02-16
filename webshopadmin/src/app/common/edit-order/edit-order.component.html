@@ -1,17 +1,15 @@
 <div class="container">
- <!--  Autocomplete teszt
-  <app-autocomplete></app-autocomplete> -->
-  <div class="row ">
+   <div class="row ">
     <div *ngIf="order$ | async as order" class="col-12 col-lg-8 offset-lg-2">
-      <h1 *ngIf="order.id === 0" class="h2 text-center mt-5">Create new order</h1>
-      <h1 *ngIf="order.id !== 0" class="h2 text-center mt-5">Order details</h1>
+      <h1 class="editor__title"> {{ order.id ? 'Modify order' : 'Create order' }} </h1>
       <form #orderForm="ngForm" >
+        
         <input [(ngModel)]="order.id" class="form-control" name="id" type="hidden" />
 
-        <div class="row">
+        <div class="row border mb-3">
           <div class="form-group col-4">
             <label for="customerid">CustomerID</label>
-            <input [(ngModel)]="order.customerID" id="customerid" class="form-control form-inline" name="customerID"
+            <input [(ngModel)]="order.customerID" id="customerid" class="form-control" name="customerID"
               type="number" required pattern="^[1-9][0-9]{0,}" />
 
             <div class="error-message" [hidden]="orderForm.controls['customerID']?.valid">
@@ -23,14 +21,14 @@
             <label for="customer">Customer name</label>
             <div *ngIf="customer$ | async as customer" class="d-flex mt-2">
               <div class="col-8">{{ customer.firstName }} {{ customer.lastName }}</div>
-              <div class="col-4"><button (click)="editCustomer(customer)" class="btn-primary btn-block"><i
-                    class="fa fa-pencil"></i> Edit</button>
+              <div class="col-4 px-0"><button (click)="editCustomer(customer)" class="btn-primary btn-block"><i
+                    class="fa fa-pencil"></i><span class="ml-2">EDIT</span></button>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="row">
+        <div class="row border mb-3">
           <div class="form-group col-4">
             <label for="productid">ProductID</label>
             <input [(ngModel)]="order.productID" id="productid" class="form-control" name="productID" type="number"
@@ -45,9 +43,9 @@
 
             <div *ngIf="product$ | async as product" class="d-flex mt-2">
               <div class="col-8">{{ product.name }}</div>
-              <div class="col-4"><button (click)="editProduct(product)" class="btn-primary btn-block"><i
+              <div class="col-4 px-0"><button (click)="editProduct(product)" class="btn-primary btn-block btn-small"><i
                     class="fa fa-pencil"></i>
-                  Edit</button>
+                  <span class="ml-2">EDIT</span></button>
               </div>
             </div>
           </div>
