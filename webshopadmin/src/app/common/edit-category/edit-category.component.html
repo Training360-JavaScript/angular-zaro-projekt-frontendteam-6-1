@@ -6,6 +6,7 @@
         <h1 class="editor__title">{{ titleWhenCreate }}</h1>
       </ng-template> ---->
     <form #categoryForm="ngForm">
+
       <input
         [(ngModel)]="category.id"
         class="form-control"
@@ -38,7 +39,7 @@
           class="form-control"
           name="description"
           id="description"
-          rows="5"
+          rows="3"
           pattern="^[A-Za-z0-9].{7,}"
           required
         > </textarea>
@@ -50,22 +51,24 @@
         </div>
       </div>
 
-      <div class="btn-group d-flex justify-content-center ml-1">
-        <button mat-raised-button
+      <div class="form__buttons d-md-flex justify-content-center mt-3 mt-md-5">
+        <button
+          mat-raised-button
           color="basic"
-          routerLink="/list/category/"
+          [routerLink]="['/list/product']"
           type="reset"
-          class="m-1 btn"
+          class="col-md-4"
         >
-          <mat-icon>undo</mat-icon>
+          <mat-icon>undo</mat-icon> Back
         </button>
 
-        <button mat-raised-button
+        <button
+          mat-raised-button
           color="accent"
           (click)="onUpdate(category)"
-          class="m-1 btn"
+          class="col-md-4"
         >
-          <mat-icon>save</mat-icon>
+          <mat-icon>save</mat-icon> <span> Save</span>
         </button>
       </div>
     </form>
