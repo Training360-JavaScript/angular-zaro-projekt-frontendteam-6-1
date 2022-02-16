@@ -2,7 +2,7 @@
 <div class="container">
   <div class="row">
     <div *ngIf="customer$ | async as customer" class="col-12">
-      <h1 class="h2 text-center mt-5">Customer details</h1>
+      <h1 class="editor__title"> {{ customer.id ? 'Modify customer' : 'Create customer' }} </h1>
       <form #customerForm="ngForm" (ngSubmit)="onSubmit(customer)" >
         <input [(ngModel)]="customer.id" class="form-control" name="id" type="hidden" />
         <h3 class="h4">Person</h3>
@@ -87,7 +87,7 @@
             <i class="fa fa-undo"></i> Cancel
           </button>
           <button [disabled]="customerForm.invalid" type="submit" class="btn btn-success btn-block ml-1">
-            <i class="fa fa-save"></i> Save changes
+            <i class="fa fa-save"></i> {{ customer.id ? ' Modify' : ' Create' }} customer
           </button>
         </div>
       </form>
