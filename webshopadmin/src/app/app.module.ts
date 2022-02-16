@@ -40,7 +40,6 @@ import { DialogComponent } from './common/dialog/dialog.component';
 import { PortalModule } from '@angular/cdk/portal';
 import { DialogConfirmComponent } from './common/dialog-confirm/dialog-confirm.component';
 import { NgxEchartsModule } from 'ngx-echarts';
-import { GoogleChartsModule } from 'angular-google-charts';
 
 @NgModule({
   declarations: [
@@ -89,7 +88,6 @@ import { GoogleChartsModule } from 'angular-google-charts';
     MatAutocompleteModule,
     MatInputModule,
     PortalModule,
-    GoogleChartsModule,
     NgxEchartsModule.forRoot({
       /**
        * This will import all modules from echarts.
