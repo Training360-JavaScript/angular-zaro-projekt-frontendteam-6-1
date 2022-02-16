@@ -4,6 +4,7 @@ import { CustomerService } from './../../service/customer.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Location } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-customer',
@@ -28,6 +29,7 @@ export class EditCustomerComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private customerService: CustomerService,
     private location: Location,
+    private toaster: ToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -35,13 +37,19 @@ export class EditCustomerComponent implements OnInit {
 
   onSubmit(customer: Customer) {
     this.customerService.createOrUpdate(customer).subscribe({
-      next: () => this.onClose(true),
+      next: () => this.onClose(true, customer),
       error: console.log,
     })
   }
 
-  onClose(result: boolean) {
+  onClose(result: boolean, customer?: Customer) {
     this.close.emit(result);
+    if (result) {
+      if (customer?.id)
+        this.toaster.success(`${customer.firstName} ${customer.lastName} modified successfully.`);
+      else
+        this.toaster.success(`${customer?.firstName} ${customer?.lastName} created successfully.`);
+    }
     if (this.closeNavigatePath !== null) {
       if (typeof this.closeNavigatePath === 'number')
           this.location.historyGo(this.closeNavigatePath as number);

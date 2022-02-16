@@ -39,7 +39,8 @@ import { MatInputModule } from '@angular/material/input';
 import { DialogComponent } from './common/dialog/dialog.component';
 import { PortalModule } from '@angular/cdk/portal';
 import { DialogConfirmComponent } from './common/dialog-confirm/dialog-confirm.component';
-
+import { NgxEchartsModule } from 'ngx-echarts';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -88,6 +89,19 @@ import { DialogConfirmComponent } from './common/dialog-confirm/dialog-confirm.c
     MatAutocompleteModule,
     MatInputModule,
     PortalModule,
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+    }), // ToastrModule added
+    NgxEchartsModule.forRoot({
+      /**
+       * This will import all modules from echarts.
+       * If you only need custom modules,
+       * please refer to [Custom Build] section.
+       */
+      echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
