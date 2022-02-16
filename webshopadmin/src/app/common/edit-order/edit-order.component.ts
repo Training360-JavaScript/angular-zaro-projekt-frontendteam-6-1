@@ -1,3 +1,4 @@
+import { CustomerService } from './../../service/customer.service';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable, switchMap } from 'rxjs';
 import { OrderService } from 'src/app/service/order.service';
@@ -35,8 +36,12 @@ export class EditOrderComponent implements OnInit {
     this.order$
   );
 
+  modalCustomer: boolean = false;
+  modalCustomerId: number = 0;
+
   constructor(
     private orderService: OrderService,
+    private customerService:  CustomerService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private location: Location,
@@ -60,12 +65,24 @@ export class EditOrderComponent implements OnInit {
       this.router.navigate(this.closeNavigatePath as string[]);
   }
 
-  editCustomer(customer: Customer, ): void {
-    this.router.navigate(['/customer', customer.id]);
-  }
 
   editProduct(product: Product): void {
     this.router.navigate(['/product', product.id]);
+  }
+
+  editCustomer(customer: Customer, ): void {
+    //this.router.navigate(['/customer', customer.id]);
+    this.modalCustomer = true;
+    this.modalCustomerId = customer.id;
+  }
+  changeCustomer(customer: Customer, ): void {
+    this.modalCustomer = true;
+    this.modalCustomerId = customer.id;
+  }
+  modalCustomerEnd($event: any): void {
+    if ($event)
+      this.customer$ = this.orderService.getCustomerAsync(this.order$);
+    this.modalCustomer = false;
   }
 
   /* back(): void {

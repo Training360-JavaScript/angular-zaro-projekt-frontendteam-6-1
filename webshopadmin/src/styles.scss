@@ -30,3 +30,7 @@ $my-app-accent:  mat-palette($mat-purple);
 $my-app-warn:    mat-palette($mat-red);
 $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
 @include angular-material-theme($my-app-theme);
+
+mat-row:hover {
+  background-color: #f8f8f8;
+}
