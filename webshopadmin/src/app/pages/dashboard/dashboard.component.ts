@@ -6,8 +6,9 @@ import { OrderService } from './../../service/order.service';
 import { CustomerService } from './../../service/customer.service';
 import { ProductService } from './../../service/product.service';
 import { Component, OnInit } from '@angular/core';
-import { merge, zip } from 'rxjs';
+import { zip } from 'rxjs';
 import { Product } from 'src/app/model/product';
+import { EChartsOption } from 'echarts';
 
 @Component({
   selector: 'app-dashboard',
@@ -75,35 +76,29 @@ export class DashboardComponent implements OnInit {
         this.info.newBillAmount = bills.reduce((prev, e) => e.status.toLowerCase() == 'new' ? prev + e.amount : prev, 0);
         this.info.paidBillAmount = bills.reduce((prev, e) => e.status.toLowerCase() == 'paid' ? prev + e.amount : prev, 0);
         //this.chartData.data[0] = ['c', 111];
-        this.chartDataProducts = this.getPieChartData('',
-        [
+        this.chartDataProducts = this.getPieChartData([
+          ['Inactive', this.info.allProducts - this.info.activeProducts],
           ['Active', this.info.activeProducts],
-          ['Inactive', this.info.allProducts - this.info.activeProducts]
         ]);
-        this.chartDataCustomers = this.getPieChartData('',
-        [
-          ['Active', this.info.activeCustomer],
+        this.chartDataCustomers = this.getPieChartData([
           ['Inactive', this.info.allCustomer - this.info.activeCustomer],
+          ['Active', this.info.activeCustomer],
         ]);
-        this.chartDataOrders = this.getPieChartData('Order count',
-        [
+        this.chartDataOrders = this.getPieChartData([
           ['New', this.info.newOrder],
-          ['Shipped', this.info.shippedOrder],
           ['Paid', this.info.paidOrder],
+          ['Shipped', this.info.shippedOrder],
         ]);
-        this.chartDataOrdersAmount = this.getPieChartData('Order amount',
-        [
+        this.chartDataOrdersAmount = this.getPieChartData([
           ['New', this.info.newOrderAmount],
-          ['Shipped', this.info.shippedOrderAmount],
           ['Paid', this.info.paidOrderAmount],
+          ['Shipped', this.info.shippedOrderAmount],
         ]);
-        this.chartDataBills = this.getPieChartData('Bill count',
-        [
+        this.chartDataBills = this.getPieChartData([
           ['new', this.info.newBill],
           ['paid', this.info.paidBill],
         ]);
-        this.chartDataBillsAmount = this.getPieChartData('Bill amount',
-        [
+        this.chartDataBillsAmount = this.getPieChartData([
           ['new', this.info.newBillAmount],
           ['paid', this.info.paidBillAmount],
         ]);
@@ -112,37 +107,28 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  chartDataProducts:any = null;
-  chartDataCustomers:any = null;
-  chartDataOrders:any = null;
-  chartDataOrdersAmount:any = null;
-  chartDataBills:any = null;
-  chartDataBillsAmount:any = null;
+  chartDataProducts:EChartsOption | null = null;
+  chartDataCustomers:EChartsOption | null = null;
+  chartDataOrders:EChartsOption | null = null;
+  chartDataOrdersAmount:EChartsOption | null = null;
+  chartDataBills:EChartsOption | null = null;
+  chartDataBillsAmount:EChartsOption | null = null;
 
-  getPieChartData(title: string, data: [string, number][]): any {
+  getPieChartData(data: [string, number][]): EChartsOption {
+    const sum:number = data.reduce((prev, e) => prev += e[1], 0);
     return {
-      type: 'PieChart',
-      data: data,
-    width: 400,
-    height: 200,
-    options: {
-      title: title,
-      backgroundColor: 'transparent',
-      is3D: true,
-      legend: {
-        position: 'top',
-        textStyle: {color: 'blue', fontSize: 16},
+      series: [
+        {
+          data: data.map(e => ({
+            name: `${e[0]}\n(${(e[1] / sum * 100).toFixed(1)}%)`,
+            value: e[1],
+            label: {position: 'inner'},
+          })),
+        type: 'pie',
       },
-      titleTextStyle: {
-        // color: "red",
-        // fontName: ,
-        fontSize: 16,
-        bold: false,
-        italic: false,
-      }
-    }
-    };
+    ],
   }
+}
 
 
   ngOnInit(): void {

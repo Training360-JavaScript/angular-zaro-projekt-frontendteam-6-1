@@ -61,48 +61,32 @@
         </div>
       </div>
     </div>
-    <h2 class="mt-5 col-12">Summary</h2>
     <div class="col-6">
       <h2 class="mt-5">Products</h2>
-      <div>
-        <google-chart [title]="chartDataProducts.title" [type]="chartDataProducts.type" [data]="chartDataProducts.data"
-          [options]="chartDataProducts.options" [width]="chartDataProducts.width" [height]="chartDataProducts.height">
-        </google-chart>
-      </div>
+      <div *ngIf="chartDataProducts"  echarts [options]="chartDataProducts" class="pie-chart"></div>
     </div>
     <div class="col-6">
       <h2 class="mt-5">Customers</h2>
-      <div>
-        <google-chart [title]="chartDataCustomers.title" [type]="chartDataCustomers.type"
-          [data]="chartDataCustomers.data" [options]="chartDataCustomers.options" [width]="chartDataCustomers.width"
-          [height]="chartDataCustomers.height">
-        </google-chart>
-      </div>
+      <div *ngIf="chartDataCustomers"  echarts [options]="chartDataCustomers" class="pie-chart"></div>
     </div>
     <h2 class="mt-5 col-12">Orders</h2>
     <div class="col-6">
-      <google-chart [title]="chartDataOrders.title" [type]="chartDataOrders.type" [data]="chartDataOrders.data"
-        [options]="chartDataOrders.options" [width]="chartDataOrders.width" [height]="chartDataOrders.height">
-      </google-chart>
+      <h3>Number of orders</h3>
+      <div *ngIf="chartDataOrders"  echarts [options]="chartDataOrders" class="pie-chart"></div>
     </div>
     <div class="col-6">
-      <google-chart [title]="chartDataOrdersAmount.title" [type]="chartDataOrdersAmount.type"
-        [data]="chartDataOrdersAmount.data" [options]="chartDataOrdersAmount.options"
-        [width]="chartDataOrdersAmount.width" [height]="chartDataOrdersAmount.height">
-      </google-chart>
+      <h3>Amount of orders</h3>
+      <div *ngIf="chartDataOrdersAmount"  echarts [options]="chartDataOrdersAmount" class="pie-chart"></div>
     </div>
 
     <h2 class="mt-5 col-12">Bills</h2>
     <div class="col-6">
-      <google-chart [title]="chartDataBills.title" [type]="chartDataBills.type" [data]="chartDataBills.data"
-        [options]="chartDataBills.options" [width]="chartDataBills.width" [height]="chartDataBills.height">
-      </google-chart>
+      <h3>Number of bills</h3>
+      <div *ngIf="chartDataBills"  echarts [options]="chartDataBills" class="pie-chart"></div>
     </div>
     <div class="col-6">
-      <google-chart [title]="chartDataBillsAmount.title" [type]="chartDataBillsAmount.type"
-        [data]="chartDataBillsAmount.data" [options]="chartDataBillsAmount.options" [width]="chartDataBillsAmount.width"
-        [height]="chartDataBillsAmount.height">
-      </google-chart>
+      <h3>Amount of bills</h3>
+      <div *ngIf="chartDataBillsAmount"  echarts [options]="chartDataBillsAmount" class="pie-chart"></div>
     </div>
   </div> <!-- row-->
 </div>

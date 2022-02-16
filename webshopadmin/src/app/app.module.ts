@@ -39,6 +39,7 @@ import { MatInputModule } from '@angular/material/input';
 import { DialogComponent } from './common/dialog/dialog.component';
 import { PortalModule } from '@angular/cdk/portal';
 import { DialogConfirmComponent } from './common/dialog-confirm/dialog-confirm.component';
+import { NgxEchartsModule } from 'ngx-echarts';
 import { GoogleChartsModule } from 'angular-google-charts';
 
 @NgModule({
@@ -89,6 +90,14 @@ import { GoogleChartsModule } from 'angular-google-charts';
     MatInputModule,
     PortalModule,
     GoogleChartsModule,
+    NgxEchartsModule.forRoot({
+      /**
+       * This will import all modules from echarts.
+       * If you only need custom modules,
+       * please refer to [Custom Build] section.
+       */
+      echarts: () => import('echarts'), // or import('./path-to-my-custom-echarts')
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
