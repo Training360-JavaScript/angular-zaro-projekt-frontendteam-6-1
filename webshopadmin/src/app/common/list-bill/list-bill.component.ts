@@ -21,7 +21,7 @@ export class ListBillComponent implements OnInit {
 
   table: any = {
 
-    title: 'Categories',
+    title: 'Bills',
 
     columns: {
       id: { name: '#' },
