@@ -1,9 +1,10 @@
 <div class="row">
   <div *ngIf="category$ | async as category" class="col-6 offset-3">
-    <h1 *ngIf="category.id; else elseBlock" class="editor__title">{{ titleWhenEdit }}</h1>
+    <h1 class="editor__title"> {{ category.id ?  titleWhenEdit : titleWhenCreate }}</h1>
+    <!----- <h1 *ngIf="category.id; else elseBlock" class="editor__title">{{ titleWhenEdit }}</h1>
       <ng-template #elseBlock>
         <h1 class="editor__title">{{ titleWhenCreate }}</h1>
-      </ng-template>
+      </ng-template> ---->
     <form #categoryForm="ngForm">
       <input
         [(ngModel)]="category.id"
