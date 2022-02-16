@@ -4,8 +4,9 @@ import { OrderService } from './../../service/order.service';
 import { CustomerService } from './../../service/customer.service';
 import { ProductService } from './../../service/product.service';
 import { Component, OnInit } from '@angular/core';
-import { merge, zip } from 'rxjs';
+import { zip } from 'rxjs';
 import { Product } from 'src/app/model/product';
+import { EChartsOption } from 'echarts';
 
 @Component({
   selector: 'app-dashboard',
@@ -72,9 +73,60 @@ export class DashboardComponent implements OnInit {
         this.info.allBillAmount = bills.reduce((prev, e) => prev + e.amount, 0);
         this.info.newBillAmount = bills.reduce((prev, e) => e.status.toLowerCase() == 'new' ? prev + e.amount : prev, 0);
         this.info.paidBillAmount = bills.reduce((prev, e) => e.status.toLowerCase() == 'paid' ? prev + e.amount : prev, 0);
+        //this.chartData.data[0] = ['c', 111];
+        this.chartDataProducts = this.getPieChartData([
+          ['Inactive', this.info.allProducts - this.info.activeProducts],
+          ['Active', this.info.activeProducts],
+        ]);
+        this.chartDataCustomers = this.getPieChartData([
+          ['Inactive', this.info.allCustomer - this.info.activeCustomer],
+          ['Active', this.info.activeCustomer],
+        ]);
+        this.chartDataOrders = this.getPieChartData([
+          ['New', this.info.newOrder],
+          ['Paid', this.info.paidOrder],
+          ['Shipped', this.info.shippedOrder],
+        ]);
+        this.chartDataOrdersAmount = this.getPieChartData([
+          ['New', this.info.newOrderAmount],
+          ['Paid', this.info.paidOrderAmount],
+          ['Shipped', this.info.shippedOrderAmount],
+        ]);
+        this.chartDataBills = this.getPieChartData([
+          ['new', this.info.newBill],
+          ['paid', this.info.paidBill],
+        ]);
+        this.chartDataBillsAmount = this.getPieChartData([
+          ['new', this.info.newBillAmount],
+          ['paid', this.info.paidBillAmount],
+        ]);
+
       }
     })
   }
+
+  chartDataProducts:EChartsOption | null = null;
+  chartDataCustomers:EChartsOption | null = null;
+  chartDataOrders:EChartsOption | null = null;
+  chartDataOrdersAmount:EChartsOption | null = null;
+  chartDataBills:EChartsOption | null = null;
+  chartDataBillsAmount:EChartsOption | null = null;
+
+  getPieChartData(data: [string, number][]): EChartsOption {
+    const sum:number = data.reduce((prev, e) => prev += e[1], 0);
+    return {
+      series: [
+        {
+          data: data.map(e => ({
+            name: `${e[0]}\n(${(e[1] / sum * 100).toFixed(1)}%)`,
+            value: e[1],
+            label: {position: 'inner'},
+          })),
+        type: 'pie',
+      },
+    ],
+  }
+}
 
 
   ngOnInit(): void {
