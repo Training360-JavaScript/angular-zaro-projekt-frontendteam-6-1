@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container d-flex">
   <div class="row">
 
     <div class="col-12 col-md-6 col-xl-3">
@@ -7,13 +7,13 @@
           <div class="card-icon">
             <mat-icon>inventory</mat-icon>
           </div>
-          <p class="card-category">Active Product</p>
+          <p class="card-category">Active Products</p>
           <h3 class="card-title">
             {{ info.activeProducts }} / {{ info.allProducts }}
           </h3>
         </div>
-        <div class="card-footer">
-          <mat-progress-bar mode="determinate" [value]="info.newBillAmount /  info.allBillAmount * 100"></mat-progress-bar>
+        <div class="card-footer alternate-theme">
+          <mat-progress-bar mode="determinate" color="primary" [value]="info.newBillAmount /  info.allBillAmount * 100"></mat-progress-bar>
         </div>
       </div>
     </div>
@@ -44,8 +44,8 @@
             {{ info.newOrder + info.shippedOrder }} / {{ info.allOrder }}
           </h3>
         </div>
-        <div class="card-footer">
-          <mat-progress-bar mode="determinate" [value]="(this.info.newOrder + this.info.shippedOrder) / this.info.allOrder * 100"></mat-progress-bar>
+        <div class="card-footer alternate-theme">
+          <mat-progress-bar mode="determinate" color="accent" [value]="(this.info.newOrder + this.info.shippedOrder) / this.info.allOrder * 100"></mat-progress-bar>
         </div>
       </div>
     </div>
@@ -61,39 +61,39 @@
           </h3>
         </div>
         <div class="card-footer">
-          <mat-progress-bar mode="determinate" [value]="info.activeCustomer / info.allCustomer * 100"></mat-progress-bar>
+          <mat-progress-bar mode="determinate" color="warn" [value]="info.activeCustomer / info.allCustomer * 100"></mat-progress-bar>
         </div>
       </div>
     </div>
 
 
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-md-6">
       <h2 class="mt-5 text-uppercase">Products</h2>
-      <div *ngIf="chartDataProducts"  echarts [options]="chartDataProducts" class="pie-chart"></div>
+      <div *ngIf="chartDataProducts"  [theme]="ProductTheme" echarts [options]="chartDataProducts" class="justify-content-center pie-chart"></div>
     </div>
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-md-6">
       <h2 class="mt-5 text-uppercase">Customers</h2>
-      <div *ngIf="chartDataCustomers"  echarts [options]="chartDataCustomers" class="pie-chart"></div>
+      <div *ngIf="chartDataCustomers"  [theme]="CustomerTheme" echarts [options]="chartDataCustomers" class="justify-content-center pie-chart"></div>
     </div>
     <h2 class="mt-5 col-12 text-uppercase">Orders</h2>
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-md-6">
       <h3>Number of orders</h3>
-      <div *ngIf="chartDataOrders"  echarts [options]="chartDataOrders" class="pie-chart"></div>
+      <div *ngIf="chartDataOrders"  [theme]="OrderTheme" echarts [options]="chartDataOrders" class="justify-content-center pie-chart"></div>
     </div>
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-md-6">
       <h3>Amount of orders</h3>
-      <div *ngIf="chartDataOrdersAmount"  echarts [options]="chartDataOrdersAmount" class="pie-chart"></div>
+      <div *ngIf="chartDataOrdersAmount" [theme]="OrderTheme" echarts [options]="chartDataOrdersAmount" class="justify-content-center pie-chart"></div>
     </div>
 
     <h2 class="mt-5 col-12 text-uppercase">Bills</h2>
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-md-6">
       <h3>Number of bills</h3>
-      <div *ngIf="chartDataBills"  echarts [options]="chartDataBills" class="pie-chart">
+      <div *ngIf="chartDataBills"  [theme]="BillTheme" echarts [options]="chartDataBills" class="pie-chart">
       </div>
     </div>
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-md-6">
       <h3>Amount of bills</h3>
-      <div *ngIf="chartDataBillsAmount"  echarts [options]="chartDataBillsAmount" class="pie-chart"></div>
+      <div *ngIf="chartDataBillsAmount"  [theme]="BillTheme" echarts [options]="chartDataBillsAmount" class="pie-chart"></div>
     </div>
   </div> <!-- row-->
 </div>
