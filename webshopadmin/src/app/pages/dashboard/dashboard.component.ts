@@ -22,7 +22,9 @@ export class DashboardComponent implements OnInit {
       '#9C27B0',
       '#7B1FA2',
       '#6A1B9A',
-    ],
+    ],  chord: {
+      padding: 0,
+  }
   }
 
   ProductTheme = {
@@ -30,7 +32,9 @@ export class DashboardComponent implements OnInit {
       '#4CAF50',
       '#2c722f',
       '#2c722f',
-    ],
+    ], chord: {
+      padding: 0,
+  }
   }
 
   OrderTheme = {
@@ -38,7 +42,9 @@ export class DashboardComponent implements OnInit {
       '#FF9800',
       '#FFAB40',
       '#F57C00',
-    ],
+    ], chord: {
+      padding: 0,
+  }
   }
 
   BillTheme = {
@@ -47,7 +53,9 @@ export class DashboardComponent implements OnInit {
       '#C62828',
       '#FF5252',
     ],
-  }
+    chord: {
+      padding: 0,
+  } }
 
   theme: string | ThemeOption;
 
@@ -158,7 +166,8 @@ export class DashboardComponent implements OnInit {
       calculable: true,
       series: [
         {
-          radius: ['20%', '70%'],
+          center: ['50%', '50%'],
+          radius: ['20%', '75%'],
           roseType: 'area',
           data: data.map(e => ({
             name: `${e[0]}\n(${(e[1] / sum * 100).toFixed(1)}%)`,

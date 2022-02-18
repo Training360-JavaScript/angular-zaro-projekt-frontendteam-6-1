@@ -7,7 +7,6 @@ h2, h3 {
   font-weight: 300;
 }
 
-
 .card {
   &:hover {
     transition: ease-in;
@@ -26,6 +25,11 @@ h2, h3 {
     border-radius: 99rem;
   }
 
+  &-container {
+    padding: 1rem;
+    margin-bottom: 2rem;
+  }
+
   &-header-icon {
     border-radius: 99rem;
   }
@@ -36,7 +40,3 @@ h2, h3 {
   border-radius: 2rem;
 }
 
-.pie-chart {
-  max-width: 30rem;
-  max-height: 30rem;
-}

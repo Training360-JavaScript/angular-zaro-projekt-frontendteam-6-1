@@ -1,8 +1,8 @@
 <div class="container d-flex">
-  <div class="row">
+  <div class="row py-5">
 
-    <div class="col-12 col-md-6 col-xl-3">
-      <div class="card card-stats">
+    <div class="col-12 col-md-6 col-xl-3 card-container">
+      <div class="card h-100 card-stats">
         <div class="card-header card-header-success card-header-icon">
           <div class="card-icon">
             <mat-icon>inventory</mat-icon>
@@ -12,13 +12,13 @@
             {{ info.activeProducts }} / {{ info.allProducts }}
           </h3>
         </div>
-        <div class="card-footer alternate-theme">
+        <div class="card-footer mt-auto alternate-theme">
           <mat-progress-bar mode="determinate" color="primary" [value]="info.newBillAmount /  info.allBillAmount * 100"></mat-progress-bar>
         </div>
       </div>
     </div>
-    <div class="col-12 col-md-6 col-xl-3">
-      <div class="card card-stats">
+    <div class="col-12 col-md-6 col-xl-3 card-container">
+      <div class="card h-100 card-stats">
         <div class="card-header card-header-primary card-header-icon">
           <div class="card-icon">
             <mat-icon>people</mat-icon>
@@ -28,13 +28,13 @@
             {{ info.activeCustomer }} / {{ info.allCustomer }}
           </h3>
         </div>
-        <div class="card-footer">
+        <div class="card-footer mt-auto">
           <mat-progress-bar mode="determinate" [value]="info.activeCustomer / info.allCustomer * 100"></mat-progress-bar>
         </div>
       </div>
     </div>
-    <div class="col-12 col-md-6 col-xl-3">
-      <div class="card card-stats">
+    <div class="col-12 col-md-6 col-xl-3 card-container">
+      <div class="card h-100 card-stats">
         <div class="card-header card-header-warning card-header-icon">
           <div class="card-icon">
             <mat-icon>shopping_cart</mat-icon>
@@ -44,13 +44,13 @@
             {{ info.newOrder + info.shippedOrder }} / {{ info.allOrder }}
           </h3>
         </div>
-        <div class="card-footer alternate-theme">
+        <div class="card-footer mt-auto alternate-theme">
           <mat-progress-bar mode="determinate" color="accent" [value]="(this.info.newOrder + this.info.shippedOrder) / this.info.allOrder * 100"></mat-progress-bar>
         </div>
       </div>
     </div>
-    <div class="col-12 col-md-6 col-xl-3">
-      <div class="card card-stats">
+    <div class="col-12 col-md-6 col-xl-3 card-container">
+      <div class="card h-100 card-stats">
         <div class="card-header card-header-danger card-header-icon">
           <div class="card-icon">
             <mat-icon>attach_money</mat-icon>
@@ -60,7 +60,7 @@
             {{ info.newBillAmount | currency:'USD':'symbol':'3.0' }} / {{ info.allBillAmount | currency:'USD':'symbol':'3.0' }}
           </h3>
         </div>
-        <div class="card-footer">
+        <div class="card-footer mt-auto">
           <mat-progress-bar mode="determinate" color="warn" [value]="info.activeCustomer / info.allCustomer * 100"></mat-progress-bar>
         </div>
       </div>
@@ -71,8 +71,8 @@
       <h2 class="mt-5 text-uppercase">Products</h2>
       <div *ngIf="chartDataProducts"  [theme]="ProductTheme" echarts [options]="chartDataProducts" class="justify-content-center pie-chart"></div>
     </div>
-    <div class="col-12 col-md-6">
-      <h2 class="mt-5 text-uppercase">Customers</h2>
+    <div class="col-12 col-md-6 mt-5 ">
+      <h2 class="text-uppercase">Customers</h2>
       <div *ngIf="chartDataCustomers"  [theme]="CustomerTheme" echarts [options]="chartDataCustomers" class="justify-content-center pie-chart"></div>
     </div>
     <h2 class="mt-5 col-12 text-uppercase">Orders</h2>
