@@ -31,6 +31,13 @@ $my-app-warn:    mat-palette($mat-red);
 $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
 @include angular-material-theme($my-app-theme);
 
+.alternate-theme {
+  $alternate-primary: mat-palette($mat-green);
+  $alternate-accent:  mat-palette($mat-orange, 400);
+  $alternate-theme: mat-light-theme($alternate-primary, $alternate-accent);
+  @include angular-material-theme($alternate-theme);
+}
+
 mat-row:hover {
   background-color: #f8f8f8;
 }

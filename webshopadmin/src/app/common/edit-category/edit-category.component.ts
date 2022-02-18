@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { Location } from '@angular/common';
 import { Observable, switchMap } from 'rxjs';
 import { Category } from 'src/app/model/category';
 import { CategoryService } from 'src/app/service/category.service';
@@ -23,17 +25,45 @@ export class EditCategoryComponent implements OnInit {
     private categoryService: CategoryService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private location: Location,
+    private toaster: ToastrService,
   ) { }
+
+  @Input() closeNavigatePath: string[] | null | number = -1;
+
+  @Output() close : EventEmitter<boolean> = new EventEmitter<boolean>();
 
   ngOnInit(): void {
 
   }
-
-  onUpdate(category: Category): void {
+  /* onUpdate(category: Category): void {
     this.categoryService.createOrUpdate(category).subscribe(
       category => this.router.navigate(['/list/category']),
       err => console.error(err)
     )
+  } */
+
+  onUpdate(category: Category) {
+    this.categoryService.createOrUpdate(category).subscribe({
+      next: () => this.onClose(true, category),
+      error: console.log,
+    })
+  }
+
+  onClose(result: boolean, category?: Category) {
+    this.close.emit(result);
+    if (result) {
+      if (category?.id)
+        this.toaster.success(`${category.name} has been successfully modified.`);
+      else
+        this.toaster.success(`${category?.name} ${category?.name} has been created successfully.`);
+    }
+    if (this.closeNavigatePath !== null) {
+      if (typeof this.closeNavigatePath === 'number')
+          this.location.historyGo(this.closeNavigatePath as number);
+      else
+        this.router.navigate(this.closeNavigatePath as string[]);
+    }
   }
 
 

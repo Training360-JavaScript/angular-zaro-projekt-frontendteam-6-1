@@ -42,6 +42,8 @@ import { DialogConfirmComponent } from './common/dialog-confirm/dialog-confirm.c
 import { NgxEchartsModule } from 'ngx-echarts';
 import { ToastrModule } from 'ngx-toastr';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatCardModule } from '@angular/material/card';
+
 
 
 @NgModule({
@@ -79,6 +81,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatButtonModule,
     MatIconModule,
     MatProgressBarModule,
+    MatCardModule,
 
     MatTableModule,
     MatPaginatorModule,
