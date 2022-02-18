@@ -4,7 +4,7 @@
     <div class="col-12 col-md-6 col-xl-3 card-container">
       <div class="card h-100 card-stats">
         <div class="card-header card-header-success card-header-icon">
-          <div class="card-icon">
+          <div class="card-icon rounded-circle ">
             <mat-icon>inventory</mat-icon>
           </div>
           <p class="card-category">Active Products</p>
@@ -13,14 +13,14 @@
           </h3>
         </div>
         <div class="card-footer mt-auto alternate-theme">
-          <mat-progress-bar mode="determinate" color="primary" [value]="info.newBillAmount /  info.allBillAmount * 100"></mat-progress-bar>
+          <mat-progress-bar mode="determinate" color="primary" [value]="info.activeProducts /  info.allProducts * 100"></mat-progress-bar>
         </div>
       </div>
     </div>
     <div class="col-12 col-md-6 col-xl-3 card-container">
       <div class="card h-100 card-stats">
         <div class="card-header card-header-primary card-header-icon">
-          <div class="card-icon">
+          <div class="card-icon rounded-circle">
             <mat-icon>people</mat-icon>
           </div>
           <p class="card-category">Active Customers</p>
@@ -36,7 +36,7 @@
     <div class="col-12 col-md-6 col-xl-3 card-container">
       <div class="card h-100 card-stats">
         <div class="card-header card-header-warning card-header-icon">
-          <div class="card-icon">
+          <div class="card-icon rounded-circle">
             <mat-icon>shopping_cart</mat-icon>
           </div>
           <p class="card-category">Not paid orders</p>
@@ -45,14 +45,14 @@
           </h3>
         </div>
         <div class="card-footer mt-auto alternate-theme">
-          <mat-progress-bar mode="determinate" color="accent" [value]="(this.info.newOrder + this.info.shippedOrder) / this.info.allOrder * 100"></mat-progress-bar>
+          <mat-progress-bar mode="determinate" color="accent" [value]="(info.newOrder + info.shippedOrder) / info.allOrder * 100"></mat-progress-bar>
         </div>
       </div>
     </div>
     <div class="col-12 col-md-6 col-xl-3 card-container">
       <div class="card h-100 card-stats">
         <div class="card-header card-header-danger card-header-icon">
-          <div class="card-icon">
+          <div class="card-icon rounded-circle">
             <mat-icon>attach_money</mat-icon>
           </div>
           <p class="card-category">&Sigma; of not paid bills</p>
@@ -61,7 +61,7 @@
           </h3>
         </div>
         <div class="card-footer mt-auto">
-          <mat-progress-bar mode="determinate" color="warn" [value]="info.activeCustomer / info.allCustomer * 100"></mat-progress-bar>
+          <mat-progress-bar mode="determinate" color="warn" [value]="info.newBillAmount / info.allBillAmount * 100"></mat-progress-bar>
         </div>
       </div>
     </div>
