@@ -168,7 +168,7 @@ export class DashboardComponent implements OnInit {
         {
           center: ['50%', '50%'],
           radius: ['20%', '75%'],
-          roseType: 'area',
+          roseType: 'radius',
           data: data.map(e => ({
             name: `${e[0]}\n(${(e[1] / sum * 100).toFixed(1)}%)`,
             value: e[1],
