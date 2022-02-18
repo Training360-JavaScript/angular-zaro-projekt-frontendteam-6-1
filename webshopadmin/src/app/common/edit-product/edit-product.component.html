@@ -152,7 +152,7 @@
           class="col-md-4"
           [disabled]="productForm.invalid"
         >
-          <mat-icon>save</mat-icon> <span class="ml-2"> Save</span>
+          <mat-icon>save</mat-icon> <span class="ml-2">{{ product.id ? 'Save changes' : 'Save new' }}</span>
         </button>
       </div>
     </form>
