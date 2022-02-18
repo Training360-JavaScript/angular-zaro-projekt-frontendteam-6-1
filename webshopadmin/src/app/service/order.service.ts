@@ -24,19 +24,19 @@ export class OrderService extends CrudService<Order> {
   override createInstanceOfT() { return new Order(); }
 
   getCustomer(order: Order): Observable<Customer> {
-    return this.cs.get( order.customerID);
+    return this.cs.getOrNew( order.customerID);
   }
 
   getCustomerAsync(order$: Observable<Order>): Observable<Customer> {
-    return order$.pipe(mergeMap(order => this.cs.get(order.customerID)));
+    return order$.pipe(mergeMap(order => this.cs.getOrNew(order.customerID)));
   }
 
   getProduct(order: Order): Observable<Product> {
-    return this.ps.get( order.productID);
+    return this.ps.getOrNew( order.productID);
   }
 
   getProductAsync(order$: Observable<Order>): Observable<Product> {
-    return order$.pipe(mergeMap(order => this.ps.get(order.productID)));
+    return order$.pipe(mergeMap(order => this.ps.getOrNew(order.productID)));
   }
 
 }
