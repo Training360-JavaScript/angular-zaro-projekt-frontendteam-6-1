@@ -150,6 +150,7 @@
           color="accent"
           (click)="onSubmit(product)"
           class="col-md-4"
+          [disabled]="productForm.invalid"
         >
           <mat-icon>save</mat-icon> <span class="ml-2"> Save</span>
         </button>

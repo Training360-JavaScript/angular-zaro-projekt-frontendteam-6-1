@@ -32,9 +32,6 @@
             </div>
           </div>
           <div class="form-group col-1 text-center">
-
-            <!-- <label for="active-id">Active</label>
-            <input [(ngModel)]="customer.active" id="active-id" type="checkbox" name="active" class="form-control"> -->
             <label for="active-id">Active</label>
             <mat-checkbox type="checkbox" id="active-id" name="active" [(ngModel)]="customer.active" > </mat-checkbox>
           </div>
@@ -103,14 +100,6 @@
             <mat-icon>save</mat-icon> <span class="ml-2">{{ customer.id ? 'Save changes' : 'Save new' }}</span>
           </button>
         </div>
-        <!-- <div class="btn-group d-flex justify-content-center">
-          <button (click)="onClose(false)" class="btn btn-secondary btn-block mr-1" type="button">
-            <i class="fa fa-undo"></i> Cancel
-          </button>
-          <button [disabled]="customerForm.invalid" type="submit" class="btn btn-success btn-block ml-1">
-            <i class="fa fa-save"></i> {{ customer.id ? ' Modify' : ' Create' }} customer
-          </button>
-        </div> -->
       </form>
     </div>
   </div>
