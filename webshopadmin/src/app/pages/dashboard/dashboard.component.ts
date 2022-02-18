@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 import { zip } from 'rxjs';
 import { Product } from 'src/app/model/product';
 import { EChartsOption } from 'echarts';
+import { ThemeOption } from 'ngx-echarts';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -14,6 +16,40 @@ import { EChartsOption } from 'echarts';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+
+  CustomerTheme = {
+    color: [
+      '#9C27B0',
+      '#7B1FA2',
+      '#6A1B9A',
+    ],
+  }
+
+  ProductTheme = {
+    color: [
+      '#4CAF50',
+      '#2c722f',
+      '#2c722f',
+    ],
+  }
+
+  OrderTheme = {
+    color: [
+      '#FF9800',
+      '#FFAB40',
+      '#F57C00',
+    ],
+  }
+
+  BillTheme = {
+    color: [
+      '#F44336',
+      '#C62828',
+      '#FF5252',
+    ],
+  }
+
+  theme: string | ThemeOption;
 
   constructor(
     private ps: ProductService,
@@ -93,12 +129,12 @@ export class DashboardComponent implements OnInit {
           ['Shipped', this.info.shippedOrderAmount],
         ]);
         this.chartDataBills = this.getPieChartData([
-          ['new', this.info.newBill],
-          ['paid', this.info.paidBill],
+          ['New', this.info.newBill],
+          ['Paid', this.info.paidBill],
         ]);
         this.chartDataBillsAmount = this.getPieChartData([
-          ['new', this.info.newBillAmount],
-          ['paid', this.info.paidBillAmount],
+          ['New', this.info.newBillAmount],
+          ['Paid', this.info.paidBillAmount],
         ]);
 
       }
@@ -115,8 +151,15 @@ export class DashboardComponent implements OnInit {
   getPieChartData(data: [string, number][]): EChartsOption {
     const sum:number = data.reduce((prev, e) => prev += e[1], 0);
     return {
+      tooltip: {
+        trigger: 'item',
+        formatter: '{b} : {c} ({d}%)'
+      },
+      calculable: true,
       series: [
         {
+          radius: [30, 110],
+          roseType: 'area',
           data: data.map(e => ({
             name: `${e[0]}\n(${(e[1] / sum * 100).toFixed(1)}%)`,
             value: e[1],

@@ -1,15 +1,41 @@
+h2 {
+  font-size: 1.7rem;
+  font-weight: 400;
+}
+
+.card {
+  &:hover {
+    transition: ease-in;
+    transition-duration: 300ms;
+    transform: scale(1.05, 1.05);
+  }
+
+  &-title {
+    min-height: 3rem;
+    padding: 2rem;
+  }
+
+  &-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 99rem;
+  }
+
+  &-header-icon {
+    border-radius: 99rem;
+  }
+}
+
+.mat-progress-bar {
+  height: 0.6rem;
+  border-radius: 2rem;
+}
+
 .pie-chart {
-  width: 300px;
-  height: 300px;
-};
+  max-width: 25rem;
+  max-height: 25rem;
 
-.card-icon {
-  width: 3.5rem;
-  height: 3.5rem;
+  @media screen and (min-width: 900px) {
+    padding-left: 5rem;
+  }
 }
-
-.card-title{
-  min-height: 3rem;
-  padding: 2rem;
-}
-
