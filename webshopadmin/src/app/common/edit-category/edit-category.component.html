@@ -55,7 +55,7 @@
         <button
           mat-raised-button
           color="basic"
-          [routerLink]="['/list/product']"
+          (click)="onClose(false)"
           type="reset"
           class="col-md-4"
         >
@@ -68,7 +68,7 @@
           (click)="onUpdate(category)"
           class="col-md-4"
         >
-          <mat-icon>save</mat-icon> <span class="ml-2">Save</span>
+          <mat-icon>save</mat-icon> <span class="ml-2">{{ category.id ? 'Save changes' : 'Save new' }}</span>
         </button>
       </div>
     </form>
