@@ -1,66 +1,63 @@
 <div class="container">
   <div class="row ">
-    <div *ngIf="order$ | async as order" class="col-12 col-lg-8 offset-lg-2">
+    <div *ngIf="order" class="col-12 col-lg-8 offset-lg-2">
       <h1 class="editor__title"> {{ order.id ? 'Modify order' : 'Create order' }} </h1>
       <form #orderForm="ngForm">
-
         <input [(ngModel)]="order.id" class="form-control" name="id" type="hidden" />
-
         <div class="row border mb-3">
-          <input [(ngModel)]="order.customerID" hidden id="customerid" class="form-control bg-white px-1" name="customerID" type="number"
-            required pattern="^[1-9][0-9]{0,}" />
-          <!-- <div class="form-group col-4">
-            <label for="customerid">CustomerID</label>
-
-            <div class="error-message" [hidden]="orderForm.controls['customerID']?.valid">
-              Required, numbers only!
-            </div>
-          </div> -->
-
+          <input type="hidden" [(ngModel)]="order.customerID" name="customerID">
           <div class="form-group col-12">
-            <label for="customer">Customer name</label>
+            <label for="customer">Customer</label>
             <div *ngIf="customer$ | async as customer" class="d-flex mt-2">
-              <div class="col-4">{{ customer.firstName }} {{ customer.lastName }}</div>
-              <div class="col-4">
-                <button (click)="changeCustomer(customer)" class="btn btn-primary btn-block px-0">
-                  <span class="ml-2">SELECT CUSTOMER</span></button>
+              <div matAutocompleteOrigin #origin="matAutocompleteOrigin" class="col-8">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCustomer">
+                  <mat-option *ngFor="let customer of filteredCustomers$ | async" [value]="customer">
+                    {{ displayCustomer(customer) + ' (' + customer.email + ')' }}
+                  </mat-option>
+                </mat-autocomplete>
+                <input type="text" id="id-customer" class="form-control" matInput [formControl]="customerControl"
+                  [matAutocomplete]="auto" [matAutocompleteConnectedTo]="origin">
               </div>
               <div class="col-4 px-0">
-                <button (click)="editCustomer(customer)" class="btn btn-primary btn-block"><i
-                    class="fa fa-pencil"></i><span class="ml-2">EDIT CUSTOMER</span></button>
+                <button (click)="editCustomer()" class="btn btn-primary btn-block"><i class="fa fa-pencil"></i><span
+                    class="ml-2"> {{ customer.id ? 'EDIT' : 'CREATE' }} CUSTOMER</span></button>
               </div>
             </div>
           </div>
         </div>
 
         <div class="row border mb-3">
-          <div class="form-group col-4">
-            <label for="productid">ProductID</label>
-            <input [(ngModel)]="order.productID" id="productid" class="form-control bg-white px-1" name="productID" type="number"
-              required pattern="^[1-9][0-9]{0,}" />
-            <div class="error-message" [hidden]="orderForm.controls['productID']?.valid">
-              Required, numbers only!
-            </div>
+          <input type="hidden" [(ngModel)]="order.customerID" name="customerID">
 
-          </div>
-          <div class="form-group col-8">
+          <div class="form-group col-12">
+
             <label for="product">Product name</label>
-
             <div *ngIf="product$ | async as product" class="d-flex mt-2">
-              <div class="col-6">{{ product.name }}</div>
-              <div class="col-6 px-0"><button (click)="editProduct(product)" class="btn btn-primary btn-block btn-small"><i
-                    class="fa fa-pencil"></i>
-                  <span class="ml-2">EDIT PRODUCT</span></button>
+
+              <div matAutocompleteOrigin #origin="matAutocompleteOrigin" class="col-8">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProduct">
+                  <mat-option *ngFor="let product of filteredProducts$ | async" [value]="product">
+                    {{ displayProduct(product) + ' (' + product.description + ')' }}
+                  </mat-option>
+                </mat-autocomplete>
+                <input type="text" id="id-product" class="form-control" matInput [formControl]="productControl"
+                  [matAutocomplete]="auto" [matAutocompleteConnectedTo]="origin">
               </div>
+              <div class="col-4 px-0">
+                <button (click)="editProduct()" class="btn btn-primary btn-block"><i class="fa fa-pencil"></i><span
+                    class="ml-2">{{ product.id ? 'EDIT' : 'CREATE' }} PRODUCT</span></button>
+              </div>
+
             </div>
           </div>
+
         </div>
 
         <div class="row">
           <div class="form-group col-4">
             <label for="amount">Amount</label>
-            <input [(ngModel)]="order.amount" id="amount" class="form-control bg-white px-1" name="amount" type="number" required
-              pattern="^[1-9][0-9]{0,}" />
+            <input [(ngModel)]="order.amount" id="amount" class="form-control bg-white px-1" name="amount" type="number"
+              required pattern="^[1-9][0-9]{0,}" />
             <div class="error-message" [hidden]="orderForm.controls['amount']?.valid">
               Minimum amount:1!
             </div>
@@ -83,8 +80,8 @@
 
               <div class="form-check form-check-radio ml-5">
                 <label class="form-check-label">
-                  <input [(ngModel)]="order.status" class="form-check-input bg-white px-1" type="radio" name="status" id=""
-                    value="paid" required #name="ngModel">
+                  <input [(ngModel)]="order.status" class="form-check-input bg-white px-1" type="radio" name="status"
+                    id="" value="paid" required #name="ngModel">
                   Paid
                   <span class="circle">
                     <span class="check"></span>
@@ -110,43 +107,20 @@
         </div>
 
         <div class="form__buttons d-md-flex justify-content-center mt-3 mt-md-5">
-          <button
-            mat-raised-button
-            color="basic"
-            (click)="onClose(false)"
-            type="reset"
-            class="col-md-4"
-          >
+          <button mat-raised-button color="basic" (click)="onClose(false)" type="reset" class="col-md-4">
             <mat-icon>undo</mat-icon> <span class="ml-2">Back</span>
           </button>
 
-          <button
-            [disabled]="orderForm.invalid"
-            mat-raised-button
-            color="accent"
-            type="submit"
-            class="col-md-4"
-            (click)="onSubmit(order)"
-          >
+          <button [disabled]="orderForm.invalid" mat-raised-button color="accent" type="submit" class="col-md-4"
+            (click)="onSubmit(order)">
             <mat-icon>save</mat-icon> <span class="ml-2">{{ order.id ? 'Save changes' : 'Save new' }}</span>
           </button>
         </div>
-
-        <!-- <div class="btn-group d-flex justify-content-center mt-5">
-          <button (click)="onClose(true)" class="btn btn-secondary btn-block mr-1">
-            <i class="fa fa-undo"></i> <span class="ml-2">Cancel</span>
-          </button>
-
-          <button (click)="onSubmit(order)" [disabled]="orderForm.invalid" type="submit"
-            class="btn btn-success btn-block ml-1">
-            <i class="fa fa-save"></i> <span class="ml-2">{{ order.id ? 'Save changes' : 'Save new' }}</span>
-          </button>
-        </div> -->
       </form>
     </div>
   </div>
 </div>
-<div *ngIf="modalCustomer" [style]="{
+<div *ngIf="(modalCustomer || modalProduct) && order" [style]="{
   position: 'absolute',
   top: 0,
   left: 0,
@@ -154,7 +128,11 @@
   width: '100%',
   height: '100%'
 }">
-  <app-edit-customer [customerID]="modalCustomerId" [closeNavigatePath]="null" (close)="modalCustomerEnd($event)" >
-
+  <app-edit-customer *ngIf="modalCustomer" [customerID]="order.customerID" [closeNavigatePath]="null"
+    (close)="modalCustomerEnd($event)">
   </app-edit-customer>
+  <app-edit-product *ngIf="modalProduct">
+    <!-- Ezeket implementálni kell itt lenn!!! -->
+    <!-- [productID]="order.productID" [closeNavigatePath]="null" (close)="modalProductEnd($event)" -->
+  </app-edit-product>
 </div>
