@@ -1,7 +1,7 @@
 import { ProductService } from './../../service/product.service';
 import { CustomerService } from './../../service/customer.service';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { combineLatest, Observable, switchMap, map, tap, timer } from 'rxjs';
+import { combineLatest, Observable, switchMap, map, tap } from 'rxjs';
 import { OrderService } from 'src/app/service/order.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Order } from 'src/app/model/order';
@@ -42,8 +42,6 @@ export class EditOrderComponent implements OnInit {
   modalCustomer: boolean = false;
 
   modalProduct: boolean = false;
-
-  wait$: Observable<number> = timer(500).pipe(map(e => 1));
 
   constructor(
     private orderService: OrderService,

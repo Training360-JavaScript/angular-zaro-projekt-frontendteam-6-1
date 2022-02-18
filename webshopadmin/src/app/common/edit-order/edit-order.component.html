@@ -16,8 +16,10 @@
                     {{ displayCustomer(customer) + ' (' + customer.email + ')' }}
                   </mat-option>
                 </mat-autocomplete>
-                <input type="text" id="id-customer" class="form-control" matInput [formControl]="customerControl"
-                  [matAutocomplete]="auto" [matAutocompleteConnectedTo]="origin">
+                <mat-form-field>
+                  <input type="text" id="id-customer" class="form-control" matInput [formControl]="customerControl"
+                    [matAutocomplete]="auto" [matAutocompleteConnectedTo]="origin">
+                </mat-form-field>
                 <div class="error-message" [hidden]="order?.customerID">
                   Please choose a customer, or create a new.
                 </div>
@@ -41,8 +43,10 @@
                     {{ displayProduct(product) + ' (' + product.description + ')' }}
                   </mat-option>
                 </mat-autocomplete>
-                <input type="text" id="id-product" class="form-control" matInput [formControl]="productControl"
+                <mat-form-field>
+                  <input type="text" id="id-product" class="form-control" matInput [formControl]="productControl"
                   [matAutocomplete]="auto" [matAutocompleteConnectedTo]="origin">
+                </mat-form-field>
                 <div class="error-message" [hidden]="order?.productID">
                   Please choose a product, or create a new.
                 </div>
@@ -58,7 +62,7 @@
         <div class="row">
           <div class="form-group col-4">
             <label for="amount">Amount</label>
-            <input [(ngModel)]="order.amount" id="amount" class="form-control bg-white px-1" name="amount" type="number"
+            <input [(ngModel)]="order.amount" id="amount" class="form-control px-1" name="amount" type="number"
               required pattern="^[1-9][0-9]{0,}" />
             <div class="error-message" [hidden]="orderForm.controls['amount']?.valid">
               Minimum amount:1!
