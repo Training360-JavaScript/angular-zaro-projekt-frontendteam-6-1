@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, switchMap } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 import { Location } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 
@@ -15,11 +15,22 @@ import { ProductService } from 'src/app/service/product.service';
 })
 export class EditProductComponent implements OnInit {
 
-  product$: Observable<Product> = this.activatedRoute.params.pipe(
-    switchMap( params => this.productService.getOrNew(params['id']))
-  )
+  @Input() closeNavigatePath: string[] | null | number = -1;
 
-  category$: Observable<Category> = this.productService.getCategoryAsync(this.product$);
+  @Input() set productID(value: number) {
+    this.product$ = this.productService.getOrNew(value)
+      .pipe(map( e => {
+        if (e.id === 0 && this.defaultName)
+          e.name = this.defaultName;
+        return e;
+      }));
+  }
+
+  @Input() defaultName: string = '';
+
+  @Output() close : EventEmitter<Product | null> = new EventEmitter();
+
+  product$: Observable<Product>;
 
   categories$: Observable<Category[]> = this.categoryService.getAll()
 
@@ -33,37 +44,28 @@ export class EditProductComponent implements OnInit {
     private router: Router,
     private location: Location,
     private toaster: ToastrService,
-  ) { }
-
-  @Input() closeNavigatePath: string[] | null | number = -1;
-
-  @Output() close : EventEmitter<boolean> = new EventEmitter<boolean>();
+  ) {
+    this.product$ = this.activatedRoute.params.pipe(switchMap(params => this.productService.getOrNew(params['id'])));
+   }
 
   ngOnInit(): void {
 
   }
 
-  /* onUpdate(product: Product): void {
-    this.productService.createOrUpdate(product).subscribe(
-      product => this.router.navigate(['/list/product']),
-      err => console.error(err)
-    )
-  } */
-
   onSubmit(product: Product) {
     this.productService.createOrUpdate(product).subscribe({
-      next: () => this.onClose(true, product),
+      next: nProduct => this.onClose(true, nProduct),
       error: console.log,
     })
   }
 
-  onClose(result: boolean, product?: Product) {
-    this.close.emit(result);
+  onClose(result: boolean, product?: Product, isNew: boolean = false) {
+    this.close.emit(result ? product : null);
     if (result) {
-      if (product?.id)
-        this.toaster.success(`${product.name} has been successfully modified.`);
-      else
+      if (isNew)
         this.toaster.success(`${product?.name} ${product?.name} has been created successfully.`);
+      else
+        this.toaster.success(`${product?.name} has been successfully modified.`);
     }
     if (this.closeNavigatePath !== null) {
       if (typeof this.closeNavigatePath === 'number')

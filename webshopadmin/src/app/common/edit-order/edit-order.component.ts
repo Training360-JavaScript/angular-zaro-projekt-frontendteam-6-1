@@ -21,47 +21,29 @@ export class EditOrderComponent implements OnInit {
   customerControl = new FormControl();
   productControl = new FormControl();
 
+  @Input() set orderID(value: number) {
+    this.orderService.getOrNew(value).subscribe(this.setupOrder.bind(this));
+  }
+
   @Input() closeNavigatePath: string[] | null | number = -1;
 
-  @Output() close: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() close: EventEmitter<Order | null> = new EventEmitter();
 
   order: Order | null = null;
 
-  product$: Observable<Product> | null = null;
+  product$: Observable<Product>;
 
-  filteredProducts$: Observable<Product[]> | null = null;
+  filteredProducts$: Observable<Product[]>;
 
-  customer$: Observable<Customer> | null = null;
+  customer$: Observable<Customer>;
 
-  filteredCustomers$: Observable<Customer[]> | null = null;
-
-  customerSetup(): void {
-    if (this.order) {
-      this.customer$ = this.orderService.getCustomer(this.order)
-        .pipe(tap(e => this.customerControl.setValue(this.displayCustomer(e))));
-      this.filteredCustomers$ = combineLatest([
-        this.customerService.getAll(),
-        this.customerControl.valueChanges.pipe(map(e => this.displayCustomer(e)))
-        ]).pipe(map(ee => ee[0]
-          .filter(e => (this.displayCustomer(e)).toLowerCase().includes(ee[1].toLowerCase()))));
-    }
-  }
-
-  productSetup(): void {
-    if (this.order) {
-      this.product$ = this.orderService.getProduct(this.order)
-        .pipe(tap(e => this.productControl.setValue(this.displayProduct(e))));
-      this.filteredProducts$ = combineLatest([
-        this.productService.getAll(),
-        this.productControl.valueChanges.pipe(map(e => this.displayProduct(e)))
-        ]).pipe(map(ee => ee[0]
-          .filter(e => (this.displayProduct(e)).toLowerCase().includes(ee[1].toLowerCase()))));
-    }
-  }
+  filteredCustomers$: Observable<Customer[]>;
 
   modalCustomer: boolean = false;
 
   modalProduct: boolean = false;
+
+  //defaultCustomerName: string = '';
 
   constructor(
     private orderService: OrderService,
@@ -71,7 +53,50 @@ export class EditOrderComponent implements OnInit {
     private router: Router,
     private location: Location,
     private toaster: ToastrService,
-  ) { }
+  ) {
+    this.activatedRoute.params.pipe(switchMap(params => this.orderService.getOrNew(params['id']))).subscribe(this.setupOrder.bind(this));
+   }
+
+  customerSetup(): void {
+    if (this.order) {
+      this.customer$ = this.orderService.getCustomer(this.order)
+        .pipe(tap(e => this.customerControl.setValue(e)));
+      this.filteredCustomers$ = combineLatest([
+        this.customerService.getAll(),
+        this.customerControl.valueChanges
+          //.pipe(tap(e => typeof e === 'string' && (this.defaultCustomerName = e)))
+      ]).pipe(map(ee =>
+        this.setupFunc<Customer>(ee[1], ee[0], this.displayCustomer, e => this.order && (this.order.customerID = e))
+      ));
+    }
+  }
+
+  productSetup(): void {
+    if (this.order) {
+      this.product$ = this.orderService.getProduct(this.order)
+        .pipe(tap(e => this.productControl.setValue(e)));
+      this.filteredProducts$ = combineLatest([
+        this.productService.getAll(),
+        this.productControl.valueChanges
+        ]).pipe(map(ee =>
+          this.setupFunc<Product>(ee[1], ee[0], this.displayProduct, e => this.order && (this.order.productID = e))
+        ));
+    }
+  }
+
+  setupFunc<T extends Customer | Product>(value: any, array: T[], displayFunc: (e: T) => string, setIDFunc: (id: number) => void):T[]  {
+    if (value?.id) {
+      setIDFunc(value.id);
+      return array.filter(e => e.id == value.id);
+    } else {
+      setIDFunc(0);
+      if (typeof value === 'string') {
+        const phrase = value.toLowerCase();
+        return array.filter(e => (displayFunc(e)).toLowerCase().includes(phrase));
+      } else
+        return array.slice();
+    }
+  }
 
   displayCustomer(customer: Customer | string | null): string {
     if (!customer)
@@ -79,7 +104,7 @@ export class EditOrderComponent implements OnInit {
     else if (typeof customer === 'string')
       return customer;
     else
-      return `${customer.firstName} ${customer.lastName}`;
+      return customer.firstName + (customer.firstName && customer.lastName ? ' ' : '') + customer.lastName;
   }
 
   displayProduct(product: Product | string | null): string {
@@ -91,38 +116,28 @@ export class EditOrderComponent implements OnInit {
       return `${product.name}`;
   }
 
-  ngOnInit(): void {
-    this.activatedRoute.params.pipe(switchMap(params => this.orderService.getOrNew(params['id']))).subscribe(e => {
-      this.order = e;
-      this.customerSetup();
-      this.productSetup();
-    });
-
-    this.customerControl.valueChanges.subscribe(e => {
-      if (e && e?.id && this.order)
-        this.order.customerID = e?.id;
-    })
-
-    this.productControl.valueChanges.subscribe(e => {
-      if (e && e?.id && this.order)
-        this.order.productID = e?.id;
-    })
+  setupOrder(o: Order): void {
+    this.order = o;
+    this.customerSetup();
+    this.productSetup();
   }
+
+  ngOnInit(): void { }
 
   onSubmit(order: Order) {
     this.orderService.createOrUpdate(order).subscribe({
-      next: () => this.onClose(true),
+      next: nOrder => this.onClose(true, nOrder, this.order?.id === 0),
       error: console.log,
     });
   }
 
-  onClose(result: boolean): void {
-    this.close.emit(result);
+  onClose(result: boolean, nOrder?: Order, isNew: boolean = false): void {
+    this.close.emit(result ? nOrder : null);
     if (result) {
-      if (this.order?.id)
-        this.toaster.success(`Order #${this.order?.id} modified successfully.`);
+      if (isNew)
+        this.toaster.success(`Order #${nOrder?.id} created successfully.`);
       else
-        this.toaster.success(`Order #${this.order?.id} created successfully.`);
+        this.toaster.success(`Order #${nOrder?.id} modified successfully.`);
     }
     if (this.closeNavigatePath !== null) {
       if (typeof this.closeNavigatePath === 'number')
@@ -132,14 +147,15 @@ export class EditOrderComponent implements OnInit {
     }
   }
 
-
   editProduct(): void {
     this.modalProduct = true;
   }
 
-  modalProductEnd($event: any): void {
-    if ($event)
+  modalProductEnd($event: Product | null): void {
+    if ($event && this.order) {
+      this.order!.productID = $event.id;
       this.productSetup();
+    }
     this.modalProduct = false;
   }
 
@@ -149,7 +165,7 @@ export class EditOrderComponent implements OnInit {
 
   modalCustomerEnd($event: Customer | null): void {
     if ($event && this.order) {
-      this.order.customerID = $event.id;
+      this.order!.customerID = $event.id;
       this.customerSetup();
     }
     this.modalCustomer = false;

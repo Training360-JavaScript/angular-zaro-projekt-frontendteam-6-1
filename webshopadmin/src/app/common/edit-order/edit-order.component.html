@@ -17,10 +17,13 @@
                 </mat-autocomplete>
                 <input type="text" id="id-customer" class="form-control" matInput [formControl]="customerControl"
                   [matAutocomplete]="auto" [matAutocompleteConnectedTo]="origin">
+                <div class="error-message" [hidden]="order?.customerID">
+                  Please choose a customer, or create a new.
+                </div>
               </div>
               <div class="col-4 px-0">
                 <button (click)="editCustomer()" class="btn btn-primary btn-block"><i class="fa fa-pencil"></i><span
-                    class="ml-2"> {{ customer.id ? 'EDIT' : 'CREATE' }} CUSTOMER</span></button>
+                    class="ml-2"> {{ order?.customerID ? 'EDIT' : 'CREATE' }} CUSTOMER</span></button>
               </div>
             </div>
           </div>
@@ -42,10 +45,13 @@
                 </mat-autocomplete>
                 <input type="text" id="id-product" class="form-control" matInput [formControl]="productControl"
                   [matAutocomplete]="auto" [matAutocompleteConnectedTo]="origin">
+                <div class="error-message" [hidden]="order?.productID">
+                  Please choose a product, or create a new.
+                </div>
               </div>
               <div class="col-4 px-0">
                 <button (click)="editProduct()" class="btn btn-primary btn-block"><i class="fa fa-pencil"></i><span
-                    class="ml-2">{{ product.id ? 'EDIT' : 'CREATE' }} PRODUCT</span></button>
+                    class="ml-2">{{ order?.productID ? 'EDIT' : 'CREATE' }} PRODUCT</span></button>
               </div>
 
             </div>
@@ -129,10 +135,9 @@
   height: '100%'
 }">
   <app-edit-customer *ngIf="modalCustomer" [customerID]="order.customerID" [closeNavigatePath]="null"
-    (close)="modalCustomerEnd($event)">
+    (close)="modalCustomerEnd($event)" [defaultName]="customerControl.value">
   </app-edit-customer>
-  <app-edit-product *ngIf="modalProduct">
-    <!-- Ezeket implementálni kell itt lenn!!! -->
-    <!-- [productID]="order.productID" [closeNavigatePath]="null" (close)="modalProductEnd($event)" -->
+  <app-edit-product *ngIf="modalProduct" [productID]="order.productID" [closeNavigatePath]="null"
+    (close)="modalProductEnd($event)" [defaultName]="productControl.value">
   </app-edit-product>
 </div>
