@@ -19,7 +19,7 @@ export class EditCustomerComponent implements OnInit {
     this.customer$ = this.customerService.getOrNew(value);
   }
 
-  @Output() close : EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() close : EventEmitter<Customer | null> = new EventEmitter();
 
   customer$: Observable<Customer> = this.activatedRoute.params
     .pipe(switchMap(e => this.customerService.getOrNew(e['id'])));
@@ -37,13 +37,13 @@ export class EditCustomerComponent implements OnInit {
 
   onSubmit(customer: Customer) {
     this.customerService.createOrUpdate(customer).subscribe({
-      next: () => this.onClose(true, customer),
+      next: mCustomer => this.onClose(true, mCustomer),
       error: console.log,
     })
   }
 
   onClose(result: boolean, customer?: Customer) {
-    this.close.emit(result);
+    this.close.emit(result ? customer : null);
     if (result) {
       if (customer?.id)
         this.toaster.success(`${customer.firstName} ${customer.lastName} modified successfully.`);
