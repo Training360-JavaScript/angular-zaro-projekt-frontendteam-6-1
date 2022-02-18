@@ -4,6 +4,7 @@
       <h1 class="editor__title"> {{ order.id ? 'Modify order' : 'Create order' }} </h1>
       <form #orderForm="ngForm">
         <input [(ngModel)]="order.id" class="form-control" name="id" type="hidden" />
+
         <div class="row border mb-3">
           <input type="hidden" [(ngModel)]="order.customerID" name="customerID">
           <div class="form-group col-12">
@@ -30,13 +31,10 @@
         </div>
 
         <div class="row border mb-3">
-          <input type="hidden" [(ngModel)]="order.customerID" name="customerID">
-
+          <input type="hidden" [(ngModel)]="order.productID" name="productID">
           <div class="form-group col-12">
-
             <label for="product">Product name</label>
             <div *ngIf="product$ | async as product" class="d-flex mt-2">
-
               <div matAutocompleteOrigin #origin="matAutocompleteOrigin" class="col-8">
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProduct">
                   <mat-option *ngFor="let product of filteredProducts$ | async" [value]="product">
@@ -53,10 +51,8 @@
                 <button (click)="editProduct()" class="btn btn-primary btn-block"><i class="fa fa-pencil"></i><span
                     class="ml-2">{{ order?.productID ? 'EDIT' : 'CREATE' }} PRODUCT</span></button>
               </div>
-
             </div>
           </div>
-
         </div>
 
         <div class="row">
@@ -125,19 +121,19 @@
       </form>
     </div>
   </div>
-</div>
-<div *ngIf="(modalCustomer || modalProduct) && order" [style]="{
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  background: '#fff',
-  width: '100%',
-  height: '100%'
-}">
-  <app-edit-customer *ngIf="modalCustomer" [customerID]="order.customerID" [closeNavigatePath]="null"
-    (close)="modalCustomerEnd($event)" [defaultName]="customerControl.value">
-  </app-edit-customer>
-  <app-edit-product *ngIf="modalProduct" [productID]="order.productID" [closeNavigatePath]="null"
-    (close)="modalProductEnd($event)" [defaultName]="productControl.value">
-  </app-edit-product>
+  <div *ngIf="(modalCustomer || modalProduct) && order" [style]="{
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    background: '#fff',
+    width: '100%',
+    height: '100%'
+  }">
+    <app-edit-customer *ngIf="modalCustomer" [customerID]="order.customerID" [closeNavigatePath]="null"
+      (close)="modalCustomerEnd($event)" [defaultName]="customerControl.value">
+    </app-edit-customer>
+    <app-edit-product *ngIf="modalProduct" [productID]="order.productID" [closeNavigatePath]="null"
+      (close)="modalProductEnd($event)" [defaultName]="productControl.value">
+    </app-edit-product>
+  </div>
 </div>
