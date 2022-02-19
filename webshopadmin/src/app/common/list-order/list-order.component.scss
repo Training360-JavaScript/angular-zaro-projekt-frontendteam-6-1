@@ -3,8 +3,11 @@
 
 $alignCenterNameList:            id                                       buttons;
 $responsiveNameList:             id customerID productID  amount  status  buttons;
-$responsiveList:      $xs-min    10%    20%        25%      10%      10%      25%,
-                      $md-min    10%    20%        20%      10%      15%      25%;
+$responsiveList:      $xs-min    20%    20%        15%      10%   hidden      35%,
+                      $sm-min    15%    20%        15%      10%      10%      30%,
+                      $md-min    15%    20%        15%      10%      10%      30%,
+                      $lg-min    10%    35%        20%      10%      10%      15%,
+                      $xl-min     5%    40%        20%      10%      10%      15%;
 
 @include mixin.set-database-table-style(
   $responsiveNameList,
