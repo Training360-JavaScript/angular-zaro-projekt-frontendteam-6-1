@@ -1,70 +1,125 @@
 <div class="container">
   <div class="row">
-    <div *ngIf="bill$ | async as bill" class="col-12 col-lg-8 offset-lg-2">
+    <div *ngIf="bill" class="col-12 col-lg-8 offset-lg-2">
       <h1 class="editor__title"> {{ bill.id ? 'Modify bill' : 'Create bill' }} </h1>
       <form #billForm="ngForm">
-
         <input [(ngModel)]="bill.id" class="form-control" name="id" type="hidden" />
 
-        <div  class="row border mb-3">
+        <div class="row border mb-3">
           <div class="form-group col-4">
             <label for="orderid">OrderID</label>
-            <input [(ngModel)]="bill.orderID" id="orderid" class="form-control bg-white px-1" name="orderID"
-              type="number" required pattern="^[1-9][0-9]{0,}" />
-            <div class="error-message" [hidden]="billForm.controls['orderID']?.valid">
+            <div>{{ bill.orderID}}</div>
+            <!-- <input [(ngModel)]="bill.orderID" id="orderid" class="form-control bg-white px-1" name="orderID"
+              type="number" required pattern="^[1-9][0-9]{0,}" /> -->
+            <!-- <div class="error-message" [hidden]="billForm.controls['orderID']?.valid">
               Required, numbers only!
-            </div>
-            <!-- {{ order$ | async | json }} -->
+            </div> -->
           </div>
-          <div *ngIf="order$ | async as order" class="form-group col-8 d-flex justify-content-end">
-
-            <div class="col-6 "><button (click)="editOrder(order)" class="btn btn-primary btn-block"><i
+          <div *ngIf="orderBasic$ | async as orderBasic" class="form-group col-8 d-flex justify-content-end">
+            <div class="col-6 "><button (click)="editOrderBasic(orderBasic)" class="btn btn-primary btn-block"><i
                   class="fa fa-pencil"></i>
                 <span class="ml-2">EDIT ORDER</span></button>
             </div>
           </div>
         </div>
 
-        <div *ngIf="customer$ | async as customer" class="row border mb-3">
+        <div class="row border mb-3">
+          <div class="form-group col-12">
+            <label for="customer">Customer</label>
+            <div *ngIf="customer$ | async as customer" class="d-flex mt-2">
+              <div matAutocompleteOrigin #origin="matAutocompleteOrigin" class="col-8">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCustomer">
+                  <mat-option *ngFor="let customer of filteredCustomers$ | async" [value]="customer">
+                    {{ displayCustomer(customer) + ' (' + customer.email + ')' }}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-form-field>
+                  <input type="text" id="id-customer" class="form-control" matInput [formControl]="customerControl"
+                    [matAutocomplete]="auto" [matAutocompleteConnectedTo]="origin">
+                </mat-form-field>
+                <div class="error-message" [hidden]="order?.customerID">
+                  Please choose a customer, or create a new.
+                </div>
+              </div>
+              <div class="col-4 px-0">
+                <button (click)="editCustomer()" class="btn btn-primary btn-block"><i class="fa fa-pencil"></i><span
+                    class="ml-2"> {{ order?.customerID ? 'EDIT' : 'CREATE' }} CUSTOMER</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- <div *ngIf="customerBasic$ | async as customerBasic" class="row border mb-3">
           <div class="form-group col-4">
             <label for="customerid">Customer ID</label>
             <div class="d-flex mt-2">
-              {{ customer.id }}
+              {{ customerBasic.id }}
             </div>
           </div>
 
           <div class="form-group col-8">
             <label for="customer">Customer</label>
             <div class="d-flex mt-2">
-              <div class="col-6">{{ customer.firstName }} {{ customer.lastName }}</div>
-              <div class="col-6 text-center"><button (click)="editCustomer(customer)"
+              <div class="col-6">{{ customerBasic.firstName }} {{ customerBasic.lastName }}</div>
+              <div class="col-6 text-center"><button (click)="editCustomerBasic(customerBasic)"
                   class="btn btn-primary btn-block"><i class="fa fa-pencil"></i>
                   <span class="ml-2">EDIT CUSTOMER</span></button>
               </div>
             </div>
           </div>
+        </div> -->
+
+
+        <div class="row border mb-3">
+          <!-- <input type="hidden" [(ngModel)]="order.productID" name="productID"> -->
+          <div class="form-group col-12">
+            <label for="product">Product name</label>
+            <div *ngIf="product$ | async as product" class="d-flex mt-2">
+              <div matAutocompleteOrigin #origin="matAutocompleteOrigin" class="col-8">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayProduct">
+                  <mat-option *ngFor="let product of filteredProducts$ | async" [value]="product">
+                    {{ displayProduct(product) + ' (' + product.description + ')' }}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-form-field>
+                  <input type="text" id="id-product" class="form-control" matInput [formControl]="productControl"
+                    [matAutocomplete]="auto" [matAutocompleteConnectedTo]="origin">
+                </mat-form-field>
+                <div class="error-message" [hidden]="order?.productID">
+                  Please choose a product, or create a new.
+                </div>
+              </div>
+              <div class="col-4 px-0">
+                <button (click)="editProduct()" class="btn btn-primary btn-block"><i class="fa fa-pencil"></i><span
+                    class="ml-2">{{ order?.productID ? 'EDIT' : 'CREATE' }} PRODUCT</span></button>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="row border">
+
+        <!-- <div class="row border">
           <div class="form-group col-4">
             <label for="amount">Product amount</label>
-            <div *ngIf="order$ | async as order" class="d-flex mt-2">
-              <div class="col-8">{{ order.amount }}</div>
+            <div *ngIf="orderBasic$ | async as orderBasic" class="d-flex mt-2">
+              <div class="col-8">{{ orderBasic.amount }}</div>
             </div>
           </div>
 
           <div class="form-group col-8">
             <label for="product">Product name</label>
-            <div *ngIf="product$ | async as product" class="d-flex mt-2">
-              <div class="col-6">{{ product.name }}</div>
-              <div class="col-6"><button (click)="editProduct(product)" class="btn btn-primary btn-block"><i
+            <div *ngIf="productBasic$ | async as productBasic" class="d-flex mt-2">
+              <div class="col-6">{{ productBasic.name }}</div>
+              <div class="col-6"><button (click)="editProductBasic(productBasic)" class="btn btn-primary btn-block"><i
                     class="fa fa-pencil"></i>
                   <span class="ml-2">EDIT PRODUCT</span></button>
               </div>
             </div>
           </div>
+        </div> -->
 
-        </div>
+
 
         <div class="row">
           <div class="form-group col-4">
@@ -76,20 +131,7 @@
             </div>
           </div>
 
-          <!-- <div class="form-group col-8">
-            <label for="billStatus"> Status </label>
-            <select [(ngModel)]="bill.status" id="billStatus" name="status" required class="form-control">
-              <option value="" selected>Choose status...</option>
-              <option value="new">New</option>
-              <option value="paid">Paid</option>
-            </select>
-            <div class="error-message" [hidden]="billForm.controls['status']?.valid">
-              Status required!
-            </div>
-          </div> -->
-
           <div class="form-group col-8">
-
             <label for=""> Status </label>
             <div class="row mx-2 mt-2">
 
@@ -122,18 +164,33 @@
           </div>
         </div>
 
-    <div class="btn-group d-flex justify-content-center mt-5">
+        <div class="form__buttons d-md-flex justify-content-center mt-3 mt-md-5">
+          <button mat-raised-button color="basic" (click)="onClose(false)" type="reset" class="col-md-4">
+            <mat-icon>undo</mat-icon> <span class="ml-2">Back</span>
+          </button>
 
-      <button (click)="onClose(true)" class="btn btn-secondary btn-block mr-1">
-        <i class="fa fa-undo"></i> <span class="ml-2">Cancel</span>
-      </button>
-
-      <button (click)="onSubmit(bill)" [disabled]="billForm.invalid" type="submit"
-        class="btn btn-success btn-block ml-1">
-        <i class="fa fa-save"></i> <span class="ml-2">{{ bill.id ? 'Save changes' : 'Save new' }}</span>
-      </button>
+          <button [disabled]="billForm.invalid" mat-raised-button color="accent" type="submit" class="col-md-4"
+            (click)="onSubmit(bill)">
+            <mat-icon>save</mat-icon> <span class="ml-2">{{ bill.id ? 'Save changes' : 'Save new' }}</span>
+          </button>
+        </div>
+      </form>
     </div>
-    </form>
   </div>
-</div>
+
+  <div *ngIf="(modalCustomer || modalProduct) && order" [style]="{
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    background: '#fff',
+    width: '100%',
+    height: '100%'
+  }">
+    <app-edit-customer *ngIf="modalCustomer" [customerID]="order.customerID" [closeNavigatePath]="null"
+      (close)="modalCustomerEnd($event)" [defaultName]="customerControl.value">
+    </app-edit-customer>
+    <app-edit-product *ngIf="modalProduct" [productID]="order.productID" [closeNavigatePath]="null"
+      (close)="modalProductEnd($event)" [defaultName]="productControl.value">
+    </app-edit-product>
+  </div>
 </div>
