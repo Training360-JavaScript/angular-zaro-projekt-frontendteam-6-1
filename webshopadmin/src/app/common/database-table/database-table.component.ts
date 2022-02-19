@@ -1,3 +1,4 @@
+import { Toast, ToastrService, ToastrModule, ToastRef, ActiveToast } from 'ngx-toastr';
 import { DialogConfirmComponent, DialogData } from './../dialog-confirm/dialog-confirm.component';
 import { Component, Input, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 
@@ -7,15 +8,17 @@ import { MatPaginator } from '@angular/material/paginator';
 import { CrudService } from 'src/app/service/crud.service';
 import { Product } from './../../model/product';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/portal';
+import { timer } from 'rxjs';
 
 
 class CheckBoxIndeterminate {
   checked: boolean = false;
   status: 'indeterminated' | 'checked' | 'unchecked' = 'indeterminated';
 }
+
+let justOnceJoke: boolean = false;
 
 @Component({
   selector: 'app-database-table',
@@ -42,11 +45,40 @@ export class DatabaseTableComponent implements OnInit, AfterViewInit {
 
   emptyFilter: any;
 
+  storageKey: string = '';
+
   constructor(
     public dialog: MatDialog,
-    private dom: DomSanitizer ) { }
+    private toaster: ToastrService ) { }
+
+  loadColumnMessage: boolean = true;
+  loadColumnOrder() {
+    this.storageKey = this.tableConfig.title+'-config';
+    const columnOrder: string[] = JSON.parse( String(localStorage.getItem( this.storageKey)) );
+    try {
+      if ([...columnOrder].sort().join(',') === [...this.displayedColumnsKeys].sort().join(',')) {
+        this.displayedColumnsKeys = columnOrder;
+        this.displayedColumnsFilterKeys = this.displayedColumnsKeys.map( key => `${key}--filter` );
+        if (this.loadColumnMessage) {
+          this.toaster.success(`Column order is loaded.`);
+          this.loadColumnMessage = false;
+        }
+      }
+    } catch (err) {
+    }
+  }
+
+  saveColumnOrder() {
+    localStorage.setItem( this.storageKey, JSON.stringify(this.displayedColumnsKeys) );
+    this.toaster.success(`Column order is saved successfully.`);
+  }
 
   ngOnInit(): void {
+
+    this.displayedColumnsKeys = Object.keys(this.tableConfig.columns);
+    this.displayedColumnsFilterKeys = this.displayedColumnsKeys.map( key => `${key}--filter` );
+
+    this.loadColumnOrder();
 
     this.service.getAll().subscribe(
       ( data: any[] ) => {
@@ -134,9 +166,6 @@ export class DatabaseTableComponent implements OnInit, AfterViewInit {
         this.startFilter();
       }
     );
-
-    this.displayedColumnsKeys = Object.keys(this.tableConfig.columns);
-    this.displayedColumnsFilterKeys = this.displayedColumnsKeys.map( key => `${key}--filter` );
   }
 
   startFilter() {
@@ -185,19 +214,35 @@ export class DatabaseTableComponent implements OnInit, AfterViewInit {
     );
 
     dialogConfirm.beforeClosed().subscribe( ( selectedOption: string ) => {
+
       if ( selectedOption === 'yes' ) {
         const obs = this.service.delete( element.id );
         obs.subscribe( {
           next: ( p: any ) => {
+            this.toaster.success('It has been deleted.');
             this.ngOnInit();
           }
         } );
+      } else if ( selectedOption === 'no' ) {
+
+        if ( ! justOnceJoke ) {
+          justOnceJoke = true;
+          const t: ActiveToast<any> = this.toaster.success('It has been deleted.');
+          timer(2000).subscribe({
+            next() {
+              t.toastRef.componentInstance.message = 'It was a joke. OK? 🤣'
+            }
+          });
+        }
+
       }
     });
   }
 
   drop(event: CdkDragDrop<string[]>) {
+
     moveItemInArray(this.displayedColumnsKeys, event.previousIndex, event.currentIndex);
+    this.saveColumnOrder();
     this.displayedColumnsFilterKeys = this.displayedColumnsKeys.map( key => `${key}--filter` );
   }
 

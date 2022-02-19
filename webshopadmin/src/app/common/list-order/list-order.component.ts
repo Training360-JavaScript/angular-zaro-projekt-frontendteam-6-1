@@ -25,14 +25,14 @@ export class ListOrderComponent implements OnInit {
         name: 'Customer',
         value: ( customerID: number ) => {
           const find = this.customerList.find( (customer:Customer) => customer.id === customerID );
-          return find?.firstName || '' + find?.lastName || '';
+          return `${find?.firstName || ''} ${find?.lastName || ''}`;
         }
       },
       productID: {
         name: 'Product',
         value: ( productID: number ) => {
           const find = this.productList.find( (product:Product) => product.id === productID );
-          return find?.name || '';
+          return find?.name;
         }
       },
       amount: { name: 'Amount', pipe: 'currency' },

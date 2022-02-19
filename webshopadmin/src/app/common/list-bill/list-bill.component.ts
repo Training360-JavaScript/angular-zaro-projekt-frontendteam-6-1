@@ -9,7 +9,7 @@ import { OrderService } from './../../service/order.service';
 import { BillService } from './../../service/bill.service';
 import { Component, OnInit } from '@angular/core';
 import { Bill } from 'src/app/model/bill';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-list-bill',
@@ -26,7 +26,7 @@ export class ListBillComponent implements OnInit {
     columns: {
       id: { name: '#' },
       orderID: {
-        name: 'OrderID',
+        name: 'Order (id / customer / product)',
         value: ( orderID: number ) : SafeHtml => {
 
           if (!this.orderList) return 'x';
@@ -82,7 +82,6 @@ export class ListBillComponent implements OnInit {
     public orderService: OrderService,
     public productService: ProductService,
     public customerService: CustomerService,
-    private _sanitizer: DomSanitizer,
     private router: Router
   ) {
     forkJoin([
