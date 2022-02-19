@@ -55,7 +55,7 @@ export class EditProductComponent implements OnInit {
   onSubmit(product: Product) {
     this.productService.createOrUpdate(product).subscribe({
       next: nProduct => this.onClose(true, nProduct),
-      error: console.log,
+      error: error => this.toaster.error(error),
     })
   }
 

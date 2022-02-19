@@ -124,7 +124,7 @@ export class EditOrderComponent implements OnInit {
   onSubmit(order: Order) {
     this.orderService.createOrUpdate(order).subscribe({
       next: nOrder => this.onClose(true, nOrder, this.order?.id === 0),
-      error: console.log,
+      error: error => this.toaster.error(error),
     });
   }
 
