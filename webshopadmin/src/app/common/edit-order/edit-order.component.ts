@@ -1,7 +1,7 @@
 import { ProductService } from './../../service/product.service';
 import { CustomerService } from './../../service/customer.service';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { combineLatest, Observable, Subject, switchMap, map, startWith, tap } from 'rxjs';
+import { combineLatest, Observable, switchMap, map, tap } from 'rxjs';
 import { OrderService } from 'src/app/service/order.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Order } from 'src/app/model/order';
@@ -43,8 +43,6 @@ export class EditOrderComponent implements OnInit {
 
   modalProduct: boolean = false;
 
-  //defaultCustomerName: string = '';
-
   constructor(
     private orderService: OrderService,
     private customerService:  CustomerService,
@@ -64,7 +62,6 @@ export class EditOrderComponent implements OnInit {
       this.filteredCustomers$ = combineLatest([
         this.customerService.getAll(),
         this.customerControl.valueChanges
-          //.pipe(tap(e => typeof e === 'string' && (this.defaultCustomerName = e)))
       ]).pipe(map(ee =>
         this.setupFunc<Customer>(ee[1], ee[0], this.displayCustomer, e => this.order && (this.order.customerID = e))
       ));

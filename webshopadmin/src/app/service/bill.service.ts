@@ -21,11 +21,11 @@ export class BillService extends CrudService<Bill> {
   override createInstanceOfT() { return new Bill(); }
 
   getOrder(bill: Bill): Observable<Order> {
-    return this.os.get(bill.orderID);
+    return this.os.getOrNew(bill.orderID);
   }
 
   getOrderAsync(bill$: Observable<Bill>): Observable<Order> {
-    return bill$.pipe(mergeMap(bill => this.os.get(bill.orderID)));
+    return bill$.pipe(mergeMap(bill => this.os.getOrNew(bill.orderID)));
   }
 
 }
