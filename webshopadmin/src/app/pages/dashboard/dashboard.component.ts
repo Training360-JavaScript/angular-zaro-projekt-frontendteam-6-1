@@ -208,6 +208,9 @@ export class DashboardComponent implements OnInit {
       c => (c.name.length <= 6) ? c.name : c.name.substring(0,6)+'.' );
 
     this.optionsSalesByCategory = {
+      tooltip: {
+        trigger: 'item',
+      },
       xAxis: {
         data: xAxisData,
         axisLabel: {
@@ -254,7 +257,7 @@ export class DashboardComponent implements OnInit {
       .map( customer => {
         return {
           id: customer.id,
-          name: `${customer.firstName} ${customer.firstName}`,
+          name: `${customer.firstName} ${customer.lastName}`,
           total:
             orders
             .filter( order => order.customerID === customer.id )
@@ -277,6 +280,9 @@ export class DashboardComponent implements OnInit {
 
     this.optionsSalesByTopCustomer =
       {
+        tooltip: {
+          trigger: 'item',
+        },
         yAxis: {
           data: customerYAxis,
           axisLabel: {
