@@ -24,6 +24,7 @@ export class ListProductComponent implements OnInit {
       active: { name: 'Active', type: 'boolean' },
       name: { name: 'Name'},
       type: { name: 'Type' },
+      price: { name: 'Price' },
       catID: {
         name: 'Category',
         value: ( catID: number ) => {
@@ -57,7 +58,21 @@ export class ListProductComponent implements OnInit {
 
     getItemName( product: Product ) {
       return `#${product.id} ${product.name}`;
-    }
+    },
+
+    getFooterRow: (data: []): Observable<{[key:string]:any}> => {
+      return new Observable(
+        subscriber => {
+          const result = {
+            name: 'Avarage price',
+            price: (data.length>0) ? (data.reduce((p,c:Product)=>p+c.price,0)/data.length).toFixed(1) : ''
+          };
+          subscriber.next( result );
+          subscriber.complete();
+        }
+      );
+    },
+
   };
 
   categoryList: Category[] = [];
