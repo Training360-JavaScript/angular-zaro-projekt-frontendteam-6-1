@@ -16,7 +16,7 @@
                     {{ displayCustomer(customer) + ' (' + customer.email + ')' }}
                   </mat-option>
                 </mat-autocomplete>
-                <mat-form-field>
+                <mat-form-field color="accent">
                   <input type="text" id="id-customer" class="form-control" matInput [formControl]="customerControl"
                     [matAutocomplete]="auto" [matAutocompleteConnectedTo]="origin">
                 </mat-form-field>
@@ -43,7 +43,7 @@
                     {{ displayProduct(product) + ' (' + product.description + ')' }}
                   </mat-option>
                 </mat-autocomplete>
-                <mat-form-field>
+                <mat-form-field color="accent">
                   <input type="text" id="id-product" class="form-control" matInput [formControl]="productControl"
                   [matAutocomplete]="auto" [matAutocompleteConnectedTo]="origin">
                 </mat-form-field>

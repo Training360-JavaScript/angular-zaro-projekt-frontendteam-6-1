@@ -8,11 +8,6 @@ h2, h3 {
 }
 
 .card {
-  &:hover {
-    transition: ease-in;
-    transition-duration: 300ms;
-    transform: scale(1.05, 1.05);
-  }
 
   &-category {
     text-transform: uppercase;
@@ -36,6 +31,14 @@ h2, h3 {
 
   &-header-icon {
     border-radius: 99rem;
+  }
+}
+
+.upper-cards .card {
+  &:hover {
+    transition: ease-in;
+    transition-duration: 300ms;
+    transform: scale(1.05, 1.05);
   }
 }
 
