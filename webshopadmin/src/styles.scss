@@ -25,7 +25,7 @@ mat-checkbox {
   padding: 1.5rem;
 }
 
-$my-app-primary: mat-palette($mat-blue);
+$my-app-primary: mat-palette($mat-green, 600);
 $my-app-accent:  mat-palette($mat-purple);
 $my-app-warn:    mat-palette($mat-red);
 $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
