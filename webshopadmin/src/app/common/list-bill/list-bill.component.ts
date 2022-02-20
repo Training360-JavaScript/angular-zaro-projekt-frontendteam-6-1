@@ -71,6 +71,19 @@ export class ListBillComponent implements OnInit {
       );
     },
 
+    getFooterRow: (data: []): Observable<{[key:string]:any}> => {
+      return new Observable(
+        subscriber => {
+          const result = {
+            orderID: 'Amount',
+            amount: data.reduce( (p,c:Bill) => p+c.amount, 0 )
+          };
+          subscriber.next( result );
+          subscriber.complete();
+        }
+      );
+    },
+
   };
 
   productList: Product[];

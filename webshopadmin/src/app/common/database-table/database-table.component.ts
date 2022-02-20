@@ -1,4 +1,4 @@
-import { Toast, ToastrService, ToastrModule, ToastRef, ActiveToast } from 'ngx-toastr';
+import { ToastrService, ActiveToast } from 'ngx-toastr';
 import { DialogConfirmComponent, DialogData } from './../dialog-confirm/dialog-confirm.component';
 import { Component, Input, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 
@@ -47,6 +47,8 @@ export class DatabaseTableComponent implements OnInit, AfterViewInit {
 
   storageKey: string = '';
 
+  footerRow: {[key:string]:string} = {};
+
   constructor(
     public dialog: MatDialog,
     private toaster: ToastrService ) { }
@@ -92,6 +94,14 @@ export class DatabaseTableComponent implements OnInit, AfterViewInit {
           return item[property];
         };
         this.dataSource.sort = this.sort;
+
+        if (this.tableConfig.getFooterRow) {
+          this.tableConfig.getFooterRow(data).subscribe({
+            next: (rowCells:{}) => {
+              this.footerRow = rowCells
+            }
+          });
+        }
 
         this.dataSource.paginator = this.paginator;
 

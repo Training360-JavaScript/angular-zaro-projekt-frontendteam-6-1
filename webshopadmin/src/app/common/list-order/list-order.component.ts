@@ -60,6 +60,19 @@ export class ListOrderComponent implements OnInit {
       );
     },
 
+    getFooterRow: (data: []): Observable<{[key:string]:any}> => {
+      return new Observable(
+        subscriber => {
+          const result = {
+            customerID: 'Total',
+            amount: data.reduce((p,c:Order)=>p+c.amount,0)
+          };
+          subscriber.next( result );
+          subscriber.complete();
+        }
+      );
+    },
+
   };
 
   productList: Product[] = [];
