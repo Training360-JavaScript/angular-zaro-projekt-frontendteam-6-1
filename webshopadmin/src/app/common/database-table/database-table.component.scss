@@ -78,20 +78,23 @@
   margin-bottom: 0;
 }
 
-
 ::ng-deep {
-  .mat-header-row > button,
-  .mat-header-cell > button {
-    top: -8px;
+
+  .mat-header-row > mat-checkbox .mat-checkbox-layout,
+  .mat-header-cell > mat-checkbox .mat-checkbox-layout {
+    margin-bottom: 0px;
   }
 
-  .mat-header-row > mat-checkbox,
-  .mat-header-cell > mat-checkbox {
-    margin-top: -4px;
-  }
-
-  .mat-header-cell {
+  .mat-header-row,
+  .mat-footer-row,
+  .mat-header-cell,
+  .mat-footer-cell {
     font-size: 15px;
     font-weight: 600;
+    background: #f8f8f8;
+  }
+
+  .mat-form-field-wrapper {
+    margin-bottom: -21px;
   }
 }

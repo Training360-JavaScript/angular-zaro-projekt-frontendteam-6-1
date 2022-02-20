@@ -44,7 +44,6 @@
           <ng-template #boolean>
             <ng-container *ngIf="tableConfig.columns[key].type==='boolean'; else default">
               <mat-checkbox
-                class="example-margin"
                 [ngModel]="element[ key ]"
                 disabled></mat-checkbox>
             </ng-container>
@@ -55,6 +54,11 @@
           </ng-template>
 
         </mat-cell>
+
+        <mat-footer-cell *matFooterCellDef>
+          {{ footerRow[key] }}
+        </mat-footer-cell>
+
       </ng-container>
     </ng-container>
   </ng-container>
@@ -74,6 +78,7 @@
       </div>
     </mat-cell>
 
+    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
   </ng-container>
 
 
@@ -98,7 +103,6 @@
                 <input class="w-100"
                   matInput
                   autocomplete="off"
-                  [name]="key"
                   type="text"
                   [(ngModel)]="filter[key]"
                   (keyup)="onChange()">
@@ -129,6 +133,9 @@
 
   <!-- data table rows -->
   <mat-row *matRowDef="let row; columns: displayedColumnsKeys;"></mat-row>
+
+  <!-- data footer row -->
+  <mat-footer-row *matFooterRowDef="displayedColumnsKeys"></mat-footer-row>
 
 </mat-table>
 

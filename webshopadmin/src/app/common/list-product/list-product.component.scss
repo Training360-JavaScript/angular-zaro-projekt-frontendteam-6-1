@@ -1,13 +1,13 @@
 @use '../../scss/variable' as *;
 @use '../../scss/mixin' as mixin;
 
-$alignCenterNameList:            id  active                      featured buttons;
-$responsiveNameList:             id  active  name   type  catID  featured buttons;
-$responsiveList:      $xs-min   20%  hidden  45%  hidden  hidden  hidden  35%,
-                      $sm-min   15%  hidden  55%  hidden  hidden  hidden  30%,
-                      $md-min   15%     15%  40%  hidden  hidden  hidden  30%,
-                      $lg-min   10%     10%  35%     30%  hidden  hidden  15%,
-                      $xl-min    5%      5%  30%     15%     25%      5%  15%;
+$alignCenterNameList:            id  active                               featured  buttons;
+$responsiveNameList:             id  active  name    type   catID  price  featured  buttons;
+$responsiveList:      $xs-min   20%  hidden   35%  hidden  hidden    10%    hidden      35%,
+                      $sm-min   15%  hidden   45%  hidden  hidden    10%    hidden      30%,
+                      $md-min   15%     15%   30%  hidden  hidden    10%    hidden      30%,
+                      $lg-min   10%     10%   35%     20%  hidden    10%    hidden      15%,
+                      $xl-min    5%      5%   30%     15%     20%     5%        5%      15%;
 
 @include mixin.set-database-table-style(
   $responsiveNameList,
