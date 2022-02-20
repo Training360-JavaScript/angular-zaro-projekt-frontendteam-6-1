@@ -14,6 +14,10 @@ h2, h3 {
     transform: scale(1.05, 1.05);
   }
 
+  &-category {
+    text-transform: uppercase;
+  }
+
   &-title {
     min-height: 3rem;
     padding: 2rem;
@@ -40,10 +44,3 @@ h2, h3 {
   border-radius: 2rem;
 }
 
-@media screen and (max-width: 600px) {
-
-  .pie-chart {
-    max-height:200px;
-  }
-
-}

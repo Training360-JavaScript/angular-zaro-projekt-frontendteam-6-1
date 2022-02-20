@@ -1,5 +1,5 @@
 <div class="row">
-  <div *ngIf="category$ | async as category" class="col-6 offset-3">
+  <div *ngIf="category$ | async as category" class="col-10 offset-1 col-lg-8 offset-lg-2">
     <h1 class="editor__title"> {{ category.id ?  titleWhenEdit : titleWhenCreate }}</h1>
     <!----- <h1 *ngIf="category.id; else elseBlock" class="editor__title">{{ titleWhenEdit }}</h1>
       <ng-template #elseBlock>
