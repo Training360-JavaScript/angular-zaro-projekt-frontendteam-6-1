@@ -254,7 +254,7 @@ export class DashboardComponent implements OnInit {
       .map( customer => {
         return {
           id: customer.id,
-          name: `${customer.firstName} ${customer.firstName}`,
+          name: `${customer.firstName} ${customer.lastName}`,
           total:
             orders
             .filter( order => order.customerID === customer.id )
