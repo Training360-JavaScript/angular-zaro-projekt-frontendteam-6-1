@@ -97,3 +97,36 @@
     </div>
   </div> <!-- row-->
 </div>
+
+<div class="container-fluid d-flex">
+  <div class="row py-5">
+    <div class="col-12 col-md-12 col-xl-12 card-container">
+      <div class="card h-100 card-stats mb-0">
+        <div class="card-header card-header-warning card-header-icon">
+          <div class="card-icon rounded-circle">
+            <mat-icon>shopping_cart</mat-icon>
+          </div>
+        </div>
+        <div class="mx-5">
+          <h2 class="mt-5 text-uppercase">Sales volume by category</h2>
+          <div style="width:100%;height:500px;" echarts [options]="optionsSalesByCategory" [theme]="CustomerTheme"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-12 col-xl-12 card-container">
+      <div class="card h-100 card-stats mb-0">
+        <div class="card-header card-header-warning card-header-icon">
+          <div class="card-icon rounded-circle">
+            <mat-icon>shopping_cart</mat-icon>
+          </div>
+        </div>
+        <div class="mx-5">
+          <h2 class="mt-5 text-uppercase">Sales volume by top customer</h2>
+          <div style="width:100%;height:500px;" echarts [options]="optionsSalesByTopCustomer" [theme]="CustomerTheme"></div>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- row-->
+</div>

@@ -1,3 +1,6 @@
+import { Customer } from './../../model/customer';
+import { Category } from './../../model/category';
+import { CategoryService } from './../../service/category.service';
 import { Order } from './../../model/order';
 import { BillService } from './../../service/bill.service';
 import { OrderService } from './../../service/order.service';
@@ -9,6 +12,7 @@ import { Product } from 'src/app/model/product';
 import { EChartsOption } from 'echarts';
 import { ThemeOption } from 'ngx-echarts';
 
+import LinearGradient from 'zrender/lib/graphic/LinearGradient';
 
 @Component({
   selector: 'app-dashboard',
@@ -61,6 +65,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private ps: ProductService,
+    private cas: CategoryService,
     private cs: CustomerService,
     private os: OrderService,
     private bs: BillService,
@@ -88,12 +93,13 @@ export class DashboardComponent implements OnInit {
   }
 
   initInfo() {
-    zip(this.ps.getAll(), this.cs.getAll(), this.os.getAll(), this.bs.getAll()).subscribe({
+    zip(this.ps.getAll(), this.cs.getAll(), this.os.getAll(), this.bs.getAll(), this.cas.getAll()).subscribe({
       next: value => {
         const products = value[0];
         const customers = value[1];
         const orders = value[2];
         const bills = value[3];
+        const categories = value[4];
         const productsOfOrders: Product[] = orders.map(o => products.find(p => p.id === o.productID) || new Product);
         this.info.allCustomer = customers.length;
         this.info.activeCustomer = customers.reduce((prev, e) => e.active ? prev + 1: prev, 0);
@@ -145,6 +151,8 @@ export class DashboardComponent implements OnInit {
           ['Paid', this.info.paidBillAmount],
         ]);
 
+        this.setOptionSalesByCategory( categories, products, orders );
+        this.setOptionSalesByTopCustomer( customers, products, orders );
       }
     })
   }
@@ -174,15 +182,145 @@ export class DashboardComponent implements OnInit {
             value: e[1],
             label: {position: 'inner'},
           })),
-        type: 'pie',
-      },
-    ],
+          type: 'pie',
+        },
+      ],
+    }
   }
-}
 
+  setOptionSalesByCategory( categories: Category[], products: Product[], orders: Order[] ) {
+
+    const sortCategory = (a:Category,b:Category) => b.name.localeCompare(a.name);
+
+    const data = categories.sort(sortCategory).map( category =>
+      products
+        .filter( product => product.catID === category.id )
+        .map( product =>
+          orders
+            .filter( order => order.productID === product.id )
+            .map( order => order.amount * product.price )
+        )
+        .flat()
+        .reduce( (p,c)=>p+c )
+    );
+
+    const xAxisData = categories.sort(sortCategory).map(
+      c => (c.name.length <= 6) ? c.name : c.name.substring(0,6)+'.' );
+
+    this.optionsSalesByCategory = {
+      xAxis: {
+        data: xAxisData,
+        axisLabel: {
+          inside: !true,
+          color: '#999',
+        },
+        axisTick: {
+          show: !false,
+        },
+        axisLine: {
+          show: !false,
+        },
+      },
+      yAxis: {
+        axisLabel: {
+          color:"#999"
+        },
+      },
+      series: [
+        {
+          type: 'bar',
+          itemStyle: {
+            color: new LinearGradient( 0, 0, 0, 1, [
+              { offset: 0, color: '#ffb746' },
+              { offset: 0.5, color: '#ffa726' },
+              { offset: 1, color: '#ffa726' },
+            ]),
+          },
+          emphasis: {
+            itemStyle: {
+              color: '#ffa726'
+            }
+          },
+          data
+        },
+      ],
+    };
+  }
+
+
+  setOptionSalesByTopCustomer( customers: Customer[], products: Product[], orders: Order[] ) {
+
+    const dataCustomer = customers
+      .map( customer => {
+        return {
+          id: customer.id,
+          name: `${customer.firstName} ${customer.firstName}`,
+          total:
+            orders
+            .filter( order => order.customerID === customer.id )
+            .flat()
+            .map( order =>
+              products
+              .filter( product => product.id === order.productID )
+              .map( product => product.price * order.amount )
+            )
+            .flat()
+            .reduce( (p,c)=>p+c, 0 )
+        }
+      })
+      .sort( (c1,c2) => {
+        return c2.total-c1.total;
+      });
+
+    const customerYAxis = dataCustomer.slice( 0, 10 ).map( d => d.name ).reverse();
+    const customerData = dataCustomer.slice( 0, 10 ).map( d => d.total ).reverse();
+
+    this.optionsSalesByTopCustomer =
+      {
+        yAxis: {
+          data: customerYAxis,
+          axisLabel: {
+            inside: !true,
+            color: '#999',
+          },
+          axisTick: {
+            show: true,
+          },
+          axisLine: {
+            show: true,
+          },
+        },
+        xAxis: {
+          axisLabel: {
+            color: '#999',
+          },
+        },
+        series: [
+          {
+            type: 'bar',
+            itemStyle: {
+              color: new LinearGradient( 0, 0, 0, 1, [
+                { offset: 0, color: '#ffb746' },
+                { offset: 0.5, color: '#ffa726' },
+                { offset: 1, color: '#ffa726' },
+              ]),
+            },
+            emphasis: {
+              itemStyle: {
+                color: '#ffa726'
+              }
+            },
+            data: customerData
+          },
+        ],
+      };
+  }
 
   ngOnInit(): void {
     this.initInfo();
   }
+
+  optionsSalesByCategory: EChartsOption;
+  optionsSalesByTopCustomer: EChartsOption;
 
 }
