@@ -1,8 +1,15 @@
 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
   <div class="container-fluid">
     <div class="navbar-wrapper">
-      <a class="navbar-brand" routerLink="/">
-        <div class="navbar_title h4"> Dashboard </div></a>
+      <div class="h4">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"
+              *ngFor="let bread of breadCrumb; let last = last;"
+            ><a [routerLink]="bread.routerLink">{{ bread.name }}</a></li>
+          </ol>
+        </nav>
+      </div>
     </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
       <span class="sr-only">Toggle navigation</span>
