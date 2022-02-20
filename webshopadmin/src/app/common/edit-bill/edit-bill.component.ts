@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, Observable, switchMap, map, tap } from 'rxjs';
+import { of, Observable, switchMap, map, tap } from 'rxjs';
 import { Bill } from 'src/app/model/bill';
 import { BillService } from 'src/app/service/bill.service';
 import { Product } from 'src/app/model/product';
@@ -13,17 +13,23 @@ import { Location } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
+class SOrder {
+  constructor(
+    public id: number = 0,
+    public name: string,
+  ) {}
+}
+
 @Component({
   selector: 'app-edit-bill',
   templateUrl: './edit-bill.component.html',
   styleUrls: ['./edit-bill.component.scss'],
 })
 export class EditBillComponent implements OnInit {
-  customerControl = new FormControl();
-  productControl = new FormControl();
+  orderControl = new FormControl();
 
   @Input() set billID(value: number) {
-    this.billService.getOrNew(value).subscribe(this.setupBill.bind(this));
+    this.setupBill(this.billService.getOrNew(value));
   }
 
   @Input() closeNavigatePath: string[] | null | number = -1;
@@ -31,31 +37,30 @@ export class EditBillComponent implements OnInit {
   @Output() close: EventEmitter<boolean> = new EventEmitter();
 
   bill: Bill | null = null;
-  order: Order | null = null;
+  sorder: SOrder;
 
-  // előző kód átnevezve párhuzamos működéshez
-  billBasic$: Observable<Bill> = this.activatedRoute.params.pipe(
-    switchMap((params) => this.billService.getOrNew(params['id']))
-  );
-  orderBasic$: Observable<Order> = this.billService.getOrderAsync(
-    this.billBasic$
-  );
-  customerBasic$: Observable<Customer> = this.orderService.getCustomerAsync(
-    this.orderBasic$
-  );
-  productBasic$: Observable<Product> = this.orderService.getProductAsync(
-    this.orderBasic$
-  );
-  // előző kód vége
+  filteredList$: Observable<SOrder[]>; // = of([{id: 12, name: 'asdf'}]);
 
-  product$: Observable<Product>;
-  filteredProducts$: Observable<Product[]>;
 
-  customer$: Observable<Customer>;
-  filteredCustomers$: Observable<Customer[]>;
+  modalOrder: boolean = false;
 
-  modalCustomer: boolean = false;
-  modalProduct: boolean = false;
+  setupBill(b$: Observable<Bill>): void {
+    b$.subscribe(b => {
+      this.bill = b;
+      this.setupOrder();
+    })
+  }
+
+  setupOrder() {
+    if (this.bill) {
+      this.orderService.get(this.bill.orderID)
+      .pipe(switchMap(o => this.orderService.getCustomer(o).pipe(map(c => new SOrder(o.id, `#${o.id} (${c.firstName} ${c.lastName})`)))))
+      .subscribe(so => {
+        this.sorder = so;
+        this.orderControl.setValue(this.sorder);
+      });
+    }
+  }
 
   constructor(
     private billService: BillService,
@@ -67,106 +72,32 @@ export class EditBillComponent implements OnInit {
     private location: Location,
     private toaster: ToastrService
   ) {
-    this.activatedRoute.params
-      .pipe(switchMap((params) => this.billService.getOrNew(params['id'])))
-      .subscribe(this.setupBill.bind(this));
-    this.activatedRoute.params
-      .pipe(switchMap((params) => this.orderService.getOrNew(params['id'])))
-      .subscribe(this.setupOrder.bind(this));
+    this.setupBill(this.activatedRoute.params
+      .pipe(switchMap(params => this.billService.getOrNew(params['id']))));
   }
 
-  customerSetup(): void {
-    if (this.order) {
-      this.customer$ = this.orderService
-        .getCustomer(this.order)
-        .pipe(tap((e) => this.customerControl.setValue(e)));
-      this.filteredCustomers$ = combineLatest([
-        this.customerService.getAll(),
-        this.customerControl.valueChanges,
-      ]).pipe(
-        map((ee) =>
-          this.setupFunc<Customer>(
-            ee[1],
-            ee[0],
-            this.displayCustomer,
-            (e) => this.order && (this.order.customerID = e)
-          )
-        )
-      );
-    }
-  }
-
-  productSetup(): void {
-    if (this.order) {
-      this.product$ = this.orderService
-        .getProduct(this.order)
-        .pipe(tap((e) => this.productControl.setValue(e)));
-      this.filteredProducts$ = combineLatest([
-        this.productService.getAll(),
-        this.productControl.valueChanges,
-      ]).pipe(
-        map((ee) =>
-          this.setupFunc<Product>(
-            ee[1],
-            ee[0],
-            this.displayProduct,
-            (e) => this.order && (this.order.productID = e)
-          )
-        )
-      );
-    }
-  }
-
-  setupFunc<T extends Customer | Product>(
-    value: any,
-    array: T[],
-    displayFunc: (e: T) => string,
-    setIDFunc: (id: number) => void
-  ): T[] {
-    if (value?.id) {
-      setIDFunc(value.id);
-      return array.filter((e) => e.id == value.id);
-    } else {
-      setIDFunc(0);
-      if (typeof value === 'string') {
-        const phrase = value.toLowerCase();
-        return array.filter((e) =>
-          displayFunc(e).toLowerCase().includes(phrase)
-        );
-      } else return array.slice();
-    }
-  }
-
-  displayCustomer(customer: Customer | string | null): string {
-    if (!customer) return '';
-    else if (typeof customer === 'string') return customer;
+  displayFunc(value:  SOrder | string | null): string {
+    if (!value)
+      return '';
+    else if (typeof value === 'string')
+      return value;
     else
-      return (
-        customer.firstName +
-        (customer.firstName && customer.lastName ? ' ' : '') +
-        customer.lastName
-      );
-  }
-
-  displayProduct(product: Product | string | null): string {
-    if (!product) return '';
-    else if (typeof product === 'string') return product;
-    else return `${product.name}`;
-  }
-
-  setupBill(b: Bill): void {
-    this.bill = b;
-    this.customerSetup();
-    this.productSetup();
-  }
-
-  setupOrder(o: Order): void {
-    this.order = o;
-    this.customerSetup();
-    this.productSetup();
+      return value.name;
   }
 
   ngOnInit(): void {}
+
+  editOrder() {
+    this.modalOrder = true;
+  }
+
+  modalOrderEnd($event: Order | null): void {
+    if ($event && this.bill) {
+      this.bill!.orderID = $event.id;
+      this.setupOrder();
+    }
+    this.modalOrder = false;
+  }
 
   onSubmit(bill: Bill) {
     this.billService.createOrUpdate(bill).subscribe({
@@ -176,7 +107,6 @@ export class EditBillComponent implements OnInit {
   }
 
   onClose(result: boolean, nBill?: Bill, isNew: boolean = false): void {
-    /* this.close.emit(result ? nBill : null ); */
     if (result) {
       if (isNew)
         this.toaster.success(`Bill #${nBill?.id} created successfully.`);
@@ -189,43 +119,5 @@ export class EditBillComponent implements OnInit {
     }
   }
 
-  // előző kód átnevezve
-  editOrderBasic(order: Order): void {
-    this.router.navigate(['/order', order.id]);
-  }
 
-  editProductBasic(product: Product): void {
-    this.router.navigate(['/product', product.id]);
-  }
-  editCustomerBasic(customer: Customer): void {
-    this.router.navigate(['/customer', customer.id]);
-  }
-  /*  back(): void {
-    this.location.back();
-  } */
-  // előző kód vége
-
-  editProduct(): void {
-    this.modalProduct = true;
-  }
-
-  modalProductEnd($event: Product | null): void {
-    if ($event && this.order) {
-      this.order!.productID = $event.id;
-      this.productSetup();
-    }
-    this.modalProduct = false;
-  }
-
-  editCustomer(): void {
-    this.modalCustomer = true;
-  }
-
-  modalCustomerEnd($event: Customer | null): void {
-    if ($event && this.order) {
-      this.order!.customerID = $event.id;
-      this.customerSetup();
-    }
-    this.modalCustomer = false;
-  }
 }

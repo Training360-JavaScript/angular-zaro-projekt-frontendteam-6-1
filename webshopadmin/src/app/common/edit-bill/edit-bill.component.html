@@ -6,24 +6,50 @@
         <input [(ngModel)]="bill.id" class="form-control" name="id" type="hidden" />
 
         <div class="row border mb-3">
-          <div class="form-group col-4">
-            <label for="orderid">OrderID</label>
-            <div>{{ bill.orderID}}</div>
+          <div *ngIf="sorder" class="form-group col-12">
+            <div>{{ sorder.id + ' ' + sorder.name}}</div>
+
+
+            <div class="form-group col-12">
+              <label for="customer">Order</label>
+              <div class="d-flex mt-2">
+                <div matAutocompleteOrigin #origin="matAutocompleteOrigin" class="col-8">
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFunc">
+                    <mat-option *ngFor="let sord of filteredList$ | async" [value]="sord">
+                      {{ displayFunc(sord) }}
+                    </mat-option>
+                  </mat-autocomplete>
+                  <mat-form-field>
+                    <input type="text" id="id-customer" class="form-control" matInput [formControl]="orderControl"
+                      [matAutocomplete]="auto" [matAutocompleteConnectedTo]="origin">
+                  </mat-form-field>
+                  <div class="error-message" [hidden]="bill?.orderID">
+                    Please choose an order, or create a new.
+                  </div>
+                </div>
+                <div class="col-4 px-0">
+                  <button (click)="editOrder()" class="btn btn-primary btn-block"><i class="fa fa-pencil"></i><span
+                      class="ml-2"> {{ bill?.orderID ? 'Edit' : 'Create' }} order</span></button>
+                </div>
+              </div>
+            </div>
+
+
             <!-- <input [(ngModel)]="bill.orderID" id="orderid" class="form-control bg-white px-1" name="orderID"
               type="number" required pattern="^[1-9][0-9]{0,}" /> -->
             <!-- <div class="error-message" [hidden]="billForm.controls['orderID']?.valid">
               Required, numbers only!
             </div> -->
           </div>
-          <div *ngIf="orderBasic$ | async as orderBasic" class="form-group col-8 d-flex justify-content-end">
+          <!-- <div *ngIf="orderBasic$ | async as orderBasic" class="form-group col-8 d-flex justify-content-end">
             <div class="col-6 "><button (click)="editOrderBasic(orderBasic)" class="btn btn-primary btn-block"><i
                   class="fa fa-pencil"></i>
                 <span class="ml-2">EDIT ORDER</span></button>
             </div>
-          </div>
+          </div> -->
         </div>
 
-        <div class="row border mb-3">
+        <!-- <div class="row border mb-3">
           <div class="form-group col-12">
             <label for="customer">Customer</label>
             <div *ngIf="customer$ | async as customer" class="d-flex mt-2">
@@ -47,7 +73,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
 
         <!-- <div *ngIf="customerBasic$ | async as customerBasic" class="row border mb-3">
@@ -71,8 +97,7 @@
         </div> -->
 
 
-        <div class="row border mb-3">
-          <!-- <input type="hidden" [(ngModel)]="order.productID" name="productID"> -->
+        <!-- <div class="row border mb-3">
           <div class="form-group col-12">
             <label for="product">Product name</label>
             <div *ngIf="product$ | async as product" class="d-flex mt-2">
@@ -96,7 +121,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
 
         <!-- <div class="row border">
@@ -177,8 +202,7 @@
       </form>
     </div>
   </div>
-
-  <div *ngIf="(modalCustomer || modalProduct) && order" [style]="{
+  <div *ngIf="modalOrder" [style]="{
     position: 'absolute',
     top: 0,
     left: 0,
@@ -186,11 +210,8 @@
     width: '100%',
     height: '100%'
   }">
-    <app-edit-customer *ngIf="modalCustomer" [customerID]="order.customerID" [closeNavigatePath]="null"
-      (close)="modalCustomerEnd($event)" [defaultName]="customerControl.value">
-    </app-edit-customer>
-    <app-edit-product *ngIf="modalProduct" [productID]="order.productID" [closeNavigatePath]="null"
-      (close)="modalProductEnd($event)" [defaultName]="productControl.value">
-    </app-edit-product>
+  <app-edit-order [orderID]="bill?.orderID || 0" [closeNavigatePath]="null" (close)="modalOrderEnd($event)"
+   >
+  </app-edit-order>
   </div>
 </div>

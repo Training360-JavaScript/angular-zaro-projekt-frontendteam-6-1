@@ -21,7 +21,10 @@ export class EditOrderComponent implements OnInit {
   customerControl = new FormControl();
   productControl = new FormControl();
 
+  disableRouter: boolean = false;
+
   @Input() set orderID(value: number) {
+    this.disableRouter = true;
     this.orderService.getOrNew(value).subscribe(this.setupOrder.bind(this));
   }
 
@@ -52,7 +55,10 @@ export class EditOrderComponent implements OnInit {
     private location: Location,
     private toaster: ToastrService,
   ) {
-    this.activatedRoute.params.pipe(switchMap(params => this.orderService.getOrNew(params['id']))).subscribe(this.setupOrder.bind(this));
+    this.activatedRoute.params.pipe(switchMap(params => this.orderService.getOrNew(params['id']))).subscribe( o => {
+      if (!this.disableRouter)
+        this.setupOrder(o);
+    });
    }
 
   customerSetup(): void {

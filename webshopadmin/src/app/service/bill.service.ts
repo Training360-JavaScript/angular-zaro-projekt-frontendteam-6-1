@@ -34,20 +34,4 @@ export class BillService extends CrudService<Bill> {
   getOrderAsync(bill$: Observable<Bill>): Observable<Order> {
     return bill$.pipe(mergeMap(bill => this.os.getOrNew(bill.orderID)));
   }
-
-  getCustomer(order: Order): Observable<Customer> {
-    return this.cs.getOrNew(order.customerID);
-  }
-
-  getCustomerAsync(order$: Observable<Order>): Observable<Customer> {
-    return order$.pipe(mergeMap((order) => this.cs.getOrNew(order.customerID)));
-  }
-
-  getProduct(order: Order): Observable<Product> {
-    return this.ps.getOrNew(order.productID);
-  }
-
-  getProductAsync(order$: Observable<Order>): Observable<Product> {
-    return order$.pipe(mergeMap((order) => this.ps.getOrNew(order.productID)));
-  }
 }
