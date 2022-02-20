@@ -81,7 +81,7 @@
       <div *ngIf="chartDataOrders"  [theme]="OrderTheme" echarts [options]="chartDataOrders" class="justify-content-center pie-chart"></div>
     </div>
     <div class="col-12 col-md-6">
-      <h3>Amount of orders</h3>
+      <h3>Amount of orders ($)</h3>
       <div *ngIf="chartDataOrdersAmount" [theme]="OrderTheme" echarts [options]="chartDataOrdersAmount" class="justify-content-center pie-chart"></div>
     </div>
 
@@ -92,7 +92,7 @@
       </div>
     </div>
     <div class="col-12 col-md-6">
-      <h3>Amount of bills</h3>
+      <h3>Amount of bills ($)</h3>
       <div *ngIf="chartDataBillsAmount"  [theme]="BillTheme" echarts [options]="chartDataBillsAmount" class="pie-chart"></div>
     </div>
   </div> <!-- row-->
@@ -108,7 +108,7 @@
           </div>
         </div>
         <div class="mx-5">
-          <h2 class="mt-5 text-uppercase">Sales volume by category</h2>
+          <h2 class="mt-5 text-uppercase">Sales volume by category ($)</h2>
           <div style="width:100%;height:500px;" echarts [options]="optionsSalesByCategory" [theme]="CustomerTheme"></div>
         </div>
       </div>
@@ -122,7 +122,7 @@
           </div>
         </div>
         <div class="mx-5">
-          <h2 class="mt-5 text-uppercase">Sales volume by top customer</h2>
+          <h2 class="mt-5 text-uppercase">Sales volume by top customer ($)</h2>
           <div style="width:100%;height:500px;" echarts [options]="optionsSalesByTopCustomer" [theme]="CustomerTheme"></div>
         </div>
       </div>

@@ -169,7 +169,7 @@ export class DashboardComponent implements OnInit {
     return {
       tooltip: {
         trigger: 'item',
-        formatter: '{b} : {c} ({d}%)'
+        formatter: '{b}: <strong> {c} </strong >'
       },
       calculable: true,
       series: [
