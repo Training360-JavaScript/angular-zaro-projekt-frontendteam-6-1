@@ -1,7 +1,7 @@
 import { ProductService } from './../../service/product.service';
 import { CustomerService } from './../../service/customer.service';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { combineLatest, Observable, switchMap, map, tap, startWith } from 'rxjs';
+import { combineLatest, Observable, switchMap, map, tap } from 'rxjs';
 import { OrderService } from 'src/app/service/order.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Order } from 'src/app/model/order';
