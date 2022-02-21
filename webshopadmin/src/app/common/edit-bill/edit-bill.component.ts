@@ -67,24 +67,48 @@ export class EditBillComponent implements OnInit {
         this.orderControl.setValue(so);
       });
     }
+
     this.filteredList$ = combineLatest([
-      this.orderService.getAll(),
-      this.customerService.getAll(),
-      this.orderControl.valueChanges
-      ]).pipe(map(ee => {
-        const value = ee[2];
-        const array = ee[0].map(o => new SOrder(o.id, this.getOrderName(o, ee[1].find(c => c.id === o.customerID))));
-        if (value?.id) {
-          if (this.bill)
-            this.bill.orderID = value.id;
-          return array.filter(e => e.id == value.id);
-        } else {
-          if(this.bill)
-            this.bill.orderID = 0;
-          return array.filter(so => this.displayFunc(so).toLowerCase().includes(String(value).toLocaleLowerCase()));
-        }
+      combineLatest([
+        this.orderService.getAll(),
+        this.customerService.getAll(),
+      ]).pipe(map (ee => {
+        return ee[0].map(o => new SOrder(o.id, this.getOrderName(o, ee[1].find(c => c.id === o.customerID))));
+      })),
+      this.orderControl.valueChanges,
+    ]).pipe(map (ee => {
+      const array = ee[0];
+      const value = ee[1];
+      if (value?.id) {
+        if (this.bill)
+          this.bill.orderID = value.id;
+        return array.filter(e => e.id == value.id);
+      } else {
+        if(this.bill)
+          this.bill.orderID = 0;
+        return array.filter(so => this.displayFunc(so).toLowerCase().includes(String(value).toLocaleLowerCase()));
       }
-      ));
+    }));
+
+
+    // this.filteredList$ = combineLatest([
+    //   this.orderService.getAll(),
+    //   this.customerService.getAll(),
+    //   this.orderControl.valueChanges
+    //   ]).pipe(map(ee => {
+    //     const value = ee[2];
+    //     const array = ee[0].map(o => new SOrder(o.id, this.getOrderName(o, ee[1].find(c => c.id === o.customerID))));
+    //     if (value?.id) {
+    //       if (this.bill)
+    //         this.bill.orderID = value.id;
+    //       return array.filter(e => e.id == value.id);
+    //     } else {
+    //       if(this.bill)
+    //         this.bill.orderID = 0;
+    //       return array.filter(so => this.displayFunc(so).toLowerCase().includes(String(value).toLocaleLowerCase()));
+    //     }
+    //   }
+    //   ));
   }
 
   constructor(
