@@ -64,7 +64,9 @@ export class EditOrderComponent implements OnInit {
   customerSetup(): void {
     if (this.order) {
       this.customer$ = this.orderService.getCustomer(this.order)
-        .pipe(map(e => e || new Customer()), tap(e => this.customerControl.setValue(e)));
+        .pipe(map(e => e || new Customer()),
+          tap(e => this.customerControl.setValue(e)),
+          tap(e => this.order!.customerID = e.id));
       this.filteredCustomers$ = combineLatest([
         this.customerService.getAll(),
         this.customerControl.valueChanges
@@ -77,7 +79,9 @@ export class EditOrderComponent implements OnInit {
   productSetup(): void {
     if (this.order) {
       this.product$ = this.orderService.getProduct(this.order)
-        .pipe(map(e => e || new Product()), tap(e => this.productControl.setValue(e)));
+        .pipe(map(e => e || new Product()),
+          tap(e => this.productControl.setValue(e)),
+          tap(e => this.order!.productID = e.id));
       this.filteredProducts$ = combineLatest([
         this.productService.getAll(),
         this.productControl.valueChanges
