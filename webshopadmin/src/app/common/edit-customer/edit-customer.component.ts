@@ -17,7 +17,8 @@ export class EditCustomerComponent implements OnInit {
 
   @Input() set customerID(value: number) {
     this.customer$ = this.customerService.getOrNew(value).pipe(map(e => {
-      if (e.id === 0 && this.defaultName) {
+      if (e.id === 0 && this.defaultName && typeof this.defaultName === 'string') {
+        console.log(this.defaultName);
         const nameArray = this.defaultName.split(' ').filter(e => e && e != ' ');
         e.firstName = nameArray.shift() || '';
         e.lastName = nameArray.join(' ');

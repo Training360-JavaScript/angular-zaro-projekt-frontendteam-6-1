@@ -26,12 +26,12 @@ export class CrudService<T extends {id: number} > {
 
   hideDiv(index: number): OperatorFunction<T[],T[]> {
     return map( (list:T[]): T[] => {
-      console.log('töröl',index);
+      //console.log('töröl',index);
       (timer$[index] as Subscription).unsubscribe();
-      console.log(timer$);
+      //console.log(timer$);
       // delete timer$[index];
       timer$[index] = false;
-      console.log(timer$);
+      //console.log(timer$);
       // ha nincs már aktív letöltés
       if ( ! timer$.some( (x) => x ) )
         spinnerDiv.style.display = 'none';

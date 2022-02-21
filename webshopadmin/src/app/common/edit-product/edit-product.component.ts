@@ -20,7 +20,7 @@ export class EditProductComponent implements OnInit {
   @Input() set productID(value: number) {
     this.product$ = this.productService.getOrNew(value)
       .pipe(map( e => {
-        if (e.id === 0 && this.defaultName)
+        if (e.id === 0 && this.defaultName && typeof this.defaultName === 'string')
           e.name = this.defaultName;
         return e;
       }));
