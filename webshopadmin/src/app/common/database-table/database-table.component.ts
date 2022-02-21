@@ -93,7 +93,12 @@ export class DatabaseTableComponent implements OnInit, AfterViewInit {
             return this.tableConfig.columns[property].value( item[property] );
           return item[property];
         };
-        this.dataSource.sort = this.sort;
+
+        timer(10).subscribe({
+          next: () => {
+            this.dataSource.sort = this.sort;
+          }
+        });
 
         if (this.tableConfig.getFooterRow) {
           this.tableConfig.getFooterRow(data).subscribe({
