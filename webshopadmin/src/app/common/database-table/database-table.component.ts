@@ -277,7 +277,7 @@ export class DatabaseTableComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.ngOnInit();
+    // this.ngOnInit(); //
   }
 
 

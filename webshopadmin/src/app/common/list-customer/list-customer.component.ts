@@ -63,9 +63,7 @@ export class ListCustomerComponent implements OnInit {
   constructor(
     public customService: CustomerService,
     private router: Router
-  ) {
-    customService.getAll();
-  }
+  ) { }
 
   ngOnInit(): void {
   }
