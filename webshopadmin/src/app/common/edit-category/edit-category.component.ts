@@ -46,7 +46,7 @@ export class EditCategoryComponent implements OnInit {
   onUpdate(category: Category) {
     this.categoryService.createOrUpdate(category).subscribe({
       next: () => this.onClose(true, category),
-      error: console.log,
+      error: error => this.toaster.error(error),
     })
   }
 

@@ -47,7 +47,7 @@ export class EditCustomerComponent implements OnInit {
   onSubmit(customer: Customer) {
     this.customerService.createOrUpdate(customer).subscribe({
       next: mCustomer => this.onClose(true, mCustomer, customer.id === 0),
-      error: console.log,
+      error: error => this.toaster.error(error),
     })
   }
 
