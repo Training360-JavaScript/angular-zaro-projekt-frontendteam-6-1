@@ -58,3 +58,17 @@ mat-row:hover {
 
 }
 
+.nav-mobile-menu + ul > li.nav-item > a,
+.nav-mobile-menu + ul > li.nav-item > a > i {
+  color: #a9afbb;
+}
+
+@media (max-width: 991px) {
+  .sidebar .logo a.simple-text {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .sidebar .logo:after {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+}
