@@ -5,8 +5,8 @@ import { CategoryService } from './../../service/category.service';
 import { Router } from '@angular/router';
 import { ProductService } from './../../service/product.service';
 import { Product } from './../../model/product';
-import { Observable } from 'rxjs';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Observable, timer } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-list-product',
@@ -83,14 +83,18 @@ export class ListProductComponent implements OnInit {
     public categoryService: CategoryService,
     public router: Router,
   ) {
-    categoryService.getAll().subscribe( {
-      next: ( categories: Category[] | null ) => {
-        if ( categories !== null ) {
-          this.categoryList = categories;
-          customService.getAll();
-        }
-      }
-    });
+    //timer(5000).subscribe( {
+    //  next: () => {
+        categoryService.getAll().subscribe( {
+          next: ( categories: Category[] | null ) => {
+            if ( categories !== null ) {
+              this.categoryList = categories;
+            }
+          }
+        });
+
+    //  }
+    //})
   }
 
   ngOnInit(): void {
