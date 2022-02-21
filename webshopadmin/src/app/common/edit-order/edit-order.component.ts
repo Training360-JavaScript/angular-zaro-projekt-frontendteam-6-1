@@ -1,7 +1,7 @@
 import { ProductService } from './../../service/product.service';
 import { CustomerService } from './../../service/customer.service';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { combineLatest, Observable, switchMap, map, tap } from 'rxjs';
+import { combineLatest, Observable, switchMap, map, tap, startWith } from 'rxjs';
 import { OrderService } from 'src/app/service/order.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Order } from 'src/app/model/order';
@@ -64,7 +64,7 @@ export class EditOrderComponent implements OnInit {
   customerSetup(): void {
     if (this.order) {
       this.customer$ = this.orderService.getCustomer(this.order)
-        .pipe(tap(e => this.customerControl.setValue(e)));
+        .pipe(map(e => e || new Customer()), tap(e => this.customerControl.setValue(e)));
       this.filteredCustomers$ = combineLatest([
         this.customerService.getAll(),
         this.customerControl.valueChanges
@@ -77,7 +77,7 @@ export class EditOrderComponent implements OnInit {
   productSetup(): void {
     if (this.order) {
       this.product$ = this.orderService.getProduct(this.order)
-        .pipe(tap(e => this.productControl.setValue(e)));
+        .pipe(map(e => e || new Product()), tap(e => this.productControl.setValue(e)));
       this.filteredProducts$ = combineLatest([
         this.productService.getAll(),
         this.productControl.valueChanges

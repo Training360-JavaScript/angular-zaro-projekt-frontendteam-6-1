@@ -20,7 +20,7 @@
                   <input type="text" id="id-customer" class="form-control" matInput [formControl]="customerControl"
                     [matAutocomplete]="auto" [matAutocompleteConnectedTo]="origin">
                 </mat-form-field>
-                <div class="error-message" [hidden]="order?.customerID">
+                <div class="error-message" [hidden]="order?.customerID && customer?.id">
                   Please choose a customer, or create a new.
                 </div>
               </div>
@@ -47,7 +47,7 @@
                   <input type="text" id="id-product" class="form-control" matInput [formControl]="productControl"
                   [matAutocomplete]="auto" [matAutocompleteConnectedTo]="origin">
                 </mat-form-field>
-                <div class="error-message" [hidden]="order?.productID">
+                <div class="error-message" [hidden]="order?.productID && product?.id">
                   Please choose a product, or create a new.
                 </div>
               </div>
