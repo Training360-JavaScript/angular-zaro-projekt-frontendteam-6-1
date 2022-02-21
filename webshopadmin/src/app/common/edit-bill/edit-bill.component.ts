@@ -1,6 +1,7 @@
+import { OrderService } from './../../service/order.service';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, Observable, switchMap, map, tap } from 'rxjs';
+import { Observable, switchMap, map, combineLatest } from 'rxjs';
 import { Bill } from 'src/app/model/bill';
 import { BillService } from 'src/app/service/bill.service';
 import { Product } from 'src/app/model/product';
@@ -8,7 +9,6 @@ import { ProductService } from './../../service/product.service';
 import { Customer } from 'src/app/model/customer';
 import { CustomerService } from './../../service/customer.service';
 import { Order } from 'src/app/model/order';
-import { OrderService } from 'src/app/service/order.service';
 import { Location } from '@angular/common';
 import { FormControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -37,9 +37,8 @@ export class EditBillComponent implements OnInit {
   @Output() close: EventEmitter<boolean> = new EventEmitter();
 
   bill: Bill | null = null;
-  sorder: SOrder;
 
-  filteredList$: Observable<SOrder[]>; // = of([{id: 12, name: 'asdf'}]);
+  filteredList$: Observable<SOrder[]>;
 
 
   modalOrder: boolean = false;
@@ -51,15 +50,41 @@ export class EditBillComponent implements OnInit {
     })
   }
 
+  getOrderName(o?: Order, c?: Customer):string {
+    if (!o)
+      return  '#0';
+    else if (!c)
+      return `#${o.id}`;
+    else
+    return `#${o.id} (${c.firstName} ${c.lastName})`
+  }
+
   setupOrder() {
     if (this.bill) {
       this.orderService.get(this.bill.orderID)
-      .pipe(switchMap(o => this.orderService.getCustomer(o).pipe(map(c => new SOrder(o.id, `#${o.id} (${c.firstName} ${c.lastName})`)))))
+      .pipe(switchMap(o => this.orderService.getCustomer(o).pipe(map(c => new SOrder(o.id, this.getOrderName(o, c))))))
       .subscribe(so => {
-        this.sorder = so;
-        this.orderControl.setValue(this.sorder);
+        this.orderControl.setValue(so);
       });
     }
+    this.filteredList$ = combineLatest([
+      this.orderService.getAll(),
+      this.customerService.getAll(),
+      this.orderControl.valueChanges
+      ]).pipe(map(ee => {
+        const value = ee[2];
+        const array = ee[0].map(o => new SOrder(o.id, this.getOrderName(o, ee[1].find(c => c.id === o.customerID))));
+        if (value?.id) {
+          if (this.bill)
+            this.bill.orderID = value.id;
+          return array.filter(e => e.id == value.id);
+        } else {
+          if(this.bill)
+            this.bill.orderID = 0;
+          return array.filter(so => this.displayFunc(so).toLowerCase().includes(String(value).toLocaleLowerCase()));
+        }
+      }
+      ));
   }
 
   constructor(
