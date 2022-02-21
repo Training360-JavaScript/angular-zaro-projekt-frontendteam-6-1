@@ -191,7 +191,7 @@
             <mat-icon>undo</mat-icon> <span class="ml-2">Back</span>
           </button>
 
-          <button [disabled]="billForm.invalid" mat-raised-button color="accent" type="submit" class="col-md-4"
+          <button [disabled]="!(billForm.valid && bill.orderID)" mat-raised-button color="accent" type="submit" class="col-md-4"
             (click)="onSubmit(bill)">
             <mat-icon>save</mat-icon> <span class="ml-2">{{ bill.id ? 'Save changes' : 'Save new' }}</span>
           </button>
